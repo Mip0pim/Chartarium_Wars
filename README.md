@@ -126,7 +126,8 @@ A continuación se muestran los primeros bocetos de los tanques, el logo del jue
 
 ## 2.3 Logotipo
 
-Se muestra el logotipo ya escaneado.  
+Se muestran los logotipos del juego y empresa ya escaneado. 
+![Logotipo de Chartarium Studios](images/image4.png)
 ![Logotipo de Chartarium Wars](images/image6.png)
 
 ## 2.4 Inspiración
@@ -134,18 +135,22 @@ Se muestra el logotipo ya escaneado.
 Hay juegos existentes que ya se basan en una mecánica de tanques. Estos sirven de inspiración tanto a nivel artístico como a nivel de jugabilidad. Ejemplos más destacados son Tanks Wii, Tiny Tanks, tinytanks.io y Paper Tanks.   
 # 
 Tanks Wii cuenta con un estilo más bélico y realista que los demás. Tiene modo un jugador y dos jugadores como se muestra en la imagen. No dispone de poderes, pero sí de varios enemigos de distintas clases que dan dificultad al juego.
+
 ![Imagen del juego Tanks Wii](images/image12.png)
 # 
 
 Tiny Tanks está inspirado en el pixel art. La peculiaridad del juego es que tiene varios jefes como en la imagen, lo que aumenta su dificultad. Además, cuenta con varios poderes que se van eligiendo y son permanentes durante esa partida. Compensando así la gran dificultad del juego.
+
 ![Imagen del juego Tiny Tanks](images/image5.png)
 # 
 
 Tinytanks.io es un juego mucho más minimalista. Usa colores azules para los aliados y rojos para los enemigos. Es un juego en línea con varias personas a la vez. Cuenta con distintos tipos de tanques que disparan balas diferentes. 
+
 ![Imagen del juego tinytanks.io](images/image10.png)
 # 
 
 Paper Tanks es un juego local con una temática muy característica. Todo ha sido dibujado a boli con una vista cenital, intentando simular 3D con el uso de sombras. No tiene poderes adicionales pero dispone de distintos enemigos cada uno con más vida que el anterior.
+
 ![Imagen del juego Paper Tanks](images/image8.png)
 
 # 3. SONIDO
