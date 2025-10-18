@@ -126,7 +126,9 @@ A continuación se muestran los primeros bocetos de los tanques, el logo del jue
 
 ## 2.3 Logotipo
 
-Se muestran los logotipos del juego y empresa ya escaneado. 
+Se muestran los logotipos del juego y empresa ya escaneado.
+
+
 ![Logotipo de Chartarium Studios](images/image4.png)
 ![Logotipo de Chartarium Wars](images/image6.png)
 
