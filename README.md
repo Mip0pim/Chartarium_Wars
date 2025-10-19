@@ -1,6 +1,6 @@
 # Chartarium Wars
 
-Descripción del juego: un juego de tanques estilo papel donde peleas contra un rival.
+Descripción del juego: un juego de tanques estilo papel donde peleas contra un rival. Recoge poderes para desatar el caos y dejar sin escapatoria al oponente.
 
 Integrantes del equipo:
 
@@ -48,7 +48,7 @@ Integrantes del equipo:
 
 Chartarium Wars es un juego de tanques 2D con vista cenital, donde dos jugadores se enfrentarán entre sí. Habrá dos modos de juego posibles, local y online. En local se podrá jugar contra otro jugador, donde ambos usan el mismo ordenador. En online se podrá conectar con otro jugador y jugar de forma conjunta en ordenadores independientes. La vista de la cámara es cenital, de modo que ambos jugadores podrán ver todo el campo de batalla. Además de que irán apareciendo poderes adicionales para que la pelea sea más caótica y divertida.
 
-El público objetivo es a la gente que le gustan los juegos para jugar con amigos y pasar un buen rato. Además, el estilo papel del juego atenúa el hecho de ser tanques que disparan, de esta forma, niños de siete años en adelante podrían jugarlo siendo PEGI 7. 
+El público objetivo es la gente que le gustan los juegos para jugar con amigos y pasar un buen rato. Además, el estilo papel del juego atenúa el hecho de ser tanques que disparan, de esta forma, niños de siete años en adelante podrían jugarlo siendo PEGI 7. 
 
 ## 1.2 Controles 
 
