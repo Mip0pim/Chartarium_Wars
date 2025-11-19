@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { Paddle } from '../entities/Paddle';
+import { Tank } from '../entities/Tank';
 import { CommandProcessor } from '../commands/CommandProcessor';
 import { MovePaddleCommand } from '../commands/MovePaddleCommand';
 import { PauseGameCommand } from '../commands/PuaseGameCommand';
@@ -9,7 +9,9 @@ export class GameScene extends Phaser.Scene {
     constructor() {
         super('GameScene');
     }
-
+    preload(){
+        
+    }
     init() {
         this.players = new Map();
         this.inputMappings = [];
@@ -42,34 +44,38 @@ export class GameScene extends Phaser.Scene {
         this.createBall();
         this.launchBall();
 
-        this.physics.add.overlap(this.ball, this.leftGoal, this.scoreRightGoal, null, this);
-        this.physics.add.overlap(this.ball, this.rightGoal, this.scoreLeftGoal, null, this);
+        //this.physics.add.overlap(this.ball, this.leftGoal, this.scoreRightGoal, null, this);
+        //this.physics.add.overlap(this.ball, this.rightGoal, this.scoreLeftGoal, null, this);
 
         this.setUpPlayers();
-        this.players.forEach(paddle => {
-            this.physics.add.collider(this.ball, paddle.sprite);
+        this.players.forEach(tank => {
+            this.physics.add.collider(this.ball, tank.sprite);
         });
 
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
 
     setUpPlayers() {
-        const leftPaddle = new Paddle(this, 'player1', 50, 300);
-        const rightPaddle = new Paddle(this, 'player2', 750, 300); 
+        const tank1 = new Tank(this, 'player1', 50, 300);
+        const tank2 = new Tank(this, 'player2', 750, 300); 
 
-        this.players.set('player1', leftPaddle);
-        this.players.set('player2', rightPaddle);
+        this.players.set('player1', tank1);
+        this.players.set('player2', tank2);
 
         const InputConfig = [
             {
                 playerId: 'player1',
                 upKey : 'W',
                 downKey : 'S',
+                rightKey : 'D',
+                lefteKey : 'A'
             },
             {
                 playerId: 'player2',
                 upKey : 'UP',
                 downKey : 'DOWN',
+                rightKey : 'RIGHT',
+                leftKey : 'LEFT'
             }
         ]
         this.inputMappings = InputConfig.map(config => {
@@ -77,13 +83,15 @@ export class GameScene extends Phaser.Scene {
                 playerId : config.playerId,
                 upKeyObj : this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.upKey]),
                 downKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.downKey]),
+                rightKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.rightKey]),
+                leftKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.leftKey]),
             }
         });
     }
-
+/*
     scoreLeftGoal() {
         const player1 = this.players.get('player1');
-        player1.score += 1;
+        player1.score -= 1;
         this.scoreLeft.setText(player1.score.toString());
 
         if (player1.score >= 2) {
@@ -104,11 +112,11 @@ export class GameScene extends Phaser.Scene {
             this.resetBall();
         }
     }
-
+*/
     endGame(winnerId) {
         this.ball.setVelocity(0, 0);
-        this.players.forEach(paddle => {
-            paddle.sprite.setVelocity(0, 0);
+        this.players.forEach(tank => {
+            tank.sprite.setVelocity(0, 0);
         });
         this.physics.pause();
 
@@ -202,7 +210,7 @@ export class GameScene extends Phaser.Scene {
         }
 
         this.inputMappings.forEach(mapping => {
-            const paddle = this.players.get(mapping.playerId);
+            const tank = this.players.get(mapping.playerId);
             let direction = null;
             if (mapping.upKeyObj.isDown) {
                 direction = 'up';
@@ -211,7 +219,7 @@ export class GameScene extends Phaser.Scene {
             } else {
                 direction = 'stop';
             }
-            let moveCommand = new MovePaddleCommand(paddle, direction);
+            //let moveCommand = new MovePaddleCommand(tank, direction);
             this.processor.process(moveCommand);
         });
     }

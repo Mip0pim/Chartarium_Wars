@@ -1,5 +1,5 @@
 {
-  "name": "practice",
+  "name": "Chartarium Wars",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,11 +12,12 @@
   },
   "keywords": [
     "game",
-    "pong"
+    "Tanks",
+    "Power-Ups"
   ],
-  "author": "Ruben Rodriguez",
+  "author": "Iván Palacios, Carlos Martínez, Pablo Romero, Alex Weng Yu",
   "license": "Apache-2.0",
-  "description": "A pong game with Phaser3",
+  "description": "A tank game with Phaser3",
   "dependencies": {
     "express": "^5.1.0",
     "phaser": "^3.90.0"
