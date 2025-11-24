@@ -1,18 +1,26 @@
 import Phaser from 'phaser';
 
 
-export class MenuScene extends Phaser.Scene {
+export class CreditScene extends Phaser.Scene {
     constructor() {
-        super('MenuScene');
+        super('CreditScene');
+    }
+
+    preload() {//carga de archivos
+        this.load.image('Fondo', 'imagenes/Fondo.jpg');
     }
 
     create() {
-        this.add.text(400, 100, 'PONG GAME', {
+
+        //fondo
+        this.add.image(400, 310, 'Fondo');
+        
+        this.add.text(400, 100, 'CREDITS', {
             fontSize: '64px',
-            color: '#ffffff'
+            color: '#00ffff'
         }).setOrigin(0.5);
 
-        const localBtn = this.add.text(400, 320, 'Local 2 Player', {
+        const localBtn = this.add.text(400, 320, 'Back to menu', {
             fontSize: '24px',
             color: '#00ff00',
         }).setOrigin(0.5)
@@ -20,12 +28,8 @@ export class MenuScene extends Phaser.Scene {
         .on('pointerover', () => localBtn.setColor('#00ff88'))
         .on('pointerout', () => localBtn.setColor('#00ff00'))
         .on('pointerdown', () => {
-            this.scene.start('GameScene');
+            this.scene.start('MenuScene');
         });
 
-        const onlineBtn = this.add.text(400, 390, 'Online Multiplayer (Not available)', {
-            fontSize: '24px',
-            color: '#ff6666',
-        }).setOrigin(0.5);
     }
 }

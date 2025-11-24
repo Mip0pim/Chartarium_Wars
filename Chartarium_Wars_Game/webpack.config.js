@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/main.js',
@@ -22,9 +23,15 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       inject: false
-    })
+    }),
+  new CopyWebpackPlugin ({patterns:[{
+      from:'public/imagenes',
+      to:'imagenes'
+}]})
   ],
   resolve: {
     extensions: ['.js']
   }
+
 };
+console.log('Ruta imágenes:', path.resolve(__dirname, 'public/imagenes'));

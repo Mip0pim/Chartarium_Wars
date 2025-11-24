@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { Tank } from '../entities/Tank';
 import { CommandProcessor } from '../commands/CommandProcessor';
-import { MovePaddleCommand } from '../commands/MovePaddleCommand';
+import { MoveTankCommand } from '../commands/MoveTankCommand';
 import { PauseGameCommand } from '../commands/PuaseGameCommand';
 
 export class GameScene extends Phaser.Scene {
@@ -9,8 +9,26 @@ export class GameScene extends Phaser.Scene {
     constructor() {
         super('GameScene');
     }
-    preload(){
-        
+    preload() {//carga de archivos
+        this.load.image('Fondo', 'imagenes/Fondo.jpg');
+
+        this.load.image('BaseRoja', 'imagenes/TanqueRojoCW.png');
+        this.load.image('TorretaRoja', 'imagenes/CanonRojoCW.png');
+        this.load.image('BalaRoja', 'imagenes/BalaNRojoCw.png');
+
+        this.load.image('BaseVerde', 'imagenes/TanqueVerdeCW.png');
+        this.load.image('TorretaVerde', 'imagenes/CanonVerdeCW.png');
+        this.load.image('BalaVerde', 'imagenes/BalaNVerdeCW.png');
+
+        this.load.image('BaseAzul', 'imagenes/TanqueAzulCW.png');
+        this.load.image('TorretaAzul', 'imagenes/CanonAzulCW.png');
+        this.load.image('BalaAzul', 'imagenes/BalaNAzulCW.png');
+
+        this.load.image('BaseAmarilla', 'imagenes/TanqueAmarilloCW.png');
+        this.load.image('TorretaAmarilla', 'imagenes/CanonAmarilloCW.png');
+        this.load.image('BalaAmarilla', 'imagenes/BalaNAmarilloCW.png');
+
+       
     }
     init() {
         this.players = new Map();
@@ -22,12 +40,11 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.rectangle(400, 300, 800, 600, 0x1a1a2e);
 
-        // Center discontinued line
-        for (let i = 0; i < 12; i++) {
-            this.add.rectangle(400, i * 50 + 25, 10, 30, 0x444444);
-        }
+        //fondo
+        this.add.image(400, 310, 'Fondo');
+
+        
     
         // Score texts
         this.scoreLeft = this.add.text(100, 50, '0', {
@@ -41,24 +58,27 @@ export class GameScene extends Phaser.Scene {
         });
 
         this.createBounds();
-        this.createBall();
-        this.launchBall();
+        //this.createBall();
+        //this.launchBall();
 
         //this.physics.add.overlap(this.ball, this.leftGoal, this.scoreRightGoal, null, this);
         //this.physics.add.overlap(this.ball, this.rightGoal, this.scoreLeftGoal, null, this);
 
         this.setUpPlayers();
         this.players.forEach(tank => {
-            this.physics.add.collider(this.ball, tank.sprite);
+            //this.physics.add.collider(this.ball, tank.sprite);
         });
 
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
 
     setUpPlayers() {
-        const tank1 = new Tank(this, 'player1', 50, 300);
-        const tank2 = new Tank(this, 'player2', 750, 300); 
+        const tank1 = new Tank(this, 'player1', 50, 300,"blue");
+        const tank2 = new Tank(this, 'player2', 750, 300,"yellow"); 
 
+        tank1.SetTarget(tank2);
+        tank2.SetTarget(tank1);
+        
         this.players.set('player1', tank1);
         this.players.set('player2', tank2);
 
@@ -68,7 +88,7 @@ export class GameScene extends Phaser.Scene {
                 upKey : 'W',
                 downKey : 'S',
                 rightKey : 'D',
-                lefteKey : 'A'
+                leftKey : 'A'
             },
             {
                 playerId: 'player2',
@@ -84,11 +104,11 @@ export class GameScene extends Phaser.Scene {
                 upKeyObj : this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.upKey]),
                 downKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.downKey]),
                 rightKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.rightKey]),
-                leftKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.leftKey]),
+                leftKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.leftKey])
             }
         });
     }
-/*
+
     scoreLeftGoal() {
         const player1 = this.players.get('player1');
         player1.score -= 1;
@@ -112,7 +132,7 @@ export class GameScene extends Phaser.Scene {
             this.resetBall();
         }
     }
-*/
+
     endGame(winnerId) {
         this.ball.setVelocity(0, 0);
         this.players.forEach(tank => {
@@ -216,10 +236,14 @@ export class GameScene extends Phaser.Scene {
                 direction = 'up';
             } else if (mapping.downKeyObj.isDown) {
                 direction = 'down';
+            } else if (mapping.leftKeyObj.isDown) {
+                direction = 'left';
+            } else if (mapping.rightKeyObj.isDown) {
+                direction = 'right';
             } else {
                 direction = 'stop';
             }
-            //let moveCommand = new MovePaddleCommand(tank, direction);
+            let moveCommand = new MoveTankCommand(tank, direction);
             this.processor.process(moveCommand);
         });
     }
