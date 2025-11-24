@@ -31,14 +31,19 @@ export class GameScene extends Phaser.Scene {
 
        
     }
-    init() {
+    init(data) {
         this.players = new Map();
         this.inputMappings = [];
         this.ball = null;
         this.isPaused = false;
         this.escWasDown = false;
         this.processor = new CommandProcessor();
+
+        // Colores que vienen de SelectColor
+        this.colorPlayer1 = data?.colorPlayer1;
+        this.colorPlayer2 = data?.colorPlayer2;
     }
+
 
     create() {
 
@@ -76,8 +81,8 @@ export class GameScene extends Phaser.Scene {
     }
  
     setUpPlayers() {
-        const tank1 = new Tank(this, 'player1', 50, 300,"Red");
-        const tank2 = new Tank(this, 'player2', 750, 300,"Green"); 
+        const tank1 = new Tank(this, 'player1', 50, 300,this.colorPlayer1);
+        const tank2 = new Tank(this, 'player2', 750, 300,this.colorPlayer2); 
 
         tank1.SetTarget(tank2);
         tank2.SetTarget(tank1);

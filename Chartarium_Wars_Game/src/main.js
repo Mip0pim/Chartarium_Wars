@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { MenuScene } from './scenes/MenuScene.js';
+import { SelectColor } from './scenes/SelectColor.js';
 import { GameScene } from './scenes/GameScene.js';
 import { PauseScene } from './scenes/PauseScene.js';
 import { CreditScene } from './scenes/CreditScene.js';
@@ -16,7 +17,7 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuScene, GameScene, PauseScene,CreditScene],
+    scene: [MenuScene, SelectColor, GameScene, PauseScene,CreditScene],
     backgroundColor: '#1a1a2e',
 }
 

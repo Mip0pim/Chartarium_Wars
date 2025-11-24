@@ -42,7 +42,7 @@ export class MenuScene extends Phaser.Scene {
                 localBtn.setScale(1);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
-                this.scene.start('GameScene');
+                this.scene.start('SelectColor');
         });
 
         
