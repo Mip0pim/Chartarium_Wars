@@ -13,17 +13,17 @@ export class Bullet {
         this.canCollide = true;
         this.bounces = 3;
 
-        if (this.color === "red") {
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BalaRoja');
+        if (this.color === "Red") {
+            this.sprite = this.scene.physics.add.sprite(x, y, 'BalaRed');
         }
-        if(this.color==="green"){
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BalaVerde');
+        if(this.color==="Green"){
+            this.sprite = this.scene.physics.add.sprite(x, y, 'BalaGreen');
         }
-        if(this.color==="blue"){
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BalaAzul');
+        if(this.color==="Blue"){
+            this.sprite = this.scene.physics.add.sprite(x, y, 'BalaBlue');
         }
-        if(this.color==="yellow"){
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BalaAmarilla');
+        if(this.color==="Yellow"){
+            this.sprite = this.scene.physics.add.sprite(x, y, 'BalaYellow');
         }
         this.sprite.body.allowGravity = false;
         this.sprite.setCollideWorldBounds(true);

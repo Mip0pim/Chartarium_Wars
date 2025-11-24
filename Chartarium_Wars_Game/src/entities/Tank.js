@@ -6,26 +6,26 @@ export class Tank {
         this.lives = 5;
         this.dirX = 0;
         this.dirY = 0;
-        this.baseSpeed = 200;
+        this.baseSpeed = 100;
         this.speedMultiplier = 1;
         this.x=x;
         this.y=y;
         this.color=color;
         this.target=null;//donde apunta
-
+        this.vidas = 3;
         
 
-        if(this.color==="red"){
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseRoja');
+        if(this.color==="Red"){
+            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseRed');
         }
-        if(this.color==="green"){
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseVerde');
+        if(this.color==="Green"){
+            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseGreen');
         }
-        if(this.color==="blue"){
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseAzul');
+        if(this.color==="Blue"){
+            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseBlue');
         }
-        if(this.color==="yellow"){
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseAmarilla');
+        if(this.color==="Yellow"){
+            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseYellow');
         }
         this.sprite.setCollideWorldBounds(true);
         this.sprite.body.allowGravity = false;

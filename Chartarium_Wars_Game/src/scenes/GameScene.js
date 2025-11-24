@@ -11,22 +11,23 @@ export class GameScene extends Phaser.Scene {
     }
     preload() {//carga de archivos
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
+        this.load.image('Vida', 'imagenes/VidaCW.png');
 
-        this.load.image('BaseRoja', 'imagenes/TanqueRojoCW.png');
-        this.load.image('TorretaRoja', 'imagenes/CanonRojoCW.png');
-        this.load.image('BalaRoja', 'imagenes/BalaNRojoCw.png');
+        this.load.image('BaseRed', 'imagenes/TanqueRojoCW.png');
+        this.load.image('TorretaRed', 'imagenes/CanonRojoCW.png');
+        this.load.image('BalaRed', 'imagenes/BalaNRojoCw.png');
 
-        this.load.image('BaseVerde', 'imagenes/TanqueVerdeCW.png');
-        this.load.image('TorretaVerde', 'imagenes/CanonVerdeCW.png');
-        this.load.image('BalaVerde', 'imagenes/BalaNVerdeCW.png');
+        this.load.image('BaseGreen', 'imagenes/TanqueVerdeCW.png');
+        this.load.image('TorretaGreen', 'imagenes/CanonVerdeCW.png');
+        this.load.image('BalaGreen', 'imagenes/BalaNVerdeCW.png');
 
-        this.load.image('BaseAzul', 'imagenes/TanqueAzulCW.png');
-        this.load.image('TorretaAzul', 'imagenes/CanonAzulCW.png');
-        this.load.image('BalaAzul', 'imagenes/BalaNAzulCW.png');
+        this.load.image('BaseBlue', 'imagenes/TanqueAzulCW.png');
+        this.load.image('TorretaBlue', 'imagenes/CanonAzulCW.png');
+        this.load.image('BalaBlue', 'imagenes/BalaNAzulCW.png');
 
-        this.load.image('BaseAmarilla', 'imagenes/TanqueAmarilloCW.png');
-        this.load.image('TorretaAmarilla', 'imagenes/CanonAmarilloCW.png');
-        this.load.image('BalaAmarilla', 'imagenes/BalaNAmarilloCW.png');
+        this.load.image('BaseYellow', 'imagenes/TanqueAmarilloCW.png');
+        this.load.image('TorretaYellow', 'imagenes/CanonAmarilloCW.png');
+        this.load.image('BalaYellow', 'imagenes/BalaNAmarilloCW.png');
 
        
     }
@@ -42,20 +43,7 @@ export class GameScene extends Phaser.Scene {
     create() {
 
         //fondo
-        this.add.image(400, 310, 'Fondo');
-
-        
-    
-        // Score texts
-        this.scoreLeft = this.add.text(100, 50, '0', {
-            fontSize: '48px',
-            color: '#00ff00'
-        });
-
-        this.rightScore = this.add.text(700, 50, '0', {
-            fontSize: '48px',
-            color: '#00ff00'
-        });
+        this.add.image(400, 310, 'Fondo');       
 
         this.createBounds();
         //this.createBall();
@@ -69,12 +57,27 @@ export class GameScene extends Phaser.Scene {
             //this.physics.add.collider(this.ball, tank.sprite);
         });
 
+        this.vidasJugadores();
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
-
+    vidasJugadores() {
+        const vidaPlayer1 = [];
+        const vidaPlayer2 = [];
+        this.add.image(10,30,`Base${this.players.get('player1').color}`).setOrigin(0,0);
+        this.add.image(740,30,`Base${this.players.get('player2').color}`).setOrigin(0,0);
+        this.add.image(10,30,`Torreta${this.players.get('player1').color}`).setOrigin(0.15, 0.5);
+        this.add.image(740,30,`Torreta${this.players.get('player2').color}`).setOrigin(0.15, 0.5);
+        for (let i = 0; i < 3; i++) {
+            const vida1 = this.add.image(80 + i * 30, 50, 'Vida').setScale(0.05);
+            vidaPlayer1.push(vida1);
+            const vida2 = this.add.image(720 - i * 30, 50, 'Vida').setScale(0.05);
+            vidaPlayer2.push(vida2);
+        }
+    }
+ 
     setUpPlayers() {
-        const tank1 = new Tank(this, 'player1', 50, 300,"blue");
-        const tank2 = new Tank(this, 'player2', 750, 300,"yellow"); 
+        const tank1 = new Tank(this, 'player1', 50, 300,"Red");
+        const tank2 = new Tank(this, 'player2', 750, 300,"Green"); 
 
         tank1.SetTarget(tank2);
         tank2.SetTarget(tank1);
@@ -108,7 +111,9 @@ export class GameScene extends Phaser.Scene {
             }
         });
     }
-
+    actualizarVidas(playerId, vidasRestantes) {
+       
+    }  
     scoreLeftGoal() {
         const player1 = this.players.get('player1');
         player1.score -= 1;
@@ -124,6 +129,7 @@ export class GameScene extends Phaser.Scene {
     scoreRightGoal() {
         const player2 = this.players.get('player2');
         player2.score += 1;
+        this.add.image(700 + 30 * (player2.score - 1), 100, 'Vida').setScale(0.5);
         this.rightScore.setText(player2.score.toString());
 
         if (player2.score >= 2) {

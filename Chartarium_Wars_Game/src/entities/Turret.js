@@ -15,17 +15,17 @@ export class Turret {
         this.leftAngle = 75;
         this.rightAngle = 105;
 
-        if (this.color === "red") {
-            this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaRoja');
+        if (this.color === "Red") {
+            this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaRed');
         }
-        if (this.color === "green") {
-            this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaVerde');
+        if (this.color === "Green") {
+            this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaGreen');
         }
-        if (this.color === "blue") {
-            this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaAzul');
+        if (this.color === "Blue") {
+            this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaBlue');
         }
-        if (this.color === "yellow") {
-            this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaAmarilla');
+        if (this.color === "Yellow") {
+            this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaYellow');
         }
         this.sprite.body.allowGravity = false;
         this.sprite.setOrigin(0.15, 0.5);
