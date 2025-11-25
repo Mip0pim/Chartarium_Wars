@@ -12,6 +12,11 @@ export class GameScene extends Phaser.Scene {
     preload() {//carga de archivos
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('Vida', 'imagenes/VidaCW.png');
+        this.load.image('MedioMapa', 'imagenes/MedioObstaculoCW.png');
+        this.load.image('Palo', 'imagenes/PaloObstaculoCW.png');
+        this.load.image('BloqueSimple', 'imagenes/TileMuro.png');
+        this.load.image('BottomTopWall', 'imagenes/BottomTopCW.png');
+        this.load.image('LeftRightWall', 'imagenes/LeftRightCW.png');
 
         this.load.image('BaseRed', 'imagenes/TanqueRojoCW.png');
         this.load.image('TorretaRed', 'imagenes/CanonRojoCW.png');
@@ -49,7 +54,6 @@ export class GameScene extends Phaser.Scene {
 
         //fondo
         this.add.image(400, 310, 'Fondo');       
-
         this.createBounds();
         //this.createBall();
         //this.launchBall();
@@ -68,21 +72,21 @@ export class GameScene extends Phaser.Scene {
     vidasJugadores() {
         const vidaPlayer1 = [];
         const vidaPlayer2 = [];
-        this.add.image(10,30,`Base${this.players.get('player1').color}`).setOrigin(0,0);
-        this.add.image(740,30,`Base${this.players.get('player2').color}`).setOrigin(0,0);
-        this.add.image(10,30,`Torreta${this.players.get('player1').color}`).setOrigin(0.15, 0.5);
-        this.add.image(740,30,`Torreta${this.players.get('player2').color}`).setOrigin(0.15, 0.5);
+        this.add.image(10,20,`Base${this.players.get('player1').color}`).setOrigin(0,0);
+        this.add.image(740,20,`Base${this.players.get('player2').color}`).setOrigin(0,0);
+        this.add.image(35,40,`Torreta${this.players.get('player1').color}`).setOrigin(0.15, 0.5);
+        this.add.image(765,40,`Torreta${this.players.get('player2').color}`).setOrigin(0.15, 0.5).setRotation(Math.PI);
         for (let i = 0; i < 3; i++) {
-            const vida1 = this.add.image(80 + i * 30, 50, 'Vida').setScale(0.05);
+            const vida1 = this.add.image(90 + i * 30, 35, 'Vida').setScale(0.05);
             vidaPlayer1.push(vida1);
-            const vida2 = this.add.image(720 - i * 30, 50, 'Vida').setScale(0.05);
+            const vida2 = this.add.image(710 - i * 30, 35, 'Vida').setScale(0.05);
             vidaPlayer2.push(vida2);
         }
     }
  
     setUpPlayers() {
-        const tank1 = new Tank(this, 'player1', 50, 300,this.colorPlayer1);
-        const tank2 = new Tank(this, 'player2', 750, 300,this.colorPlayer2); 
+        const tank1 = new Tank(this, 'player1', 90, 300,this.colorPlayer1);
+        const tank2 = new Tank(this, 'player2', 710, 300,this.colorPlayer2); 
 
         tank1.SetTarget(tank2);
         tank2.SetTarget(tank1);
@@ -116,9 +120,7 @@ export class GameScene extends Phaser.Scene {
             }
         });
     }
-    actualizarVidas(playerId, vidasRestantes) {
-       
-    }  
+    actualizarVidas(playerId, vidasRestantes) {}  
     scoreLeftGoal() {
         const player1 = this.players.get('player1');
         player1.score -= 1;
@@ -202,17 +204,25 @@ export class GameScene extends Phaser.Scene {
     }
 
     createBounds() {
-        this.leftGoal = this.physics.add.sprite(0, 300, null);
-        this.leftGoal.setDisplaySize(10, 600);
-        this.leftGoal.body.setSize(10, 600);
-        this.leftGoal.setImmovable(true);
-        this.leftGoal.setVisible(false);
 
-        this.rightGoal = this.physics.add.sprite(800, 300, null);
-        this.rightGoal.setDisplaySize(10, 600);
-        this.rightGoal.body.setSize(10, 600);
-        this.rightGoal.setImmovable(true);
-        this.rightGoal.setVisible(false);
+        //Muros arriba y abajo
+        this.top = this.physics.add.sprite(400, 83, 'BottomTopWall');
+        this.top.setImmovable(true);
+        this.top.body.setSize(765,45);
+
+        this.bottom = this.physics.add.sprite(400, 577, 'BottomTopWall');
+        this.bottom.setImmovable(true);
+        this.bottom.body.setSize(765,45);
+
+        //Muros izquierda y derecha
+        this.left = this.physics.add.sprite(40, 330, 'LeftRightWall');
+        this.left.setImmovable(true);
+        this.left.body.setSize(45,450);
+
+        this.right = this.physics.add.sprite(760, 330, 'LeftRightWall');
+        this.right.setImmovable(true);
+        this.right.body.setSize(45,450);
+
     }
 
     setPauseState(isPaused) {

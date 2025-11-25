@@ -4,14 +4,23 @@ export class Turret {
     constructor(scene, tank, x, y, color) {
         this.myTank = tank;
         this.scene = scene;
-        this.angle = 0;
         this.x = x;
         this.y = y;
+        if(x>400){
+            this.angle = Math.PI;
+        }else{
+            this.angle = 0;
+        }
         this.color = color;
         this.target = null;
         this.rotateSpeed = Phaser.Math.DegToRad(1);
         this.canShoot = false;
-        this.perfectAngle = 0;
+        
+        if (x > 400) {
+            this.perfectAngle = Math.PI;
+        }else{
+            this.perfectAngle = 0;
+        }
         this.leftAngle = 75;
         this.rightAngle = 105;
 
@@ -33,7 +42,7 @@ export class Turret {
         this.sprite.setDepth(10);
         this.powerUpBullet = null;
 
-        
+        this.sprite.rotation = this.angle;
         this.fireEvent = null;
     }
 
