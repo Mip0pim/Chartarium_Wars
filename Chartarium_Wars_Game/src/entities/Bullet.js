@@ -27,11 +27,13 @@ export class Bullet {
         }
         this.sprite.body.allowGravity = false;
         this.sprite.setCollideWorldBounds(true);
-        this.sprite.setBounce(1);
+        this.sprite.setSize(20,15);
+        this.sprite.setBounce(0.8);
         this.sprite.rotation=this.dir;
         this.sprite.setDepth(5);
         this.setDir();
         this.scene.events.on('update', this.update, this);
+        this.createCollisions();
     }
 
     setDir() {
@@ -49,14 +51,22 @@ export class Bullet {
 
             // atan2 devuelve el ángulo en radianes según la dirección del vector
             this.sprite.rotation = Math.atan2(vy, vx);
-            this.destroy();
         }
     }
 
     destroy() {
+        this.bounces-=1;
         if (this.bounces<1){
         this.scene.events.off('update', this.update, this);
         this.sprite.destroy();
         }
     }
+
+    createCollisions() {
+    this.scene.physics.add.collider(this.scene.left, this.sprite, () => { this.destroy(); });
+    this.scene.physics.add.collider(this.scene.right, this.sprite, () => { this.destroy(); });
+    this.scene.physics.add.collider(this.scene.top, this.sprite, () => { this.destroy(); });
+    this.scene.physics.add.collider(this.scene.bottom, this.sprite, () => { this.destroy(); });
+}
+
 }

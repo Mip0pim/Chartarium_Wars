@@ -62,9 +62,8 @@ export class GameScene extends Phaser.Scene {
         //this.physics.add.overlap(this.ball, this.rightGoal, this.scoreLeftGoal, null, this);
 
         this.setUpPlayers();
-        this.players.forEach(tank => {
-            //this.physics.add.collider(this.ball, tank.sprite);
-        });
+        this.createCollisions();
+        
 
         this.vidasJugadores();
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -124,7 +123,7 @@ export class GameScene extends Phaser.Scene {
     scoreLeftGoal() {
         const player1 = this.players.get('player1');
         player1.score -= 1;
-        this.scoreLeft.setText(player1.score.toString());
+        //this.scoreLeft.setText(player1.score.toString());
 
         if (player1.score >= 2) {
             this.endGame('player1');
@@ -137,7 +136,7 @@ export class GameScene extends Phaser.Scene {
         const player2 = this.players.get('player2');
         player2.score += 1;
         this.add.image(700 + 30 * (player2.score - 1), 100, 'Vida').setScale(0.5);
-        this.rightScore.setText(player2.score.toString());
+        //this.rightScore.setText(player2.score.toString());
 
         if (player2.score >= 2) {
             this.endGame('player2');
@@ -218,11 +217,21 @@ export class GameScene extends Phaser.Scene {
         this.left = this.physics.add.sprite(40, 330, 'LeftRightWall');
         this.left.setImmovable(true);
         this.left.body.setSize(45,450);
+        
 
         this.right = this.physics.add.sprite(760, 330, 'LeftRightWall');
         this.right.setImmovable(true);
         this.right.body.setSize(45,450);
 
+    }
+
+    createCollisions(){
+        this.players.forEach(tank => {
+            this.physics.add.collider(this.left, tank.sprite);
+            this.physics.add.collider(this.right, tank.sprite);
+            this.physics.add.collider(this.top, tank.sprite);
+            this.physics.add.collider(this.bottom, tank.sprite);
+        });
     }
 
     setPauseState(isPaused) {
