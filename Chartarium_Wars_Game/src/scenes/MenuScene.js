@@ -19,27 +19,21 @@ export class MenuScene extends Phaser.Scene {
         //fondo
         this.add.image(400, 310, 'Fondo');
         //logo
-        const logo=this.add.image(400, 180, 'Logo').setInteractive({ useHandCursor: true })
-            .on('pointerover', () => {
-                //localBtn.setTint(0x00ff88);   // aplica color
-                logo.setScale(1.1);       // aumenta tamaño un 10%
-            })
-            .on('pointerout', () => {
-                //localBtn.setTint(0x00ff00);   // vuelve al color original
-                logo.setScale(1);         // vuelve al tamaño original
-        });
-
+        const logo=this.add.image(400, 180, 'Logo')
+        .setOrigin(0.5);
+        logo.setScale(1.1);
         
-        const localBtn = this.add.image(400, 400, "BTNPlayer")
+        const localBtn = this.add.image(400, 380, "BTNPlayer")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
+                localBtn.setScale(1.2)
             .on('pointerover', () => {
                 //localBtn.setTint(0x00ff88);   // aplica color
-                localBtn.setScale(1.1);       // aumenta tamaño un 10%
+                localBtn.setScale(1.3);       // aumenta tamaño un 10%
             })
             .on('pointerout', () => {
                 //localBtn.setTint(0x00ff00);   // vuelve al color original
-                localBtn.setScale(1);         // vuelve al tamaño original
+                localBtn.setScale(1.2);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
                 this.scene.start('SelectColor');
@@ -47,11 +41,41 @@ export class MenuScene extends Phaser.Scene {
 
         
 
-        const onlineBtn = this.add.text(400, 470, 'Online Multiplayer', {
-            fontSize: '24px',
-            color: '#ff6666',
-        }).setOrigin(0.5);
+        const onlineBtn = this.add.text(400, 430, 'Online Multiplayer', {
+            fontSize: '32px',
+            color: '#000000ff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5)
+        .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => {
+                //localBtn.setTint(0x00ff88);   // aplica color
+                onlineBtn.setScale(1.1);       // aumenta tamaño un 10%
+            })
+            .on('pointerout', () => {
+                //localBtn.setTint(0x00ff00);   // vuelve al color original
+                onlineBtn.setScale(1);         // vuelve al tamaño original
+            })
+            .on('pointerdown', () => {
+                this.scene.start('OnlineScene');
+        });
 
+        const tutorialBtn = this.add.text(400, 475, 'Tutorial', {
+            fontSize: '32px',
+            color: '#000000ff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5)
+        .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => {
+                //localBtn.setTint(0x00ff88);   // aplica color
+                tutorialBtn.setScale(1.1);       // aumenta tamaño un 10%
+            })
+            .on('pointerout', () => {
+                //localBtn.setTint(0x00ff00);   // vuelve al color original
+                tutorialBtn.setScale(1);         // vuelve al tamaño original
+            })
+            .on('pointerdown', () => {
+                this.scene.start('TutorialScene');
+        });
 
         const creditBtn = this.add.image(400, 520, "BTNCredit")
             .setOrigin(0.5)
