@@ -5,10 +5,30 @@ export class SelectColor extends Phaser.Scene {
         super('SelectColor');
     }
 
+    preload() {
+        this.load.image('Fondo', 'imagenes/Fondo.jpg');
+
+        this.load.image('BaseRed', 'imagenes/TanqueRojoCW.png');
+        this.load.image('TorretaRed', 'imagenes/CanonRojoCW.png');
+
+        this.load.image('BaseGreen', 'imagenes/TanqueVerdeCW.png');
+        this.load.image('TorretaGreen', 'imagenes/CanonVerdeCW.png');
+
+        this.load.image('BaseBlue', 'imagenes/TanqueAzulCW.png');
+        this.load.image('TorretaBlue', 'imagenes/CanonAzulCW.png');
+
+        this.load.image('BaseYellow', 'imagenes/TanqueAmarilloCW.png');
+        this.load.image('TorretaYellow', 'imagenes/CanonAmarilloCW.png');
+    }
+    
     create() {
+        // Fondo
+        this.add.image(400, 310, 'Fondo');
+        
         this.add.text(400, 60, 'Select the color of the tanks', {
             fontSize: '32px',
-            color: '#ffffff'
+            color: '#000000ff',
+            fontStyle: 'bold'
         }).setOrigin(0.5);
 
         // Ahora empezamos SIN color elegido
@@ -16,172 +36,135 @@ export class SelectColor extends Phaser.Scene {
         this.colorPlayer2 = null;
 
         // --- Títulos ---
-        this.add.text(200, 120, 'Player 1', {
-            fontSize: '24px',
-            color: '#ffffff'
+        this.add.text(200, 120, 'Player 1', {   
+            fontSize: '28px', 
+            color: '#000000ff', 
+            fontStyle: 'bold' 
         }).setOrigin(0.5);
-
-        this.add.text(600, 120, 'Player 2', {
-            fontSize: '24px',
-            color: '#ffffff'
+        
+        this.add.text(600, 120, 'Player 2', { 
+            fontSize: '28px', 
+            color: '#000000ff', 
+            fontStyle: 'bold' 
         }).setOrigin(0.5);
 
         this.p1Options = [];
         this.p2Options = [];
 
-        const createColorOption = (x, y, label, colorKey, onClick) => {
-            const option = this.add.text(x, y, label, {
-                fontSize: '20px',
-                color: '#ffffff',
-                backgroundColor: '#000000'
-            })
-                .setOrigin(0.5)
-                .setPadding(10)
-                .setInteractive({ useHandCursor: true });
+        const createTankOption = (x, y, colorKey, onClick) => {
+            // Rectángulo de selección (invisible al inicio)
+            const highlight = this.add.rectangle(0, 0, 90, 90, 0xffff00, 0.3);
+            highlight.setVisible(false);
 
-            option.setData('colorKey', colorKey);
-            option.setData('selected', false);
-            option.setData('disabled', false);
+            const base = this.add.image(0, 0, `Base${colorKey}`).setScale(1.2);
+            const turret = this.add.image(0, 0, `Torreta${colorKey}`).setScale(1.2);
 
-            option.on('pointerover', () => {
-                if (option.getData('disabled')) return;
-                option.setStyle({ backgroundColor: '#333333' });
+            const container = this.add.container(x, y, [highlight, base, turret]);
+            container.setSize(base.width * 1.2, base.height * 1.2);
+            container.setInteractive({ useHandCursor: true });
+
+            container.setData('colorKey', colorKey);
+            container.setData('selected', false);
+            container.setData('disabled', false);
+            container.setData('highlight', highlight);
+
+            // Click para seleccionar
+            container.on('pointerup', () => {
+                if (container.getData('disabled')) return;
+                onClick(colorKey, container);
             });
 
-            option.on('pointerout', () => {
-                if (option.getData('disabled')) return;
-                if (option.getData('selected')) {
-                    option.setStyle({ backgroundColor: '#666666' });
-                } else {
-                    option.setStyle({ backgroundColor: '#000000' });
-                }
-            });
-
-            option.on('pointerup', () => {
-                if (option.getData('disabled')) return;
-                onClick(colorKey, option);
-            });
-
-            return option;
+            return container;
         };
 
-        // --- Opciones Jugador 1 ---
-        const p1Colors = [
-            { label: 'Red',     colorKey: 'Red',    y: 170 },
-            { label: 'Blue',     colorKey: 'Blue',   y: 220 },
-            { label: 'Green',    colorKey: 'Green',  y: 270 },
-            { label: 'Yellow', colorKey: 'Yellow', y: 320 }
-        ];
+        // Coordenadas
+        const p1X = 200;
+        const p2X = 600;
+        const startY = 180;
+        const gapY = 100;
+        const colors = ['Red', 'Blue', 'Green', 'Yellow'];
 
-        p1Colors.forEach(c => {
-            const opt = createColorOption(200, c.y, c.label, c.colorKey, (key, option) => {
+        // Player 1
+        colors.forEach((color, i) => {
+            const opt = createTankOption(p1X, startY + i * gapY, color, (key, option) => {
                 this.colorPlayer1 = key;
                 this.markSelected(this.p1Options, option);
-                this.updateDisabledStates(); // desactiva ese color para J2
+                this.updateDisabledStates();
             });
             this.p1Options.push(opt);
         });
 
-        // --- Opciones Jugador 2 ---
-        const p2Colors = [
-            { label: 'Red',     colorKey: 'Red',    y: 170 },
-            { label: 'Blue',     colorKey: 'Blue',   y: 220 },
-            { label: 'Green',    colorKey: 'Green',  y: 270 },
-            { label: 'Yellow', colorKey: 'Yellow', y: 320 }
-        ];
-
-        p2Colors.forEach(c => {
-            const opt = createColorOption(600, c.y, c.label, c.colorKey, (key, option) => {
+        // Player 2
+        colors.forEach((color, i) => {
+            const opt = createTankOption(p2X, startY + i * gapY, color, (key, option) => {
                 this.colorPlayer2 = key;
                 this.markSelected(this.p2Options, option);
-                this.updateDisabledStates(); // desactiva ese color para J1
+                this.updateDisabledStates();
             });
             this.p2Options.push(opt);
         });
 
-        // Botón Jugar
-        const playBtn = this.add.text(400, 420, 'Play', {
-            fontSize: '28px',
-            color: '#ffffff',
-            backgroundColor: '#000000'
-        })
-            .setOrigin(0.5)
-            .setPadding(10, 5)
-            .setInteractive({ useHandCursor: true });
+        // Botón Play
+        const playBtn = this.add.text(400, 515, 'Play', {
+            fontSize: '35px',
+            color: '#000000ff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
         playBtn.on('pointerover', () => {
-            playBtn.setStyle({ backgroundColor: '#444444' });
+            playBtn.setStyle({ color: '#444444' });
         });
 
         playBtn.on('pointerout', () => {
-            playBtn.setStyle({ backgroundColor: '#000000' });
+            playBtn.setStyle({ color: '#000000' });
         });
-
+        
         playBtn.on('pointerup', () => {
-            // Solo dejamos pasar si ambos han elegido y son distintos
-            if (!this.colorPlayer1 || !this.colorPlayer2) {
-                // no hacemos nada si falta color
-                return;
-            }
-            if (this.colorPlayer1 === this.colorPlayer2) {
-                // tampoco debería pasar porque ya bloqueamos repetidos
-                return;
-            }
-
+            if (!this.colorPlayer1 || !this.colorPlayer2 || this.colorPlayer1 === this.colorPlayer2) return;
             this.scene.start('GameScene', {
                 colorPlayer1: this.colorPlayer1,
                 colorPlayer2: this.colorPlayer2
             });
         });
-    
-        // Botón Volver al menú
-        const backBtn = this.add.text(400, 480, 'Return to menu', {
-            fontSize: '22px',
-            color: '#ffffff',
-            backgroundColor: '#000000'
-        })
-        .setOrigin(0.5)
-        .setPadding(10, 5)
-        .setInteractive({ useHandCursor: true });
 
+        // Botón volver
+        const backBtn = this.add.text(400, 570, 'Return to menu', {
+            fontSize: '35px',
+            color: '#000000ff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+        
         backBtn.on('pointerover', () => {
-            backBtn.setStyle({ backgroundColor: '#444444' });
+            backBtn.setStyle({ color: '#444444' });
         });
 
         backBtn.on('pointerout', () => {
-            backBtn.setStyle({ backgroundColor: '#000000' });
+            backBtn.setStyle({ color: '#000000' });
         });
 
-        backBtn.on('pointerup', () => {
-            this.scene.start('MenuScene');  // 👈 vuelve al menú principal
-        });
+       
+        backBtn.on('pointerup', () => this.scene.start('MenuScene'));
     }
 
-    // marca una opción como seleccionada y desmarca las demás
+    // Marca seleccionado
     markSelected(optionArray, selectedOption) {
         optionArray.forEach(o => {
             o.setData('selected', false);
-            if (!o.getData('disabled')) {
-                o.setStyle({ backgroundColor: '#000000' });
-            }
+            o.getData('highlight').setVisible(false);
         });
 
         selectedOption.setData('selected', true);
-        if (!selectedOption.getData('disabled')) {
-            selectedOption.setStyle({ backgroundColor: '#666666' });
-        }
+        selectedOption.getData('highlight').setVisible(true);
     }
 
-    // actualiza qué colores están bloqueados en cada lado
+    // Actualiza estados
     updateDisabledStates() {
-        // desactivar en J1 el color que tenga J2 (solo si J2 ya ha elegido)
         this.p1Options.forEach(o => {
             const key = o.getData('colorKey');
             const shouldDisable = (this.colorPlayer2 && key === this.colorPlayer2);
             this.setOptionDisabled(o, shouldDisable);
         });
 
-        // desactivar en J2 el color que tenga J1 (solo si J1 ya ha elegido)
         this.p2Options.forEach(o => {
             const key = o.getData('colorKey');
             const shouldDisable = (this.colorPlayer1 && key === this.colorPlayer1);
@@ -195,14 +178,11 @@ export class SelectColor extends Phaser.Scene {
         if (disabled) {
             option.disableInteractive();
             option.setAlpha(0.3);
-            option.setStyle({ backgroundColor: '#000000' });
             option.setData('selected', false);
+            option.getData('highlight').setVisible(false);
         } else {
             option.setInteractive({ useHandCursor: true });
             option.setAlpha(1);
-            if (!option.getData('selected')) {
-                option.setStyle({ backgroundColor: '#000000' });
-            }
         }
     }
 }
