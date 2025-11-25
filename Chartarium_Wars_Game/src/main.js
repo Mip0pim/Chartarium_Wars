@@ -4,6 +4,8 @@ import { SelectColor } from './scenes/SelectColor.js';
 import { GameScene } from './scenes/GameScene.js';
 import { PauseScene } from './scenes/PauseScene.js';
 import { CreditScene } from './scenes/CreditScene.js';
+import { OnlineScene } from './scenes/OnlineScene.js';
+import { TutorialScene } from './scenes/TutorialScene.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -17,7 +19,7 @@ const config = {
             debug: true
         }
     },
-    scene: [MenuScene, SelectColor, GameScene, PauseScene,CreditScene],
+    scene: [MenuScene, SelectColor, GameScene, PauseScene, CreditScene, OnlineScene,TutorialScene],
     backgroundColor: '#1a1a2e',
 }
 
