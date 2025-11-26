@@ -19,6 +19,8 @@ export class SelectColor extends Phaser.Scene {
 
         this.load.image('BaseYellow', 'imagenes/TanqueAmarilloCW.png');
         this.load.image('TorretaYellow', 'imagenes/CanonAmarilloCW.png');
+
+        this.load.image('Play', 'imagenes/PLAYCW.png');
     }
     
     create() {
@@ -57,7 +59,7 @@ export class SelectColor extends Phaser.Scene {
             highlight.setVisible(false);
 
             const base = this.add.image(0, 0, `Base${colorKey}`).setScale(1.2);
-            const turret = this.add.image(0, 0, `Torreta${colorKey}`).setScale(1.2);
+            const turret = this.add.image(0, 0, `Torreta${colorKey}`).setScale(1.2).setOrigin(0.2,0.5);
 
             const container = this.add.container(x, y, [highlight, base, turret]);
             container.setSize(base.width * 1.2, base.height * 1.2);
@@ -68,10 +70,20 @@ export class SelectColor extends Phaser.Scene {
             container.setData('disabled', false);
             container.setData('highlight', highlight);
 
+
+            container.on('pointerover', () => {
+                //localBtn.setTint(0x00ff88);   // aplica color
+                container.setScale(1.3);       // aumenta tamaño un 10%
+            })
+            container.on('pointerout', () => {
+                //localBtn.setTint(0x00ff00);   // vuelve al color original
+                container.setScale(1.0);         // vuelve al tamaño original
+            });
             // Click para seleccionar
             container.on('pointerup', () => {
                 if (container.getData('disabled')) return;
                 onClick(colorKey, container);
+                
             });
 
             return container;
@@ -105,19 +117,18 @@ export class SelectColor extends Phaser.Scene {
         });
 
         // Botón Play
-        const playBtn = this.add.text(400, 515, 'Play', {
-            fontSize: '35px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
-
-        playBtn.on('pointerover', () => {
-            playBtn.setStyle({ color: '#444444' });
-        });
-
-        playBtn.on('pointerout', () => {
-            playBtn.setStyle({ color: '#000000' });
-        });
+        const playBtn = this.add.image(400, 500, "Play")
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+                playBtn.setScale(1.2)
+            .on('pointerover', () => {
+                //localBtn.setTint(0x00ff88);   // aplica color
+                playBtn.setScale(1.3);       // aumenta tamaño un 10%
+            })
+            .on('pointerout', () => {
+                //localBtn.setTint(0x00ff00);   // vuelve al color original
+                playBtn.setScale(1.2);         // vuelve al tamaño original
+            });
         
         playBtn.on('pointerup', () => {
             if (!this.colorPlayer1 || !this.colorPlayer2 || this.colorPlayer1 === this.colorPlayer2) return;
@@ -152,7 +163,6 @@ export class SelectColor extends Phaser.Scene {
             o.setData('selected', false);
             o.getData('highlight').setVisible(false);
         });
-
         selectedOption.setData('selected', true);
         selectedOption.getData('highlight').setVisible(true);
     }

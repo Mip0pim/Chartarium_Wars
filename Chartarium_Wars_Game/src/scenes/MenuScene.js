@@ -10,7 +10,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('Logo', 'imagenes/Logo.png');
 
-        this.load.image('BTNPlayer', 'imagenes/PLAYERCW.png');
+        this.load.image('BTNPlayer', 'imagenes/PLAYCW.png');
         this.load.image('BTNCredit', 'imagenes/CreditosCW.png');   
     }
 
