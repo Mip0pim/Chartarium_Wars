@@ -34,6 +34,8 @@ export class GameScene extends Phaser.Scene {
         this.load.image('TorretaYellow', 'imagenes/CanonAmarilloCW.png');
         this.load.image('BalaYellow', 'imagenes/BalaNAmarilloCW.png');
 
+        this.load.image('MuroBloque6', 'imagenes/MedioObstaculoCW.png');
+        this.load.image('Bloque', 'imagenes/TileMuro.png');
        
     }
     init(data) {
@@ -75,7 +77,7 @@ export class GameScene extends Phaser.Scene {
         this.add.image(740,20,`Base${this.players.get('player2').color}`).setOrigin(0,0);
         this.add.image(35,40,`Torreta${this.players.get('player1').color}`).setOrigin(0.15, 0.5);
         this.add.image(765,40,`Torreta${this.players.get('player2').color}`).setOrigin(0.15, 0.5).setRotation(Math.PI);
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 5; i++) {
             const vida1 = this.add.image(90 + i * 30, 35, 'Vida').setScale(0.05);
             vidaPlayer1.push(vida1);
             const vida2 = this.add.image(710 - i * 30, 35, 'Vida').setScale(0.05);
@@ -223,6 +225,21 @@ export class GameScene extends Phaser.Scene {
         this.right.setImmovable(true);
         this.right.body.setSize(45,450);
 
+        //bloques de 6
+        this.block1=this.physics.add.sprite(400,198,"MuroBloque6");
+        this.block1.setImmovable(true);
+
+        this.block2=this.physics.add.sprite(400,462,"MuroBloque6");
+        this.block2.setImmovable(true);
+
+        this.centro1=this.physics.add.sprite(400,462-110,"Bloque");
+        this.centro1.setImmovable(true);
+        this.centro2=this.physics.add.sprite(400-45,462-155,"Bloque");
+        this.centro2.setImmovable(true);
+        this.centro3=this.physics.add.sprite(400+45,462-155,"Bloque");
+        this.centro3.setImmovable(true);
+
+
     }
 
     createCollisions(){
@@ -231,6 +248,11 @@ export class GameScene extends Phaser.Scene {
             this.physics.add.collider(this.right, tank.sprite);
             this.physics.add.collider(this.top, tank.sprite);
             this.physics.add.collider(this.bottom, tank.sprite);
+            this.physics.add.collider(this.block1, tank.sprite);
+            this.physics.add.collider(this.block2, tank.sprite);
+            this.physics.add.collider(this.centro1, tank.sprite);
+            this.physics.add.collider(this.centro2, tank.sprite);
+            this.physics.add.collider(this.centro3, tank.sprite);
         });
     }
 

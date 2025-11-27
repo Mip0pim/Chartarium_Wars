@@ -21,6 +21,8 @@ export class SelectColor extends Phaser.Scene {
         this.load.image('TorretaYellow', 'imagenes/CanonAmarilloCW.png');
 
         this.load.image('Play', 'imagenes/PLAYCW.png');
+
+        this.load.image('Bubble', 'imagenes/BurbujaCW.png');
     }
     
     create() {
@@ -55,13 +57,15 @@ export class SelectColor extends Phaser.Scene {
 
         const createTankOption = (x, y, colorKey, onClick) => {
             // Rectángulo de selección (invisible al inicio)
-            const highlight = this.add.rectangle(0, 0, 90, 90, 0xffff00, 0.3);
+            
+
+            const base = this.add.image(0, 0, `Base${colorKey}`).setScale(1.2).setDepth(10);
+            const turret = this.add.image(0, 0, `Torreta${colorKey}`).setScale(1.2).setOrigin(0.2,0.5).setDepth(15);
+
+            const highlight = this.add.image(0, 0, "Bubble").setScale(1.6).setDepth(40);
             highlight.setVisible(false);
 
-            const base = this.add.image(0, 0, `Base${colorKey}`).setScale(1.2);
-            const turret = this.add.image(0, 0, `Torreta${colorKey}`).setScale(1.2).setOrigin(0.2,0.5);
-
-            const container = this.add.container(x, y, [highlight, base, turret]);
+            const container = this.add.container(x, y, [base, turret,highlight]);
             container.setSize(base.width * 1.2, base.height * 1.2);
             container.setInteractive({ useHandCursor: true });
 

@@ -14,20 +14,24 @@ export class MoveTankCommand extends Command {
             this.tank.sprite.setVelocityY(-this.tank.baseSpeed*this.tank.speedMultiplier);
             this.tank.turret.rotate();
             this.tank.turret.shoot(false);
+        
         } else if (this.direction === 'down') {
             this.tank.sprite.setVelocityY(+this.tank.baseSpeed*this.tank.speedMultiplier);
             this.tank.turret.rotate();
             this.tank.turret.shoot(false);
+
             
         }else if (this.direction === 'right') {
             this.tank.sprite.setVelocityX(this.tank.baseSpeed*this.tank.speedMultiplier);
             this.tank.turret.rotate();
             this.tank.turret.shoot(false);
+
             
         }else if (this.direction === 'left') {
             this.tank.sprite.setVelocityX(-this.tank.baseSpeed*this.tank.speedMultiplier);
             this.tank.turret.rotate();
             this.tank.turret.shoot(false);
+
             
         } else {
             this.tank.sprite.setVelocityY(0);
@@ -38,6 +42,13 @@ export class MoveTankCommand extends Command {
         }
         this.tank.turret.SetPosition(this.tank.GetX(),this.tank.GetY());
         this.tank.turret.aim();
+        if (this.tank.sprite.body) {
+            const vx = this.tank.sprite.body.velocity.x;
+            const vy = this.tank.sprite.body.velocity.y;
+
+            // atan2 devuelve el ángulo en radianes según la dirección del vector
+            this.tank.sprite.rotation = Math.atan2(vy, vx)+(Math.PI/2);
+        }
     }
 
 

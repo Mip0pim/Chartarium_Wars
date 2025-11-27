@@ -67,6 +67,11 @@ export class Bullet {
     this.scene.physics.add.collider(this.scene.right, this.sprite, () => { this.destroy(); });
     this.scene.physics.add.collider(this.scene.top, this.sprite, () => { this.destroy(); });
     this.scene.physics.add.collider(this.scene.bottom, this.sprite, () => { this.destroy(); });
+    this.scene.physics.add.collider(this.scene.block1, this.sprite, () => { this.destroy(); });
+    this.scene.physics.add.collider(this.scene.block2, this.sprite, () => { this.destroy(); });
+    this.scene.physics.add.collider(this.scene.centro1, this.sprite, () => { this.destroy(); });
+    this.scene.physics.add.collider(this.scene.centro2, this.sprite, () => { this.destroy(); });
+    this.scene.physics.add.collider(this.scene.centro3, this.sprite, () => { this.destroy(); });
 }
 
 }
