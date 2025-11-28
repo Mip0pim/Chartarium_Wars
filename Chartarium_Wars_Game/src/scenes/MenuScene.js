@@ -11,7 +11,8 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('Logo', 'imagenes/Logo.png');
 
         this.load.image('BTNPlayer', 'imagenes/LocalBtnCW.png');
-        this.load.image('BTNCredit', 'imagenes/CreditosCW.png');   
+        this.load.image('BTNCredit', 'imagenes/CreditosCW.png');
+        this.load.image('BTNOnline', 'imagenes/OnlineBtnCW.png');   
     }
 
 
@@ -39,27 +40,23 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('SelectColor');
         });
 
-        
-
-        const onlineBtn = this.add.text(400, 430, 'Online Multiplayer', {
-            fontSize: '32px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true })
+        const onlineBtn = this.add.image(400, 435, "BTNOnline")
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+                onlineBtn.setScale(0.19)
             .on('pointerover', () => {
                 //localBtn.setTint(0x00ff88);   // aplica color
-                onlineBtn.setScale(1.1);       // aumenta tamaño un 10%
+                onlineBtn.setScale(0.20);       // aumenta tamaño un 10%
             })
             .on('pointerout', () => {
                 //localBtn.setTint(0x00ff00);   // vuelve al color original
-                onlineBtn.setScale(1);         // vuelve al tamaño original
+                onlineBtn.setScale(0.19);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
                 this.scene.start('OnlineScene');
         });
 
-        const tutorialBtn = this.add.text(400, 475, 'Tutorial', {
+        const tutorialBtn = this.add.text(400, 480, 'Tutorial', {
             fontSize: '32px',
             color: '#000000ff',
             fontStyle: 'bold'

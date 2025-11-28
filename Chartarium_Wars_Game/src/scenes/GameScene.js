@@ -45,7 +45,7 @@ export class GameScene extends Phaser.Scene {
         this.isPaused = false;
         this.escWasDown = false;
         this.processor = new CommandProcessor();
-
+        this.isGameOver = false;
         // Colores que vienen de SelectColor
         this.colorPlayer1 = data?.colorPlayer1;
         this.colorPlayer2 = data?.colorPlayer2;
@@ -70,21 +70,34 @@ export class GameScene extends Phaser.Scene {
         this.vidasJugadores();
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
+    
     vidasJugadores() {
-        const vidaPlayer1 = [];
-        const vidaPlayer2 = [];
-        this.add.image(10,20,`Base${this.players.get('player1').color}`).setOrigin(0,0);
-        this.add.image(740,20,`Base${this.players.get('player2').color}`).setOrigin(0,0);
-        this.add.image(35,40,`Torreta${this.players.get('player1').color}`).setOrigin(0.15, 0.5);
-        this.add.image(765,40,`Torreta${this.players.get('player2').color}`).setOrigin(0.15, 0.5).setRotation(Math.PI);
+        this.vidaPlayer1 = [];
+        this.vidaPlayer2 = [];
+        this.add.image(10, 20, `Base${this.players.get('player1').color}`).setOrigin(0, 0);
+        this.add.image(740, 20, `Base${this.players.get('player2').color}`).setOrigin(0, 0);
+        this.add.image(35, 40, `Torreta${this.players.get('player1').color}`).setOrigin(0.15, 0.5);
+        this.add.image(765, 40, `Torreta${this.players.get('player2').color}`).setOrigin(0.15, 0.5).setRotation(Math.PI);
         for (let i = 0; i < 5; i++) {
             const vida1 = this.add.image(90 + i * 30, 35, 'Vida').setScale(0.05);
-            vidaPlayer1.push(vida1);
+            this.vidaPlayer1.push(vida1);
             const vida2 = this.add.image(710 - i * 30, 35, 'Vida').setScale(0.05);
-            vidaPlayer2.push(vida2);
+            this.vidaPlayer2.push(vida2);
         }
     }
  
+    actualizarVidas(playerId, vidasRestantes) {
+        const vidaArray = playerId === 'player1' ? this.vidaPlayer1 : this.vidaPlayer2;
+        if (vidaArray.length > vidasRestantes) {
+            const vidaSprite = vidaArray.pop();
+            vidaSprite.destroy();
+        }
+        if (vidasRestantes <= 0) {
+            this.isGameOver = true; 
+            this.scene.start('GameOverScene');
+        }
+    }
+
     setUpPlayers() {
         const tank1 = new Tank(this, 'player1', 90, 300,this.colorPlayer1);
         const tank2 = new Tank(this, 'player2', 710, 300,this.colorPlayer2); 
@@ -121,7 +134,7 @@ export class GameScene extends Phaser.Scene {
             }
         });
     }
-    actualizarVidas(playerId, vidasRestantes) {}  
+
     scoreLeftGoal() {
         const player1 = this.players.get('player1');
         player1.score -= 1;
@@ -276,7 +289,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     update() {
-
+        if (this.isGameOver) return;
+        
         if (this.escKey.isDown && !this.escWasDown) {
             this.togglePause();
         }

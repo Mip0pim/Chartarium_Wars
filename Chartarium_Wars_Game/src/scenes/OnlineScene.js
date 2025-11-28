@@ -15,18 +15,15 @@ export class OnlineScene extends Phaser.Scene {
         //fondo
         this.add.image(400, 310, 'Fondo');
         
-        this.add.text(400, 100, 'Online Multiplayer', {
-            fontSize: '55px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
+        const onlineBtn = this.add.image(400, 90, "BTNOnline")
+            .setOrigin(0.5);
+            onlineBtn.setScale(0.33);
 
         this.add.text(400, 310, 'La funcionalidad online no está disponible en esta versión', {
             fontSize: '22px',
             color: '#000000ff',
             fontStyle: 'bold'
         }).setOrigin(0.5);
-        
         
         const localBtn = this.add.text(400, 520, 'Back to menu', {
             fontSize: '50px',

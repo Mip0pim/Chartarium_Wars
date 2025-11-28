@@ -6,6 +6,7 @@ import { PauseScene } from './scenes/PauseScene.js';
 import { CreditScene } from './scenes/CreditScene.js';
 import { OnlineScene } from './scenes/OnlineScene.js';
 import { TutorialScene } from './scenes/TutorialScene.js';
+import { GameOverScene } from './scenes/GameOverScene.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -19,7 +20,7 @@ const config = {
             debug: true
         }
     },
-    scene: [MenuScene, SelectColor, GameScene, PauseScene, CreditScene, OnlineScene,TutorialScene],
+    scene: [MenuScene, SelectColor, GameScene, PauseScene, CreditScene, OnlineScene, TutorialScene, GameOverScene],
     backgroundColor: '#1a1a2e',
 }
 

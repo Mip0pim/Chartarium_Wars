@@ -12,6 +12,8 @@ export class Bullet {
         this.speedMult = 1;
         this.canCollide = true;
         this.bounces = 3;
+        this.canDamage = false;
+        setTimeout(() => { this.canDamage = true; }, 200); //Esto es necesario o los tanques se dañarán al instante al disparar // NO TOCAR
 
         if (this.color === "Red") {
             this.sprite = this.scene.physics.add.sprite(x, y, 'BalaRed');
@@ -57,9 +59,13 @@ export class Bullet {
     destroy() {
         this.bounces-=1;
         if (this.bounces<1){
-        this.scene.events.off('update', this.update, this);
-        this.sprite.destroy();
+        this.destroyBullet();
         }
+    }
+
+    destroyBullet() {        
+        this.scene.events.off('update', this.update, this);        
+        this.sprite.destroy();    
     }
 
     createCollisions() {
@@ -71,7 +77,14 @@ export class Bullet {
     this.scene.physics.add.collider(this.scene.block2, this.sprite, () => { this.destroy(); });
     this.scene.physics.add.collider(this.scene.centro1, this.sprite, () => { this.destroy(); });
     this.scene.physics.add.collider(this.scene.centro2, this.sprite, () => { this.destroy(); });
-    this.scene.physics.add.collider(this.scene.centro3, this.sprite, () => { this.destroy(); });
-}
-
+    this.scene.physics.add.collider(this.scene.centro3, this.sprite, () => { this.destroy(); }); 
+    this.scene.players.forEach(tank => {
+            this.scene.physics.add.collider(this.sprite, tank.sprite, () => {
+                if (this.canDamage) {
+                    tank.receiveDamage(1);
+                    this.destroyBullet();
+                }
+            });
+        });
+    }
 }

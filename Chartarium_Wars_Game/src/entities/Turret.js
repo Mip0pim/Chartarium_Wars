@@ -98,4 +98,12 @@ export class Turret {
         }
     }
 
+    destroy() {        
+        if (this.fireEvent) {            
+            this.fireEvent.remove(false);        
+        }        
+    this.sprite.destroy();         
+    this.target = null;        
+    this.myTank = null;    
+    }
 }
