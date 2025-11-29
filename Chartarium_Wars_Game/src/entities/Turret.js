@@ -106,4 +106,8 @@ export class Turret {
     this.target = null;        
     this.myTank = null;    
     }
+
+    setalpha(al){
+        this.sprite.setAlpha(al);
+    }
 }

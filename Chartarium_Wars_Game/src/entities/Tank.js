@@ -5,7 +5,7 @@ export class Tank {
         this.scene = scene;
         this.dirX = 0;
         this.dirY = 0;
-        this.baseSpeed = 100;
+        this.baseSpeed = 120;
         this.speedMultiplier = 1;
         this.x=x;
         this.y=y;
@@ -13,7 +13,6 @@ export class Tank {
         this.target=null;//donde apunta
         this.vidas = 5;
         this.invulnerable = false;
-
         if(this.color==="Red"){
             this.sprite = this.scene.physics.add.sprite(x, y, 'BaseRed');
             this.sprite.setSize(40,35);
@@ -46,7 +45,7 @@ export class Tank {
     }
     
 receiveDamage(amount) {       
-        if (this.invulnerable) return;       
+    if (this.invulnerable) return;       
         this.vidas -= amount;      
         this.scene.actualizarVidas(this.id, this.vidas);   
         if (this.vidas <= 0) {          
@@ -61,14 +60,16 @@ makeInvulnerable() {
     this.invulnerable = true;
     let blinkCount = 0;
     this.scene.time.addEvent({
-        delay: 100,
-        repeat: 9,
+        delay: 200,
+        repeat: 5,
         callback: () => {
             this.sprite.setAlpha(this.sprite.alpha === 1 ? 0.3 : 1);
+            this.turret.setalpha(this.turret.sprite.alpha === 1 ? 0.3 : 1);
             blinkCount++;
-            if (blinkCount >= 9) {
+            if (blinkCount >= 5) {
                 this.sprite.setAlpha(1); 
-                this.invulnerable = false; 
+                this.turret.setalpha(1);
+                this.invulnerable = false;
             }
         }
     });
