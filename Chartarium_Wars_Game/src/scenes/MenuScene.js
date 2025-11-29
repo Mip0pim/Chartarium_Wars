@@ -27,7 +27,7 @@ export class MenuScene extends Phaser.Scene {
             musica.play();        
         }
         //fondo
-        this.add.image(400, 310, 'Fondo');
+        this.add.image(400, 300, 'Fondo');
         //logo
         const logo=this.add.image(400, 180, 'Logo')
         .setOrigin(0.5);
@@ -36,14 +36,14 @@ export class MenuScene extends Phaser.Scene {
         const localBtn = this.add.image(280, 410, "BTNPlayer")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
-                localBtn.setScale(1.2)
+                localBtn.setScale(0.19)
             .on('pointerover', () => {
                 //localBtn.setTint(0x00ff88);   // aplica color
-                localBtn.setScale(1.3);       // aumenta tamaño un 10%
+                localBtn.setScale(0.20);       // aumenta tamaño un 10%
             })
             .on('pointerout', () => {
                 //localBtn.setTint(0x00ff00);   // vuelve al color original
-                localBtn.setScale(1.2);         // vuelve al tamaño original
+                localBtn.setScale(0.19);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
                 this.scene.start('SelectColor');
