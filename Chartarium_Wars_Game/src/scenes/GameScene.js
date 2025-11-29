@@ -12,6 +12,7 @@ export class GameScene extends Phaser.Scene {
     preload() {//carga de archivos
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('Vida', 'imagenes/VidaCW.png');
+        this.load.image('Bubble', 'imagenes/BurbujaCW.png');
         this.load.image('MedioMapa', 'imagenes/MedioObstaculoCW.png');
         this.load.image('Palo', 'imagenes/PaloObstaculoCW.png');
         this.load.image('BloqueSimple', 'imagenes/TileMuro.png');
@@ -36,6 +37,7 @@ export class GameScene extends Phaser.Scene {
 
         this.load.image('MuroBloque6', 'imagenes/MedioObstaculoCW.png');
         this.load.image('Bloque', 'imagenes/TileMuro.png');
+        this.load.image('Palo', 'imagenes/PaloObstaculoCW.png');
        
     }
     init(data) {
@@ -252,7 +254,10 @@ export class GameScene extends Phaser.Scene {
         this.centro3=this.physics.add.sprite(400+45,462-155,"Bloque");
         this.centro3.setImmovable(true);
 
-
+        this.palo1=this.physics.add.sprite(648,439,"Palo");
+        this.palo1.setImmovable(true);
+        this.palo2=this.physics.add.sprite(152,218,"Palo");
+        this.palo2.setImmovable(true);
     }
 
     createCollisions(){
@@ -266,6 +271,8 @@ export class GameScene extends Phaser.Scene {
             this.physics.add.collider(this.centro1, tank.sprite);
             this.physics.add.collider(this.centro2, tank.sprite);
             this.physics.add.collider(this.centro3, tank.sprite);
+            this.physics.add.collider(this.palo1, tank.sprite);
+            this.physics.add.collider(this.palo2, tank.sprite);
         });
     }
 

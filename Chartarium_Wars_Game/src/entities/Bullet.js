@@ -78,6 +78,8 @@ export class Bullet {
     this.scene.physics.add.collider(this.scene.centro1, this.sprite, () => { this.destroy(); });
     this.scene.physics.add.collider(this.scene.centro2, this.sprite, () => { this.destroy(); });
     this.scene.physics.add.collider(this.scene.centro3, this.sprite, () => { this.destroy(); }); 
+    this.scene.physics.add.collider(this.scene.palo1, this.sprite, () => { this.destroy(); }); 
+    this.scene.physics.add.collider(this.scene.palo2, this.sprite, () => { this.destroy(); }); 
     this.scene.players.forEach(tank => {
             this.scene.physics.add.collider(this.sprite, tank.sprite, () => {
                 if (this.canDamage) {

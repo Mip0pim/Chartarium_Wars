@@ -24,7 +24,7 @@ export class MenuScene extends Phaser.Scene {
         .setOrigin(0.5);
         logo.setScale(1.1);
         
-        const localBtn = this.add.image(400, 380, "BTNPlayer")
+        const localBtn = this.add.image(280, 380, "BTNPlayer")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
                 localBtn.setScale(1.2)
@@ -40,7 +40,7 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('SelectColor');
         });
 
-        const onlineBtn = this.add.image(400, 435, "BTNOnline")
+        const onlineBtn = this.add.image(520, 380, "BTNOnline")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
                 onlineBtn.setScale(0.19)
@@ -56,7 +56,7 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('OnlineScene');
         });
 
-        const tutorialBtn = this.add.text(400, 480, 'Tutorial', {
+        const tutorialBtn = this.add.text(280, 520, 'Tutorial', {
             fontSize: '32px',
             color: '#000000ff',
             fontStyle: 'bold'
@@ -74,7 +74,7 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('TutorialScene');
         });
 
-        const creditBtn = this.add.image(400, 520, "BTNCredit")
+        const creditBtn = this.add.image(520, 520, "BTNCredit")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => {
