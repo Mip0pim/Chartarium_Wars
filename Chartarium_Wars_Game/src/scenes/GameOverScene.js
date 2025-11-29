@@ -16,7 +16,7 @@ export class GameOverScene extends Phaser.Scene {
     create() {
         this.add.image(400, 310, 'Fondo');
         
-        this.add.text(400, 150, "Ganador: "+this.ganador, {
+        this.add.text(400, 135, "Ganador: "+this.ganador, {
             fontSize: '70px',
             color: '#600000ff',
             fontStyle: 'bold'
@@ -25,7 +25,7 @@ export class GameOverScene extends Phaser.Scene {
         this.add.image(400, 300, `Base${this.color}`).setOrigin(0.5, 0.5).setScale(3);
         this.torre=this.add.image(400, 300, `Torreta${this.color}`).setOrigin(0.15, 0.5).setScale(3);
 
-        const menuBtn = this.add.image(400,525,'BTNMenu').setOrigin(0.5).setScale(0.4)
+        const menuBtn = this.add.image(400,500,'BTNMenu').setOrigin(0.5).setScale(0.4)
         .setInteractive({useHandCursor: true})
         .on('pointerover', () => menuBtn.setScale(0.43))
         .on('pointerout', () => menuBtn.setScale(0.4))

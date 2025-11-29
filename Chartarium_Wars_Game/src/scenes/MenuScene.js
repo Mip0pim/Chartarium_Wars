@@ -14,11 +14,18 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('BTNCredit', 'imagenes/CreditosCW.png');
         this.load.image('BTNOnline', 'imagenes/OnlineBtnCW.png');   
         this.load.image('BTNMenu', 'imagenes/MenuCW.png'); 
-        this.load.image('BTNTutorial', 'imagenes/TutorialCW.png');   
+        this.load.image('BTNTutorial', 'imagenes/TutorialCW.png');
+        this.load.audio('musica', 'audio/musica.mp3');   
     }
 
 
     create() {
+        //musica
+        let musica = this.sound.get('musica');
+        if (!musica) {        
+            musica = this.sound.add('musica', { loop: true, volume: 0.4});            
+            musica.play();        
+        }
         //fondo
         this.add.image(400, 310, 'Fondo');
         //logo
@@ -26,7 +33,7 @@ export class MenuScene extends Phaser.Scene {
         .setOrigin(0.5);
         logo.setScale(1.1);
         
-        const localBtn = this.add.image(280, 380, "BTNPlayer")
+        const localBtn = this.add.image(280, 410, "BTNPlayer")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
                 localBtn.setScale(1.2)
@@ -42,7 +49,7 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('SelectColor');
         });
 
-        const onlineBtn = this.add.image(520, 380, "BTNOnline")
+        const onlineBtn = this.add.image(520, 410, "BTNOnline")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
                 onlineBtn.setScale(0.19)
@@ -58,7 +65,7 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('OnlineScene');
         });
 
-        const tutorialBtn = this.add.image(280,520,'BTNTutorial').setOrigin(0.5).setScale(0.3)
+        const tutorialBtn = this.add.image(280,507,'BTNTutorial').setOrigin(0.5).setScale(0.3)
         .setInteractive({ useHandCursor: true })
             .on('pointerover', () => {
                 //localBtn.setTint(0x00ff88);   // aplica color
@@ -72,7 +79,7 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('TutorialScene');
         });
 
-        const creditBtn = this.add.image(520, 520, "BTNCredit")
+        const creditBtn = this.add.image(520, 500, "BTNCredit")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => {

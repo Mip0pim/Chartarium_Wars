@@ -27,7 +27,12 @@ module.exports = {
   new CopyWebpackPlugin ({patterns:[{
       from:'public/imagenes',
       to:'imagenes'
-}]})
+    },
+    {
+      from:'public/audio', 
+      to:'audio'
+    }
+  ]})
   ],
   resolve: {
     extensions: ['.js']

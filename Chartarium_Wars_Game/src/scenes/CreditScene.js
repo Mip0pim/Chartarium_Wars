@@ -21,14 +21,19 @@ export class CreditScene extends Phaser.Scene {
             .setOrigin(0.5);
                 creditBtn.setScale(1.5);
         
-        this.add.text(400, 200, 'Creado por:', {
+        this.add.text(400, 180, 'Creado por:', {
             fontSize: '40px',
             color: '#000000ff',
             fontStyle: 'bold'
         }).setOrigin(0.5);
 
-        this.add.image(400,300,'Autores').setScale(0.5);
+        this.add.image(400,300,'Autores').setScale(0.3);
 
+        this.add.text(400, 445, 'Música de Tiny Tanks', {
+            fontSize: '36px',
+            color: '#000000ff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
         
         const menuBtn = this.add.image(400,525,'BTNMenu').setOrigin(0.5).setScale(0.4)
         .setInteractive({useHandCursor: true})
