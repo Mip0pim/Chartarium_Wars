@@ -29,16 +29,13 @@ export class PauseScene extends Phaser.Scene {
             this.scene.get(data.originalScene).resume();
         });
 
-        const menuBtn = this.add.text(400, 400, 'Return to Main Menu', {
-            fontSize: '32px',
-            color: '#a30303ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerover', () => menuBtn.setColor('#790000ff'))
-        .on('pointerout', () => menuBtn.setColor('#a30303ff'))
+        const menuBtn = this.add.image(400,400,'BTNMenu').setOrigin(0.5).setScale(0.4)
+        .setInteractive({useHandCursor: true})
+        .on('pointerover', () => menuBtn.setScale(0.43))
+        .on('pointerout', () => menuBtn.setScale(0.4))
         .on('pointerdown', () => {
-            this.scene.stop(data.originalScene);
+            this.scene.stop('GameScene');
+            this.scene.stop();
             this.scene.start('MenuScene');
         });
     }

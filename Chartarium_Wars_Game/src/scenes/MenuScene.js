@@ -13,6 +13,8 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('BTNPlayer', 'imagenes/LocalBtnCW.png');
         this.load.image('BTNCredit', 'imagenes/CreditosCW.png');
         this.load.image('BTNOnline', 'imagenes/OnlineBtnCW.png');   
+        this.load.image('BTNMenu', 'imagenes/MenuCW.png'); 
+        this.load.image('BTNTutorial', 'imagenes/TutorialCW.png');   
     }
 
 
@@ -56,19 +58,15 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('OnlineScene');
         });
 
-        const tutorialBtn = this.add.text(280, 520, 'Tutorial', {
-            fontSize: '32px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5)
+        const tutorialBtn = this.add.image(280,520,'BTNTutorial').setOrigin(0.5).setScale(0.3)
         .setInteractive({ useHandCursor: true })
             .on('pointerover', () => {
                 //localBtn.setTint(0x00ff88);   // aplica color
-                tutorialBtn.setScale(1.1);       // aumenta tamaño un 10%
+                tutorialBtn.setScale(0.33);       // aumenta tamaño un 10%
             })
             .on('pointerout', () => {
                 //localBtn.setTint(0x00ff00);   // vuelve al color original
-                tutorialBtn.setScale(1);         // vuelve al tamaño original
+                tutorialBtn.setScale(0.3);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
                 this.scene.start('TutorialScene');

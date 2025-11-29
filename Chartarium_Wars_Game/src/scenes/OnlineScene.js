@@ -25,14 +25,10 @@ export class OnlineScene extends Phaser.Scene {
             fontStyle: 'bold'
         }).setOrigin(0.5);
         
-        const localBtn = this.add.text(400, 520, 'Back to menu', {
-            fontSize: '50px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5)
+        const menuBtn = this.add.image(400,525,'BTNMenu').setOrigin(0.5).setScale(0.4)
         .setInteractive({useHandCursor: true})
-        .on('pointerover', () => localBtn.setColor('#535353ff'))
-        .on('pointerout', () => localBtn.setColor('#000000ff'))
+        .on('pointerover', () => menuBtn.setScale(0.43))
+        .on('pointerout', () => menuBtn.setScale(0.4))
         .on('pointerdown', () => {
             this.scene.start('MenuScene');
         });

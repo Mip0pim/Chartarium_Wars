@@ -23,17 +23,14 @@ export class SelectColor extends Phaser.Scene {
         this.load.image('Play', 'imagenes/PLAYCW.png');
 
         this.load.image('Bubble', 'imagenes/BurbujaCW.png');
+        this.load.image('Elige', 'imagenes/EligeColorCW.png');
     }
     
     create() {
         // Fondo
         this.add.image(400, 310, 'Fondo');
         
-        this.add.text(400, 60, 'Select the color of the tanks', {
-            fontSize: '32px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
+        this.add.image(400,50,'Elige').setOrigin(0.5).setScale(0.3);
 
         // Ahora empezamos SIN color elegido
         this.colorPlayer1 = null;
@@ -121,7 +118,7 @@ export class SelectColor extends Phaser.Scene {
         });
 
         // Botón Play
-        const playBtn = this.add.image(400, 500, "Play")
+        const playBtn = this.add.image(400, 300, "Play")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
                 playBtn.setScale(1.2)
@@ -143,22 +140,13 @@ export class SelectColor extends Phaser.Scene {
         });
 
         // Botón volver
-        const backBtn = this.add.text(400, 570, 'Return to menu', {
-            fontSize: '35px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
-        
-        backBtn.on('pointerover', () => {
-            backBtn.setStyle({ color: '#444444' });
+        const menuBtn = this.add.image(400,550,'BTNMenu').setOrigin(0.5).setScale(0.3)
+        .setInteractive({useHandCursor: true})
+        .on('pointerover', () => menuBtn.setScale(0.33))
+        .on('pointerout', () => menuBtn.setScale(0.3))
+        .on('pointerdown', () => {
+            this.scene.start('MenuScene');
         });
-
-        backBtn.on('pointerout', () => {
-            backBtn.setStyle({ color: '#000000' });
-        });
-
-       
-        backBtn.on('pointerup', () => this.scene.start('MenuScene'));
     }
 
     // Marca seleccionado

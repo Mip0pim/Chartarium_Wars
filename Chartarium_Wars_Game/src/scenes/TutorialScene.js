@@ -8,6 +8,7 @@ export class TutorialScene extends Phaser.Scene {
 
     preload() {//carga de archivos
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
+        this.load.image('Tutorial', 'imagenes/TutorialCW.png');
     }
 
     create() {
@@ -15,11 +16,7 @@ export class TutorialScene extends Phaser.Scene {
         //fondo
         this.add.image(400, 310, 'Fondo');
         
-        this.add.text(400, 100, 'Tutorial', {
-            fontSize: '55px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
+        this.add.image(400,80,'Tutorial').setOrigin(0.5).setScale(0.4);
 
         this.add.text(400, 150, 'Controles:', {
             fontSize: '25px',
@@ -74,14 +71,10 @@ export class TutorialScene extends Phaser.Scene {
             color: '#000000ff',
         }).setOrigin(0.5);
 
-        const localBtn = this.add.text(400, 520, 'Back to menu', {
-            fontSize: '50px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5)
+        const menuBtn = this.add.image(400,525,'BTNMenu').setOrigin(0.5).setScale(0.4)
         .setInteractive({useHandCursor: true})
-        .on('pointerover', () => localBtn.setColor('#535353ff'))
-        .on('pointerout', () => localBtn.setColor('#000000ff'))
+        .on('pointerover', () => menuBtn.setScale(0.43))
+        .on('pointerout', () => menuBtn.setScale(0.4))
         .on('pointerdown', () => {
             this.scene.start('MenuScene');
         });

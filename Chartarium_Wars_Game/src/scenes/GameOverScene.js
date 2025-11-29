@@ -25,12 +25,10 @@ export class GameOverScene extends Phaser.Scene {
         this.add.image(400, 300, `Base${this.color}`).setOrigin(0.5, 0.5).setScale(3);
         this.torre=this.add.image(400, 300, `Torreta${this.color}`).setOrigin(0.15, 0.5).setScale(3);
 
-        this.add.text(400, 450, 'Back to menu', {
-            fontSize: '40px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true })
+        const menuBtn = this.add.image(400,525,'BTNMenu').setOrigin(0.5).setScale(0.4)
+        .setInteractive({useHandCursor: true})
+        .on('pointerover', () => menuBtn.setScale(0.43))
+        .on('pointerout', () => menuBtn.setScale(0.4))
         .on('pointerdown', () => {
             this.scene.start('MenuScene');
         });
