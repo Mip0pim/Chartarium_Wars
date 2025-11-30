@@ -57,7 +57,7 @@ export class GameScene extends Phaser.Scene {
     create() {
 
         //fondo
-        this.add.image(400, 310, 'Fondo');       
+        this.add.image(400, 300, 'Fondo');       
         this.createBounds();
         //this.createBall();
         //this.launchBall();

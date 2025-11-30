@@ -19,7 +19,7 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(400, 310, 'Fondo');
+        this.add.image(400, 300, 'Fondo');
 
         this.add.image(400, 100, 'BTNGanador').setOrigin(0.5).setScale(0.6);
 

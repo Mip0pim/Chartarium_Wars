@@ -32,7 +32,7 @@ export class SelectColor extends Phaser.Scene {
     
     create() {
         // Fondo
-        this.add.image(400, 310, 'Fondo');
+        this.add.image(400, 300, 'Fondo');
         
         this.add.image(400,50,'Elige').setOrigin(0.5).setScale(0.3);
 
@@ -118,14 +118,14 @@ export class SelectColor extends Phaser.Scene {
         const playBtn = this.add.image(400, 300, "Play")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
-                playBtn.setScale(1.2)
+                playBtn.setScale(0.25)
             .on('pointerover', () => {
                 //localBtn.setTint(0x00ff88);   // aplica color
-                playBtn.setScale(1.3);       // aumenta tamaño un 10%
+                playBtn.setScale(0.28);       // aumenta tamaño un 10%
             })
             .on('pointerout', () => {
                 //localBtn.setTint(0x00ff00);   // vuelve al color original
-                playBtn.setScale(1.2);         // vuelve al tamaño original
+                playBtn.setScale(0.25);         // vuelve al tamaño original
             });
         
         playBtn.on('pointerup', () => {

@@ -10,22 +10,19 @@ preload() {
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('BTNPause', 'imagenes/PausaCW.png');
         this.load.image('BTNMenu', 'imagenes/MenuCW.png');
+        this.load.image('BTNContinue', 'imagenes/ContinuarCW.png');
     }
 
     create(data) {
         //fondo
-        this.add.image(400, 310, 'Fondo');
+        this.add.image(400, 300, 'Fondo');
 
-        this.add.image(400,200,'BTNPause').setOrigin(0.5).setScale(1)
+        this.add.image(400,200,'BTNPause').setOrigin(0.5).setScale(0.6);
         
-        const resumeBtn = this.add.text(400, 320, 'Resume', {
-            fontSize: '32px',
-            color: '#036c03ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5)
+        const resumeBtn = this.add.image(400,310,'BTNContinue').setOrigin(0.5).setScale(0.25)
         .setInteractive({useHandCursor: true})
-        .on('pointover', () => resumeBtn.setColor('#002405ff'))
-        .on('pointerout', () => resumeBtn.setColor('#036c03ff'))
+        .on('pointerover', () => resumeBtn.setScale(0.28))
+        .on('pointerout', () => resumeBtn.setScale(0.25))
         .on('pointerdown', () => {
             this.scene.stop();
             this.scene.resume(data.originalScene);
