@@ -21,6 +21,10 @@ export class SelectColor extends Phaser.Scene {
         this.load.image('TorretaYellow', 'imagenes/CanonAmarilloCW.png');
 
         this.load.image('Play', 'imagenes/PLAYCW.png');
+        this.load.image('BTNMenu', 'imagenes/MenuCW.png');
+        this.load.image('P', 'imagenes/Pcw.png');
+        this.load.image('1', 'imagenes/1CW.png');
+        this.load.image('2', 'imagenes/2CW.png');
 
         this.load.image('Bubble', 'imagenes/BurbujaCW.png');
         this.load.image('Elige', 'imagenes/EligeColorCW.png');
@@ -37,17 +41,10 @@ export class SelectColor extends Phaser.Scene {
         this.colorPlayer2 = null;
 
         // --- Títulos ---
-        this.add.text(200, 120, 'Player 1', {   
-            fontSize: '28px', 
-            color: '#000000ff', 
-            fontStyle: 'bold' 
-        }).setOrigin(0.5);
-        
-        this.add.text(600, 120, 'Player 2', { 
-            fontSize: '28px', 
-            color: '#000000ff', 
-            fontStyle: 'bold' 
-        }).setOrigin(0.5);
+        this.add.image(190, 120, 'P').setOrigin(0.5).setScale(0.3);
+        this.add.image(240, 122, '1').setOrigin(0.5).setScale(0.3);  
+        this.add.image(590, 120, 'P').setOrigin(0.5).setScale(0.3);
+        this.add.image(640, 120, '2').setOrigin(0.5).setScale(0.3);
 
         this.p1Options = [];
         this.p2Options = [];

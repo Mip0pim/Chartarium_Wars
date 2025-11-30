@@ -5,15 +5,18 @@ export class PauseScene extends Phaser.Scene {
     constructor() {
         super('PauseScene');
     }
+   
+preload() {
+        this.load.image('Fondo', 'imagenes/Fondo.jpg');
+        this.load.image('BTNPause', 'imagenes/PausaCW.png');
+        this.load.image('BTNMenu', 'imagenes/MenuCW.png');
+    }
 
     create(data) {
-        this.add.rectangle(400, 300, 800, 600, 0x000000, 0.7);
+        //fondo
+        this.add.image(400, 310, 'Fondo');
 
-        this.add.text(400, 200, 'Game Paused', {
-            fontSize: '65px',
-            color: '#bdbdbdff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
+        this.add.image(400,200,'BTNPause').setOrigin(0.5).setScale(1)
         
         const resumeBtn = this.add.text(400, 320, 'Resume', {
             fontSize: '32px',
