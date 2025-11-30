@@ -12,33 +12,40 @@ Integrantes del equipo:
 ## ÍNDICE
 
 - [Fase 1: Equipo de desarrollo y temática del juego](#fase-1-equipo-de-desarrollo-y-tem%C3%A1tica-del-juego)
-- [1. JUGABILIDAD](#1-jugabilidad)
-  - [1.1 Concepto del juego](#11-concepto-del-juego)
-  - [1.2 Controles](#12-controles)
-  - [1.3 Mecánicas](#13-mec%C3%A1nicas)
-    - [1.3.1 Disparo y apuntado](#131-disparo-y-apuntado)
-    - [1.3.2 Poderes](#132-poderes)
-    - [1.3.3 Victoria](#133-victoria)
-  - [1.4 Físicas](#14-f%C3%ADsicas)
-    - [1.4.1 Colisiones](#141-colisiones)
-    - [1.4.2 Movimiento](#142-movimiento)
-  - [1.5 Calidad del escenario](#15-calidad-del-escenario)
-- [2. IMAGEN Y DISEÑO VISUAL](#2-imagen-y-dise%C3%B1o-visual)
-  - [2.1 Estilo visual](#21-estilo-visual)
-  - [2.2 Bocetos](#22-bocetos)
-  - [2.3 Logotipo](#23-logotipo)
-  - [2.4 Inspiración](#24-inspiraci%C3%B3n)
-- [3. SONIDO](#3-sonido)
-  - [3.1 Música](#31-m%C3%BAsica)
-  - [3.2 Efectos sonoros](#32-efectos-sonoros)
-- [4. NARRATIVA](#4-narrativa)
-  - [4.1 Historia del Juego](#41-historia-del-juego)
-  - [4.2 Desarrollo de personajes](#42-desarrollo-de-personajes)
-- [5. Comunicación](#5-comunicaci%C3%B3n)
-  - [5.1 Marketing](#51-marketing)
-- [6. DIAGRAMA DE FLUJO](#6-diagrama-de-flujo)
-- [7. REFERENCIAS](#7-referencias)
-
+  - [1. JUGABILIDAD](#1-jugabilidad)
+    - [1.1 Concepto del juego](#11-concepto-del-juego)
+    - [1.2 Controles](#12-controles)
+    - [1.3 Mecánicas](#13-mec%C3%A1nicas)
+      - [1.3.1 Disparo y apuntado](#131-disparo-y-apuntado)
+      - [1.3.2 Poderes](#132-poderes)
+      - [1.3.3 Victoria](#133-victoria)
+    - [1.4 Físicas](#14-f%C3%ADsicas)
+      - [1.4.1 Colisiones](#141-colisiones)
+      - [1.4.2 Movimiento](#142-movimiento)
+    - [1.5 Calidad del escenario](#15-calidad-del-escenario)
+  - [2. IMAGEN Y DISEÑO VISUAL](#2-imagen-y-dise%C3%B1o-visual)
+    - [2.1 Estilo visual](#21-estilo-visual)
+    - [2.2 Bocetos](#22-bocetos)
+    - [2.3 Logotipo](#23-logotipo)
+    - [2.4 Inspiración](#24-inspiraci%C3%B3n)
+  - [3. SONIDO](#3-sonido)
+    - [3.1 Música](#31-m%C3%BAsica)
+    - [3.2 Efectos sonoros](#32-efectos-sonoros)
+  - [4. NARRATIVA](#4-narrativa)
+    - [4.1 Historia del Juego](#41-historia-del-juego)
+    - [4.2 Desarrollo de personajes](#42-desarrollo-de-personajes)
+  - [5. Comunicación](#5-comunicaci%C3%B3n)
+    - [5.1 Marketing](#51-marketing)
+  - [6. DIAGRAMA DE FLUJO](#6-diagrama-de-flujo)
+  - [7. REFERENCIAS](#7-referencias)
+- [Fase 2: Desarrollo del juego en local](#fase-2-desarrollo-del-juego-en-local)
+  - [1. CAMBIOS RESPECTO LA IDEA ORIGINAL](#1-cambios-respecto-la-idea-original)
+    - [1.1 Apuntado](#11-apuntado)
+    - [1.2 Colores disponibles](#12-colores-disponibles)
+    - [1.3 Música](#13-m%C3%BAsica)
+  - [2. COSAS POR HACER](#2-cosas-por-hacer)
+    - [2.1 Poderes](#21-poderes)
+    - [2.2 Cambios de sprites](#22-cambios-de-sprites)
 
 # Fase 1: Equipo de desarrollo y temática del juego
 
@@ -223,4 +230,31 @@ Para dar a conocer Chartarium Wars, el equipo de desarrollo participa en eventos
 [https://chillnplay.itch.io/paper-tanks](https://chillnplay.itch.io/paper-tanks) Paper Tanks en itchio (para jugar)  
 [https://play.google.com/store/apps/details?id=com.habby.archero\&hl=es\_419](https://play.google.com/store/apps/details?id=com.habby.archero&hl=es_419) Juego Archero  
 [https://krita.org/es](https://krita.org/es) para editar dibujos
+# 
+# Fase2: Desarrollo del juego en local
 
+# 1. CAMBIOS RESPECTO LA IDEA ORIGINAL
+
+## 1.1 Apuntado
+
+El cambio más notable, es sin duda la forma de apuntar. En un principio se quería que fuese girando respecto al ángulo donde se encuentra el jugador objetivo. Sin embargo, debido a ciertas complicaciones se decidió que no girase y solo apunte al objetivo. De esta forma el apuntado es mucho más sencillo y fácil de entender. Se mantuvo la mecánica de solo disparar mientras se esté quieto, pues es algo importante para el juego.
+
+## 1.2 Colores disponibles
+
+En un prncipio solo se iban a poner dos colores de tanques, esto es a que se pensaba que la dificultad de incorporar nuevos colores supondría duplicar mucho código. Esto resultó no ser así pues una vez conocidas las capacidades de Phaser (motor de videojuego que se ha usado para el desarrollo local), se vio una forma de realizarlo de manera sencilla. Así pues, los cuatro colores de las cuatro facciones se encuentran disponibles en el juego. 
+
+## 1.3 Música
+
+Se quería usar alguna música de marcha militar estilo 8-bits para el juego. Se decidió cambiar por varios motivos, el primero es la dificultad de crearla. Por lo general la música en 8-bits es complicada de hacer además de que muchos instrumentos como las trompetas no se ajustan a estos sonidos. Otro motivo es que al jugar al juego Tiny Tanks en busca de inspiración, nos había gustado la banda sonora de este. Por ello se decidió poner esa banda sonora de Tiny Tanks al juego, dando el crédito correspondiente en la pantalla de créditos.
+
+# 2. COSAS POR HACER
+
+El desarrollo del juego ha resultado positivo pues las cosas han ido bastante bien. Sin embargo, no ha dado tiempo a realizar ciertas tareas que se tratarán de hacer para la siguiente fase.
+
+## 2.1 Poderes
+
+Se ha tenido que priorizar otras tareas para que el juego sea jugable y cumpla los requisitos, por ello no se ha podido implementar poderes. Para la siguiente fase se implementarán aquellos que, esencialmente sea cambiar una propiedad. Por ejemplo aumentar/disminuir la velocidad de un tanque, aumentar la velocidad de las balas y recuperar una vida. Así el juego obtendrá una nueva forma de jugarse debido al uso de estos poderes.
+
+## 2.2 Cambios de sprites
+
+Se puede obsevar cómo algunos tanques son más pequeños o grandes. Debido a que al estar dibujados las proporciones han variado. A consecuencia el tamaño de sus colisioneses lejeramente diferente, variando unos 5 píxeles. Esta variación puede hacer que de la sensación de algunos tanques sea más difícil de golpear. Se tratará de rebibujar todos los tanques de nuevo y ajustar lo más posible el tamaño de sus colisiones para que el juego se sienta justo.
