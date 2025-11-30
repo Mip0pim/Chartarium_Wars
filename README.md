@@ -231,7 +231,7 @@ Para dar a conocer Chartarium Wars, el equipo de desarrollo participa en eventos
 [https://play.google.com/store/apps/details?id=com.habby.archero\&hl=es\_419](https://play.google.com/store/apps/details?id=com.habby.archero&hl=es_419) Juego Archero  
 [https://krita.org/es](https://krita.org/es) para editar dibujos
 # 
-# Fase2: Desarrollo del juego en local
+# Fase 2: Desarrollo del juego en local
 
 # 1. CAMBIOS RESPECTO LA IDEA ORIGINAL
 
