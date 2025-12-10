@@ -17,7 +17,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
     scene: [MenuScene, SelectColor, GameScene, PauseScene, CreditScene, OnlineScene, TutorialScene, GameOverScene],
