@@ -40,7 +40,7 @@ export class TutorialScene extends Phaser.Scene {
             fontStyle: 'bold'
         }).setOrigin(0.5);
 
-        this.add.text(400, 290, 'Quitarle las tres vidas al oponente', {
+        this.add.text(400, 290, 'Quitarle las cinco vidas al oponente', {
             fontSize: '25px',
             color: '#000000ff',
         }).setOrigin(0.5);
