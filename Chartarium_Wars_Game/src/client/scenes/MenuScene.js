@@ -15,7 +15,8 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('BTNOnline', 'imagenes/OnlineBtnCW.png');   
         this.load.image('BTNMenu', 'imagenes/MenuCW.png'); 
         this.load.image('BTNTutorial', 'imagenes/TutorialCW.png');
-        this.load.audio('musica', 'audio/musica.mp3');   
+        this.load.audio('musica', 'audio/musica.mp3');
+        this.load.audio('sfx', 'audio/menusfx.mp3');   
     }
 
 
@@ -46,6 +47,7 @@ export class MenuScene extends Phaser.Scene {
                 localBtn.setScale(0.19);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
+                this.sound.play('sfx', { volume: 0.5 });
                 this.scene.start('SelectColor');
         });
 
@@ -62,6 +64,7 @@ export class MenuScene extends Phaser.Scene {
                 onlineBtn.setScale(0.19);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
+                this.sound.play('sfx', { volume: 0.5 });
                 this.scene.start('OnlineScene');
         });
 
@@ -76,6 +79,7 @@ export class MenuScene extends Phaser.Scene {
                 tutorialBtn.setScale(0.3);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
+                this.sound.play('sfx', { volume: 0.5 });
                 this.scene.start('TutorialScene');
         });
 
@@ -91,6 +95,7 @@ export class MenuScene extends Phaser.Scene {
                 creditBtn.setScale(1);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
+                this.sound.play('sfx', { volume: 0.5 });
                 this.scene.start('CreditScene');
         });
         // Indicador de conexión al servidor
