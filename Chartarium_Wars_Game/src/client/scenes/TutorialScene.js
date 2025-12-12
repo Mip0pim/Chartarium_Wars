@@ -9,6 +9,7 @@ export class TutorialScene extends Phaser.Scene {
     preload() {//carga de archivos
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('Tutorial', 'imagenes/TutorialCW.png');
+        this.load.audio('sfx', 'audio/menusfx.mp3');
     }
 
     create() {
@@ -76,6 +77,7 @@ export class TutorialScene extends Phaser.Scene {
         .on('pointerover', () => menuBtn.setScale(0.43))
         .on('pointerout', () => menuBtn.setScale(0.4))
         .on('pointerdown', () => {
+            this.sound.play('sfx', { volume: 0.5 });
             this.scene.start('MenuScene');
         });
 

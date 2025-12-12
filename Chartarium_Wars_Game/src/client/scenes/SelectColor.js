@@ -28,6 +28,7 @@ export class SelectColor extends Phaser.Scene {
 
         this.load.image('Bubble', 'imagenes/BurbujaCW.png');
         this.load.image('Elige', 'imagenes/EligeColorCW.png');
+        this.load.audio('sfx', 'audio/menusfx.mp3');
     }
     
     create() {
@@ -130,6 +131,7 @@ export class SelectColor extends Phaser.Scene {
         
         playBtn.on('pointerup', () => {
             if (!this.colorPlayer1 || !this.colorPlayer2 || this.colorPlayer1 === this.colorPlayer2) return;
+            this.sound.play('sfx', { volume: 0.5 });
             this.scene.start('GameScene', {
                 colorPlayer1: this.colorPlayer1,
                 colorPlayer2: this.colorPlayer2
@@ -142,6 +144,7 @@ export class SelectColor extends Phaser.Scene {
         .on('pointerover', () => menuBtn.setScale(0.33))
         .on('pointerout', () => menuBtn.setScale(0.3))
         .on('pointerdown', () => {
+            this.sound.play('sfx', { volume: 0.5 });
             this.scene.start('MenuScene');
         });
     }

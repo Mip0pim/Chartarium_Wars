@@ -11,6 +11,7 @@ preload() {
         this.load.image('BTNPause', 'imagenes/PausaCW.png');
         this.load.image('BTNMenu', 'imagenes/MenuCW.png');
         this.load.image('BTNContinue', 'imagenes/ContinuarCW.png');
+        this.load.audio('sfx', 'audio/menusfx.mp3');
     }
 
     create(data) {
@@ -24,6 +25,7 @@ preload() {
         .on('pointerover', () => resumeBtn.setScale(0.28))
         .on('pointerout', () => resumeBtn.setScale(0.25))
         .on('pointerdown', () => {
+            this.sound.play('sfx', { volume: 0.5 });
             this.scene.stop();
             this.scene.resume(data.originalScene);
             this.scene.get(data.originalScene).resume();
@@ -34,6 +36,7 @@ preload() {
         .on('pointerover', () => menuBtn.setScale(0.43))
         .on('pointerout', () => menuBtn.setScale(0.4))
         .on('pointerdown', () => {
+            this.sound.play('sfx', { volume: 0.5 });
             this.scene.stop('GameScene');
             this.scene.stop();
             this.scene.start('MenuScene');

@@ -12,6 +12,7 @@ export class GameOverScene extends Phaser.Scene {
         this.load.image('P', 'imagenes/Pcw.png');
         this.load.image('1', 'imagenes/1CW.png');
         this.load.image('2', 'imagenes/2CW.png');
+        this.load.audio('sfx', 'audio/menusfx.mp3');
     }
     init(data){
         this.ganador=data?.ganador;
@@ -39,6 +40,7 @@ export class GameOverScene extends Phaser.Scene {
         .on('pointerover', () => menuBtn.setScale(0.43))
         .on('pointerout', () => menuBtn.setScale(0.4))
         .on('pointerdown', () => {
+            this.sound.play('sfx', { volume: 0.5 });
             this.scene.start('MenuScene');
         });
     }

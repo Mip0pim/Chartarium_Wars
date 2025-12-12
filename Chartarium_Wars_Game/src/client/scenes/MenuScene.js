@@ -98,6 +98,26 @@ export class MenuScene extends Phaser.Scene {
                 this.sound.play('sfx', { volume: 0.5 });
                 this.scene.start('CreditScene');
         });
+
+        const optionsBtn = this.add.text(680, 350, 'Opciones', {
+            fontSize: '40px',
+            color: '#000000ff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5)
+        .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => {
+                //localBtn.setTint(0x00ff88);   // aplica color
+                optionsBtn.setScale(1.1);       // aumenta tamaño un 10%
+            })
+            .on('pointerout', () => {
+                //localBtn.setTint(0x00ff00);   // vuelve al color original
+                optionsBtn.setScale(1);         // vuelve al tamaño original
+            })
+            .on('pointerdown', () => {
+                this.sound.play('sfx', { volume: 0.5 });
+                this.scene.start('OptionsScene');
+        });
+
         // Indicador de conexión al servidor
         this.connectionText = this.add.text(525, 510, 'Servidor: Comprobando...', {
             fontSize: '18px',
