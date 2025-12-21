@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Tank } from '../entities/Tank';
+import { PowerUpGenerator } from '../entities/PowerUpGenerator.js';
 import { CommandProcessor } from '../commands/CommandProcessor';
 import { MoveTankCommand } from '../commands/MoveTankCommand';
 import { PauseGameCommand } from '../commands/PuaseGameCommand';
@@ -44,6 +45,7 @@ export class GameScene extends Phaser.Scene {
         this.players = new Map();
         this.inputMappings = [];
         this.ball = null;
+        this.powerUpGenerator = null;
         this.isPaused = false;
         this.escWasDown = false;
         this.processor = new CommandProcessor();
@@ -70,6 +72,7 @@ export class GameScene extends Phaser.Scene {
         
 
         this.vidasJugadores();
+        this.powerUpGenerator = new PowerUpGenerator(this, 1000); // Genera un power-up cada 10 segundos
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
     
@@ -93,6 +96,16 @@ export class GameScene extends Phaser.Scene {
         if (vidaArray.length > vidasRestantes) {
             const vidaSprite = vidaArray.pop();
             vidaSprite.destroy();
+        }
+        if (vidaArray.length < vidasRestantes) {
+            if (playerId === 'player1') {
+                const nuevaVida = this.add.image(90 + vidaArray.length * 30, 35, 'Vida').setScale(0.05);
+                vidaArray.push(nuevaVida);
+            } 
+            if (playerId === 'player2') {
+                const nuevaVida = this.add.image(710 - vidaArray.length * 30, 35, 'Vida').setScale(0.05);
+                vidaArray.push(nuevaVida);
+            }
         }
         if (vidasRestantes <= 0) {
             this.isGameOver = true; 
