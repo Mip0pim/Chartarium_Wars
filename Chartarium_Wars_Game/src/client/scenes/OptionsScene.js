@@ -31,5 +31,35 @@ export class OptionsScene extends Phaser.Scene {
             this.sound.play('sfx', { volume: 0.5 });
             this.scene.start('MenuScene');
         });
+
+    const x = 400;
+    const y = 300;
+
+    // Barra del slider
+    this.sliderBar = this.add.rectangle(x, y, 200, 10, 0x888888);
+
+    // Obtener volumen global actual (0 a 1)
+    const currentVolume = this.sound.volume;
+
+    // Convertir volumen a posición del handle
+    const minX = x - 100;
+    const maxX = x + 100;
+    const handleX = minX + (maxX - minX) * currentVolume;
+
+    // Crear handle en la posición correcta
+    this.sliderHandle = this.add.circle(handleX, y, 12, 0xffffff)
+        .setInteractive({ draggable: true });
+
+    this.input.setDraggable(this.sliderHandle);
+
+    // Evento de arrastre
+    this.input.on('drag', (pointer, gameObject, dragX) => {
+        gameObject.x = Phaser.Math.Clamp(dragX, minX, maxX);
+
+        const percent = (gameObject.x - minX) / (maxX - minX);
+
+        // Ajustar volumen
+        this.sound.volume = percent;
+    });
     }
 }

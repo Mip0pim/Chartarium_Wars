@@ -46,7 +46,7 @@ export class PowerUp {
     createCollistions(){
         this.scene.players.forEach(tank => {
             this.scene.physics.add.collider(this.sprite, tank.sprite, () => {
-                this.aplyPowerUp(tank, this.type);
+                this.aplyPowerUp(tank, this.type);//se podria pasar el otro tanque para cosas negativas
                 this.sprite.destroy();
                 this.generator.maxPowerUps-=1;
             });
