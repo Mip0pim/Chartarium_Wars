@@ -53,6 +53,8 @@ export class Turret {
     }
 
     fire() {
+        if (!this.myTank.canShoot) return; // Power-up no puede disparar
+        
         if (this.powerUpBullet === null) {
             if (this.canShoot) {
                 new Bullet(

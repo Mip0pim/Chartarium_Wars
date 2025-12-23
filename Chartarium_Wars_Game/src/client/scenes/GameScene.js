@@ -58,11 +58,22 @@ export class GameScene extends Phaser.Scene {
 
     create() {
 
+        this.powerUpsGroup = this.physics.add.group();
+        
         //fondo
         this.add.image(400, 300, 'Fondo');       
         this.createBounds();
         //this.createBall();
         //this.launchBall();
+
+        // Obstáculos
+        this.obstacles = this.physics.add.staticGroup(
+        this.top, this.bottom, this.left, this.right,
+        this.block1, this.block2,
+        this.centro1, this.centro2, this.centro3,
+        this.palo1, this.palo2
+        );
+    
 
         //this.physics.add.overlap(this.ball, this.leftGoal, this.scoreRightGoal, null, this);
         //this.physics.add.overlap(this.ball, this.rightGoal, this.scoreLeftGoal, null, this);

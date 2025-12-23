@@ -13,8 +13,12 @@ export class PowerUp {
             this.sprite = this.scene.physics.add.sprite(x, y, 'Bubble');//cambiar cuando se tengan
         if (type==='Shield')
             this.sprite = this.scene.physics.add.sprite(x, y, 'BaseBlue');//cambiar cuando se tengan
+        if (type === 'NoShoot')
+            this.sprite = this.scene.physics.add.sprite(x, y, 'Bubble');
         this.sprite.setDepth(1);
         this.createCollistions();
+        this.scene.powerUpsGroup.add(this.sprite);
+
     }
 
 
@@ -38,19 +42,36 @@ export class PowerUp {
                     tank.invulnerable = false;
                 }, [], this);
                 break;  
+            case 'NoShoot':
+                tank.applyNoShoot(5000); // 5 segundos sin disparar
+                break;
         }
 
     }
 
+    createCollistions() {
+    this.scene.players.forEach(tankCollector => {
+        this.scene.physics.add.collider(this.sprite, tankCollector.sprite, () => {
 
-    createCollistions(){
-        this.scene.players.forEach(tank => {
-            this.scene.physics.add.collider(this.sprite, tank.sprite, () => {
-                this.aplyPowerUp(tank, this.type);//se podria pasar el otro tanque para cosas negativas
-                this.sprite.destroy();
-                this.generator.maxPowerUps-=1;
+            // Buscar rival
+            let enemyTank = null;
+            this.scene.players.forEach(t => {
+                if (t !== tankCollector) enemyTank = t;
             });
+
+            // Solo negativos al rival
+            const negativeTypes = new Set(['NoShoot']);
+            const targetTank = negativeTypes.has(this.type)
+                ? (enemyTank ?? tankCollector)
+                : tankCollector;
+
+            this.aplyPowerUp(targetTank, this.type);
+
+            this.sprite.destroy();
+            this.generator.maxPowerUps -= 1;
         });
-    }
+    });
+}
+
 } 
    

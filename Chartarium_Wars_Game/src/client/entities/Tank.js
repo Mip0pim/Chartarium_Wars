@@ -13,6 +13,8 @@ export class Tank {
         this.target=null;//donde apunta
         this.vidas = 5;
         this.invulnerable = false;
+        this.canShoot = true;
+        this.noShootUntil = 0;
         if(this.color==="Red"){
             this.sprite = this.scene.physics.add.sprite(x, y, 'BaseRed');
             this.sprite.setSize(40,35);
@@ -71,6 +73,18 @@ makeInvulnerable() {
                 this.turret.setalpha(1);
                 this.invulnerable = false;
             }
+        }
+    });
+}
+
+applyNoShoot(ms) {
+    const now = this.scene.time.now;
+    this.noShootUntil = Math.max(this.noShootUntil, now + ms);
+    this.canShoot = false;
+
+    this.scene.time.delayedCall(ms, () => {
+        if (this.scene.time.now >= this.noShootUntil) {
+            this.canShoot = true;
         }
     });
 }
