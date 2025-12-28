@@ -39,7 +39,7 @@ export class OptionsScene extends Phaser.Scene {
     this.sliderBar = this.add.rectangle(x, y, 200, 10, 0x888888);
 
     // Obtener volumen global actual (0 a 1)
-    const currentVolume = this.sound.volume;
+    const currentVolume = Phaser.Math.Clamp(this.sound.volume ?? 1, 0, 1);
 
     // Convertir volumen a posición del handle
     const minX = x - 100;
@@ -54,12 +54,22 @@ export class OptionsScene extends Phaser.Scene {
 
     // Evento de arrastre
     this.input.on('drag', (pointer, gameObject, dragX) => {
+        if (gameObject !== this.sliderHandle) return;
         gameObject.x = Phaser.Math.Clamp(dragX, minX, maxX);
+        this.sound.volume = (gameObject.x - minX) / (maxX - minX);
+    });
+    
+    // Botón Mute simple
+    const muteBtn = this.add.text(x, y + 40, 'Mute', {
+        fontSize: '24px',
+        color: '#ffffff',
+        backgroundColor: '#333333',
+        padding: { left: 20, right: 20, top: 10, bottom: 10 }
+    }).setOrigin(0.5)
+        .setInteractive({ useHandCursor: true });
 
-        const percent = (gameObject.x - minX) / (maxX - minX);
-
-        // Ajustar volumen
-        this.sound.volume = percent;
+    muteBtn.on('pointerdown', () => {
+        this.sound.mute = !this.sound.mute;
     });
     }
 }
