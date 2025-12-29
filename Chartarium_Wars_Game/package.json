@@ -21,7 +21,8 @@
   "description": "A tank game with Phaser3",
   "dependencies": {
     "express": "^5.1.0",
-    "phaser": "^3.90.0"
+    "phaser": "^3.90.0",
+    "ws":"8.18.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

@@ -52,10 +52,10 @@ export class OnlineScene extends Phaser.Scene {
                 const nombre = this.inputName.value.trim();
                 if (nombre.length > 0) {
                     console.log("Nombre ingresado:", nombre);
-                    //const user = this.userService.createUser({ name: nombre, avatar: 'Red', x: 0, y: 0, angle: 0, firing: false });
+                    //const user = this.userService.create({ name: nombre, avatar: 'Red', x: 0, y: 0, angle: 0, firing: false });
                     //console.log("Usuario creado:", user);
                     this.sound.play('sfx', { volume: 0.5 });
-                    //this.scene.start('SelectColor', { userId: user.id });
+                    this.scene.start('OnlineGameScene', { playerName: nombre , avatar: 'Red' });
                 } else {    
                     this.sound.play('sfx', { volume: 0.5 });
                     console.log("Por favor, ingresa un nombre válido o seleccione un avatar.");

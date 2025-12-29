@@ -12,6 +12,7 @@ preload() {
         this.load.image('BTNMenu', 'imagenes/MenuCW.png');
         this.load.image('BTNContinue', 'imagenes/ContinuarCW.png');
         this.load.audio('sfx', 'audio/menusfx.mp3');
+        this.scene.bringToTop('PauseScene');
     }
 
     create(data) {
