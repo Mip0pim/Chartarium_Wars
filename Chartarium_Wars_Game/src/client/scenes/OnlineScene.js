@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import { connectionManager } from '../services/ConnectionManager';
-
+import { connectionManager } from '../services/ConnectionManager'; 
+//import { userController } from '../../server/controllers/userController.js';
 export class OnlineScene extends Phaser.Scene {
     constructor() {
         super('OnlineScene');
@@ -13,10 +13,9 @@ export class OnlineScene extends Phaser.Scene {
     }
 
     create() {
-
+        const Matter = this.matter;//no se porque pero hay que poner esto
         // Fondo
         this.add.image(400, 310, 'Fondo');
-
         const onlineBtn = this.add.image(400, 90, "BTNOnline")
             .setOrigin(0.5)
             .setScale(0.33);
@@ -53,8 +52,13 @@ export class OnlineScene extends Phaser.Scene {
                 const nombre = this.inputName.value.trim();
                 if (nombre.length > 0) {
                     console.log("Nombre ingresado:", nombre);
-                    // iniciar conexión o cambiar de escena
-                    //this.scene.start('CreditScene');
+                    //const user = this.userService.createUser({ name: nombre, avatar: 'Red', x: 0, y: 0, angle: 0, firing: false });
+                    //console.log("Usuario creado:", user);
+                    this.sound.play('sfx', { volume: 0.5 });
+                    //this.scene.start('SelectColor', { userId: user.id });
+                } else {    
+                    this.sound.play('sfx', { volume: 0.5 });
+                    console.log("Por favor, ingresa un nombre válido o seleccione un avatar.");
                 }
                 
         });

@@ -11,23 +11,25 @@ export function createUserService() {
 
   /**
    * Crea un nuevo usuario
-   * @param {Object} userData - {email, name, avatar, level}
+   * @param {Object} userData - { name, avatar, x, y, angle, firing}
    * @returns {Object} Usuario creado
    */
   function createUser(userData) {
-    // 1. Validar que el email no exista ya
-    const existingUser = users.find(u => u.email === userData.email);
+    // 1. Validar que el nombre no exista ya
+    const existingUser = users.find(u => u.name === userData.name);
     if (existingUser) {
-      throw new Error('El email ya está registrado');
+      throw new Error('Ocurrio un error al crear el usuario, nombre ya existe');
     }
 
     // 2. Crear objeto usuario con id único y createdAt
     const newUser = {
       id: String(nextId),
-      email: userData.email,
       name: userData.name,
-      avatar: userData.avatar || '',
-      level: userData.level || 1,
+      avatar: userData.avatar,
+      x: userData.x || 0,
+      y: userData.y || 0,
+      angle: userData.angle || 0,
+      firing: userData.firing || false,
       createdAt: new Date().toISOString()
     };
 
@@ -46,9 +48,8 @@ export function createUserService() {
    * @returns {Array} Array de usuarios
    */
   function getAllUsers() {
-    // TODO: Implementar
-    // Retornar una copia del array de usuarios
-    throw new Error('getAllUsers() no implementado');
+    // Retornar una copia del array para evitar mutaciones externas
+    return [...users];
   }
 
   /**
@@ -62,15 +63,13 @@ export function createUserService() {
   }
 
   /**
-   * Busca un usuario por email
-   * @param {string} email - Email del usuario
+   * Busca un usuario por nombre
+   * @param {string} name - Nombre del usuario
    * @returns {Object|null} Usuario encontrado o null
    */
-  function getUserByEmail(email) {
-    // TODO: Implementar
-    // Buscar y retornar el usuario por email, o null si no existe
-    // IMPORTANTE: Esta función será usada por el chat para verificar emails
-    throw new Error('getUserByEmail() no implementado');
+  function getUserByName(name) {
+    const user = users.find(u => u.name === name);
+    return user || null;
   }
 
   /**
@@ -80,13 +79,19 @@ export function createUserService() {
    * @returns {Object|null} Usuario actualizado o null si no existe
    */
   function updateUser(id, updates) {
-    // TODO: Implementar
-    // 1. Buscar el usuario por id
-    // 2. Si no existe, retornar null
-    // 3. Actualizar solo los campos permitidos (name, avatar, level)
-    // 4. NO permitir actualizar id, email, o createdAt
-    // 5. Retornar el usuario actualizado
-    throw new Error('updateUser() no implementado');
+    const user = users.find(u => u.id === id);
+    if (!user) return null;
+
+    // Campos permitidos
+    const allowedFields = ['x', 'y', 'angle', 'firing'];
+
+    for (const key of Object.keys(updates)) {
+      if (allowedFields.includes(key)) {
+        user[key] = updates[key];
+      }
+    }
+
+    return user;
   }
 
   /**
@@ -95,11 +100,11 @@ export function createUserService() {
    * @returns {boolean} true si se eliminó, false si no existía
    */
   function deleteUser(id) {
-    // TODO: Implementar
-    // 1. Buscar el índice del usuario
-    // 2. Si existe, eliminarlo del array
-    // 3. Retornar true si se eliminó, false si no existía
-    throw new Error('deleteUser() no implementado');
+    const index = users.findIndex(u => u.id === id);
+    if (index === -1) return false;
+
+    users.splice(index, 1);
+    return true;
   }
 
   // Exponer la API pública del servicio
@@ -107,7 +112,7 @@ export function createUserService() {
     createUser,
     getAllUsers,
     getUserById,
-    getUserByEmail,
+    getUserByName,
     updateUser,
     deleteUser
   };
