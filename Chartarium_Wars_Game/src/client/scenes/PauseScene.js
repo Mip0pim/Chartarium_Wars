@@ -54,6 +54,7 @@ preload() {
         this.input.on('drag', (pointer, gameObject, dragX) => {
             if (gameObject !== sliderHandle) return;
             gameObject.x = Phaser.Math.Clamp(dragX, minX, maxX);
+            this.sound.mute = false; // Desmutear al mover el slider
             this.sound.volume = (gameObject.x - minX) / (maxX - minX);
         });         
         
