@@ -68,6 +68,7 @@ export class GameScene extends Phaser.Scene {
 
         // Obstáculos
         this.obstacles = this.physics.add.staticGroup(
+        // @ts-ignore
         this.top, this.bottom, this.left, this.right,
         this.block1, this.block2,
         this.centro1, this.centro2, this.centro3,
