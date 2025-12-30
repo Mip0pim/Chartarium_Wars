@@ -49,20 +49,16 @@ export class OnlineGameScene extends Phaser.Scene {
 
         this.localTank = null;
         this.remoteTank = null;
-
+        this.processor = new CommandProcessor();//para local
 
         this.players = new Map();
-        this.inputMappings = [];
-        this.ball = null;
-        this.powerUpGenerator = null;
-        this.isPaused = false;
-        this.escWasDown = false;
-        this.processor = new CommandProcessor();
+        //this.powerUpGenerator = null;
+        //this.processor = new CommandProcessor();
         this.isGameOver = false;
         // Colores que vienen de SelectColor
         //mirar si colores de ambos jugadores son iguales
-        this.colorPlayer1 = data?.avatar;
-        this.colorPlayer2 = "Blue"; // Por defecto el segundo jugador es azul
+        this.colorPlayer1 = data.playerRole === 'player1' ? data.avatar : 'Red';
+        this.colorPlayer2 = data.playerRole === 'player1' ? 'Red' : data.avatar;
     }
 
 
@@ -73,8 +69,7 @@ export class OnlineGameScene extends Phaser.Scene {
         //fondo
         this.add.image(400, 300, 'Fondo');       
         this.createBounds();
-        //this.createBall();
-        //this.launchBall();
+
 
         // Obstáculos
         this.obstacles = this.physics.add.staticGroup(
@@ -84,18 +79,17 @@ export class OnlineGameScene extends Phaser.Scene {
         this.centro1, this.centro2, this.centro3,
         this.palo1, this.palo2
         );
-    
 
-        //this.physics.add.overlap(this.ball, this.leftGoal, this.scoreRightGoal, null, this);
-        //this.physics.add.overlap(this.ball, this.rightGoal, this.scoreLeftGoal, null, this);
+        this.cursors = this.input.keyboard.createCursorKeys();
 
         this.setUpPlayers();
         this.createCollisions();
-        
+
+        this.setupWebSocketListeners();//ws
+
 
         this.vidasJugadores();
-        this.powerUpGenerator = new PowerUpGenerator(this, 10000); // Genera un power-up cada 10 segundos
-        this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        //this.powerUpGenerator = new PowerUpGenerator(this, 10000); // Genera un power-up cada 10 segundos
 
         this.connectionListener = (data) => {
             if(!data.connected && this.scene.isActive()){
@@ -146,7 +140,9 @@ export class OnlineGameScene extends Phaser.Scene {
         switch (data.type) {
             case 'tankUpdate':
                 // Update opponent's tank position
-                this.remoteTank.sprite.y = data.y;
+                let moveCommand2 = new MoveTankCommand(this.remoteTank, data.action);
+                this.processor.process(moveCommand2);
+                this.actualizarVidas(this.playerRole === 'player1' ? 'player2' : 'player1', data.lives);
                 break;
 
             case 'scoreUpdate':
@@ -158,18 +154,18 @@ export class OnlineGameScene extends Phaser.Scene {
                 //this.scoreRight.setText(data.player2Score.toString());
 
                 // Stop ball, server will relaunch it
-                this.ball.setVelocity(0, 0);
-                this.ball.setPosition(400, 300);
+                //this.ball.setVelocity(0, 0);
+                //this.ball.setPosition(400, 300);
                 break;
 
             case 'ballRelaunch':
                 // Server is relaunching the ball with new velocity
-                this.ball.setPosition(data.ball.x, data.ball.y);
-                this.ball.setVelocity(data.ball.vx, data.ball.vy);
+                //this.ball.setPosition(data.ball.x, data.ball.y);
+                //this.ball.setVelocity(data.ball.vx, data.ball.vy);
                 break;
 
             case 'gameOver':
-                //this.endGame(data.winner, data.player1Score, data.player2Score);
+                this.endGame(data.winner);
                 break;
 
             case 'playerDisconnected':
@@ -183,7 +179,6 @@ export class OnlineGameScene extends Phaser.Scene {
 
     handleDisconnection() {
         this.gameEnded = true;
-        this.ball.setVelocity(0, 0);
         this.localTank.sprite.setVelocity(0, 0);
         this.remoteTank.sprite.setVelocity(0, 0);
         this.physics.pause();
@@ -195,6 +190,7 @@ export class OnlineGameScene extends Phaser.Scene {
 
         this.createMenuButton();
     }
+
     createMenuButton() {
         const menuBtn = this.add.text(400, 400, 'Return to Main Menu', {
             fontSize: '32px',
@@ -244,132 +240,48 @@ export class OnlineGameScene extends Phaser.Scene {
             }
         }
         if (vidasRestantes <= 0) {
-            this.isGameOver = true; 
-            this.scene.start('GameOverScene',{
-                ganador: playerId==='player1' ? 'player2' : 'player1',
-                color: this.players.get(playerId==='player1' ? 'player2' : 'player1').color
+            //enviar que ha muerto
+            this.sendMessage({
+                type: 'gameOver',
+                winner: playerId === 'player1' ? 'player2' : 'player1'
             });
+            this.endGame(playerId === 'player1' ? 'player2' : 'player1');
         }
     }
 
     setUpPlayers() {
-        const tank1 = new Tank(this, 'player1', 90, 300,this.colorPlayer1);
-        const tank2 = new Tank(this, 'player2', 710, 300,this.colorPlayer2); 
 
-        tank1.SetTarget(tank2);
-        tank2.SetTarget(tank1);
-        
-        this.players.set('player1', tank1);
-        this.players.set('player2', tank2);
-
-        const InputConfig = [
-            {
-                playerId: 'player1',
-                upKey : 'W',
-                downKey : 'S',
-                rightKey : 'D',
-                leftKey : 'A'
-            },
-            {
-                playerId: 'player2',
-                upKey : 'UP',
-                downKey : 'DOWN',
-                rightKey : 'RIGHT',
-                leftKey : 'LEFT'
-            }
-        ]
-        this.inputMappings = InputConfig.map(config => {
-            return {
-                playerId : config.playerId,
-                upKeyObj : this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.upKey]),
-                downKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.downKey]),
-                rightKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.rightKey]),
-                leftKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.leftKey])
-            }
-        });
-    }
-
-    scoreLeftGoal() {
-        const player1 = this.players.get('player1');
-        player1.score -= 1;
-        //this.scoreLeft.setText(player1.score.toString());
-
-        if (player1.score >= 2) {
-            this.endGame('player1');
+        if (this.playerRole === 'player1') {
+            this.localTank = new Tank(this, 'player1', 90, 300, this.colorPlayer1);
+            this.remoteTank = new Tank(this, 'player2', 710, 300, this.colorPlayer2);
+            this.players.set('player1', this.localTank);
+            this.players.set('player2', this.remoteTank);
         } else {
-            this.resetBall();
+            this.localTank = new Tank(this, 'player2', 710, 300, this.colorPlayer2);
+            this.remoteTank = new Tank(this, 'player1', 90, 300, this.colorPlayer1);
+            this.players.set('player2', this.localTank);
+            this.players.set('player1', this.remoteTank);
         }
+
+        this.localTank.SetTarget(this.remoteTank);
+        this.remoteTank.SetTarget(this.localTank);
     }
 
-    scoreRightGoal() {
-        const player2 = this.players.get('player2');
-        player2.score += 1;
-        this.add.image(700 + 30 * (player2.score - 1), 100, 'Vida').setScale(0.5);
-        //this.rightScore.setText(player2.score.toString());
-
-        if (player2.score >= 2) {
-            this.endGame('player2');
-        } else {
-            this.resetBall();
-        }
-    }
 
     endGame(winnerId) {
-        this.ball.setVelocity(0, 0);
         this.players.forEach(tank => {
             tank.sprite.setVelocity(0, 0);
         });
         this.physics.pause();
 
-        const winnerText = winnerId === 'player1' ? 'Player 1 Wins!' : 'Player 2 Wins!';
-        this.add.text(400, 250, winnerText, {
-            fontSize: '64px',
-            color: '#00ff00'
-        }).setOrigin(0.5);
-
-        const menuBtn = this.add.text(400, 350, 'Return to Main Menu', {
-            fontSize: '32px',
-            color: '#ffffff',
-        }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerover', () => menuBtn.setColor('#cccccc'))
-        .on('pointerout', () => menuBtn.setColor('#ffffff'))
-        .on('pointerdown', () => {
-            this.scene.start('MenuScene');
-        });
+        this.isGameOver = true; 
+            this.scene.start('GameOverScene',{
+                ganador: winnerId==='player1' ? 'player2' : 'player1',
+                color: this.players.get(winnerId==='player1' ? 'player2' : 'player1').color
+            });
     }
 
-    resetBall() {
-        this.ball.setVelocity(0, 0);
-        this.ball.setPosition(400, 300);
-    
-        this.time.delayedCall(1000, () => {
-            this.launchBall();
-        });
-    }
 
-    launchBall() {
-        const angle = Phaser.Math.Between(-30, 30);
-        const speed = 300;
-        const direction = Math.random() < 0.5 ? 1 : -1;
-
-        this.ball.setVelocity(
-            Math.cos(Phaser.Math.DegToRad(angle)) * speed * direction,
-            Math.sin(Phaser.Math.DegToRad(angle)) * speed
-        )
-    }
-
-    createBall() {
-        const graphics = this.add.graphics();
-        graphics.fillStyle(0xffffff);
-        graphics.fillCircle(8, 8, 8);
-        graphics.generateTexture('ball', 16, 16);
-        graphics.destroy();
-
-        this.ball = this.physics.add.sprite(400, 300, 'ball');
-        this.ball.setCollideWorldBounds(true);
-        this.ball.setBounce(1);
-    }
 
     createBounds() {
 
@@ -428,49 +340,39 @@ export class OnlineGameScene extends Phaser.Scene {
         });
     }
 
-    setPauseState(isPaused) {
-        this.isPaused = isPaused;
-        if (isPaused) {
-            this.scene.launch('PauseScene', { originalScene: 'OnlineGameScene' });
-            this.scene.pause();
-        } 
-    }
-
-    resume() {
-        this.isPaused = false;
-    }
-
-    togglePause() {
-        const newPauseState = !this.isPaused;
-        this.processor.process(
-            new PauseGameCommand(this, newPauseState)
-        );
+    sendMessage(message) {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify(message));
+        }
     }
 
     update() {
         if (this.isGameOver) return;
         
-        if (this.escKey.isDown && !this.escWasDown) {
-            this.togglePause();
+        // Handle local tank input - both players use arrow keys
+        let direction = null;
+        if (this.cursors.up.isDown) {
+            direction = 'up';
+        } else if (this.cursors.down.isDown) {
+            direction = 'down';
+        } else if (this.cursors.left.isDown) {
+            direction = 'left';
+        } else if (this.cursors.right.isDown) {
+            direction = 'right';
+        }  else {
+            direction = 'stop';
         }
 
-        this.inputMappings.forEach(mapping => {
-            const tank = this.players.get(mapping.playerId);
-            let direction = null;
-            if (mapping.upKeyObj.isDown) {
-                direction = 'up';
-            } else if (mapping.downKeyObj.isDown) {
-                direction = 'down';
-            } else if (mapping.leftKeyObj.isDown) {
-                direction = 'left';
-            } else if (mapping.rightKeyObj.isDown) {
-                direction = 'right';
-            } else {
-                direction = 'stop';
-            }
-            let moveCommand = new MoveTankCommand(tank, direction);
-            this.processor.process(moveCommand);
+        let moveCommand = new MoveTankCommand(this.localTank, direction);
+        this.processor.process(moveCommand);
+        
+        // Send tank position to server
+        this.sendMessage({
+            type: 'tankMove',
+            action: direction,
+            lives: this.localTank.vidas
         });
+
     }
 
     onShutdown() {

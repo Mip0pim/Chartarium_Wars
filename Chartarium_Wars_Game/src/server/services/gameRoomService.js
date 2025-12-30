@@ -37,11 +37,11 @@ export function createGameRoomService() {
   }
 
   /**
-   * Handle paddle movement from a player
+   * Handle tank movement from a player
    * @param {WebSocket} ws - Player's WebSocket
-   * @param {number} y - Paddle Y position
+   * @param {string} action - Movement action {x, y, angle, firing}
    */
-  function handlePaddleMove(ws, x, y) {
+  function handleTankMove(ws, action, lives) {
     const roomId = ws.roomId;
     if (!roomId) return;
 
@@ -54,10 +54,31 @@ export function createGameRoomService() {
     if (opponent.readyState === 1) { // WebSocket.OPEN
       opponent.send(JSON.stringify({
         type: 'tankUpdate',
-        x,
-        y
+        action,
+        lives
       }));
     }
+  }
+
+  function handleGameOver(ws, winner) {
+    const roomId = ws.roomId;
+    if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (!room || !room.active) return;
+
+    // Notify both players about game over
+    const gameOverMsg = {
+      type: 'gameOver',
+      winner
+    };
+
+    room.player1.ws.send(JSON.stringify(gameOverMsg));
+    room.player2.ws.send(JSON.stringify(gameOverMsg));
+
+    // Clean up room
+    room.active = false;
+    rooms.delete(roomId);
   }
 
   /**
@@ -182,9 +203,10 @@ export function createGameRoomService() {
 
   return {
     createRoom,
-    handlePaddleMove,
+    handleTankMove,
     handleGoal,
     handleDisconnect,
-    getActiveRoomCount
+    getActiveRoomCount,
+    handleGameOver
   };
 }
