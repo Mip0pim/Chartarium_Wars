@@ -7,9 +7,25 @@ export class OnlineScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('Fondo', 'imagenes/Fondo.jpg');
-        this.load.audio('sfx', 'audio/menusfx.mp3');
+        this.load.image('BaseRed', 'imagenes/TanqueRojoCW.png');
+        this.load.image('TorretaRed', 'imagenes/CanonRojoCW.png');
+
+        this.load.image('BaseGreen', 'imagenes/TanqueVerdeCW.png');
+        this.load.image('TorretaGreen', 'imagenes/CanonVerdeCW.png');
+
+        this.load.image('BaseBlue', 'imagenes/TanqueAzulCW.png');
+        this.load.image('TorretaBlue', 'imagenes/CanonAzulCW.png');
+
+        this.load.image('BaseYellow', 'imagenes/TanqueAmarilloCW.png');
+        this.load.image('TorretaYellow', 'imagenes/CanonAmarilloCW.png');
+
         this.load.image('Play', 'imagenes/PLAYCW.png');
+        this.load.image('BTNMenu', 'imagenes/MenuCW.png');
+ 
+
+        this.load.image('Bubble', 'imagenes/BurbujaCW.png');
+        this.load.image('Elige', 'imagenes/EligeColorCW.png');
+        this.load.audio('sfx', 'audio/menusfx.mp3');
     }
 
     create() {
@@ -39,7 +55,7 @@ export class OnlineScene extends Phaser.Scene {
 
         // --------- LOGIN ---------
 
-        this.play = this.add.image(400, 450, 'Play')
+        this.play = this.add.image(400, 430, 'Play')
             .setOrigin(0.5)
             .setScale(0.3).setInteractive({ useHandCursor: true })
             .on('pointerover', () => {
@@ -52,10 +68,11 @@ export class OnlineScene extends Phaser.Scene {
                 const nombre = this.inputName.value.trim();
                 if (nombre.length > 0) {
                     console.log("Nombre ingresado:", nombre);
+                    console.log("Avatar seleccionado:", this.colorPlayer1);
                     //const user = this.userService.create({ name: nombre, avatar: 'Red', x: 0, y: 0, angle: 0, firing: false });
                     //console.log("Usuario creado:", user);
                     this.sound.play('sfx', { volume: 0.5 });
-                    this.scene.start('LobbyScene', { playerName: nombre , avatar: 'Red' });
+                    this.scene.start('LobbyScene', { playerName: nombre , avatar: this.colorPlayer1 });
                 } else {    
                     this.sound.play('sfx', { volume: 0.5 });
                     console.log("Por favor, ingresa un nombre válido o seleccione un avatar.");
@@ -95,6 +112,59 @@ export class OnlineScene extends Phaser.Scene {
         // Registrar eventos de apagado de escena
         this.events.on('shutdown', this.onShutdown, this);
         this.events.on('destroy', this.onShutdown, this);
+
+        //-------tanques para selección de avatar-------
+        this.p1Options = [];
+
+        const createTankOption = (x, y, colorKey, onClick) => {
+            // Rectángulo de selección (invisible al inicio)
+            
+
+            const base = this.add.image(0, 0, `Base${colorKey}`).setScale(1.2).setDepth(10);
+            const turret = this.add.image(0, 0, `Torreta${colorKey}`).setScale(1.2).setOrigin(0.2,0.5).setDepth(15);
+
+            const highlight = this.add.image(0, 0, "Bubble").setScale(1.6).setDepth(40);
+            highlight.setVisible(false);
+
+            const container = this.add.container(x, y, [base, turret,highlight]);
+            container.setSize(base.width * 1.2, base.height * 1.2);
+            container.setInteractive({ useHandCursor: true });
+
+            container.setData('colorKey', colorKey);
+            container.setData('selected', false);
+            container.setData('disabled', false);
+            container.setData('highlight', highlight);
+
+
+            container.on('pointerover', () => {
+                //localBtn.setTint(0x00ff88);   // aplica color
+                container.setScale(1.3);       // aumenta tamaño un 10%
+            })
+            container.on('pointerout', () => {
+                //localBtn.setTint(0x00ff00);   // vuelve al color original
+                container.setScale(1.0);         // vuelve al tamaño original
+            });
+            // Click para seleccionar
+            container.on('pointerup', () => {
+                if (container.getData('disabled')) return;
+                onClick(colorKey, container);
+                
+            });
+
+            return container;
+        };
+
+        const colors = ['Red', 'Blue', 'Green', 'Yellow'];
+        const p1X = 240;
+        const startY = 240;
+        const gapY = 100;
+        colors.forEach((color, i) => {
+            const opt = createTankOption(p1X+ i * gapY, startY , color, (key, option) => {
+                this.colorPlayer1 = key;
+                this.markSelected(this.p1Options, option);
+            });
+            this.p1Options.push(opt);
+        });
     }
 
     updateConnectionDisplay(data) {
@@ -112,6 +182,31 @@ export class OnlineScene extends Phaser.Scene {
             }
         } catch (error) {
             console.error('[OnlineScene] Error updating connection display:', error);
+        }
+    }
+
+    // Marca seleccionado
+    markSelected(optionArray, selectedOption) {
+        optionArray.forEach(o => {
+            o.setData('selected', false);
+            o.getData('highlight').setVisible(false);
+        });
+        selectedOption.setData('selected', true);
+        selectedOption.getData('highlight').setVisible(true);
+    }
+
+
+    setOptionDisabled(option, disabled) {
+        option.setData('disabled', disabled);
+
+        if (disabled) {
+            option.disableInteractive();
+            option.setAlpha(0.3);
+            option.setData('selected', false);
+            option.getData('highlight').setVisible(false);
+        } else {
+            option.setInteractive({ useHandCursor: true });
+            option.setAlpha(1);
         }
     }
 

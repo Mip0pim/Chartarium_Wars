@@ -243,9 +243,9 @@ export class OnlineGameScene extends Phaser.Scene {
             //enviar que ha muerto
             this.sendMessage({
                 type: 'gameOver',
-                winner: playerId === 'player1' ? 'player2' : 'player1'
+                winner: playerId
             });
-            this.endGame(playerId === 'player1' ? 'player2' : 'player1');
+            this.endGame(playerId);
         }
     }
 
