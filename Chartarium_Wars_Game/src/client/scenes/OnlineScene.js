@@ -54,7 +54,7 @@ export class OnlineScene extends Phaser.Scene {
             });
 
         // --------- LOGIN ---------
-
+        this.colorPlayer1 = null;
         this.play = this.add.image(400, 430, 'Play')
             .setOrigin(0.5)
             .setScale(0.3).setInteractive({ useHandCursor: true })
@@ -66,7 +66,7 @@ export class OnlineScene extends Phaser.Scene {
             })
             .on('pointerdown', () => {
                 const nombre = this.inputName.value.trim();
-                if (nombre.length > 0) {
+                if (nombre.length > 0 && this.colorPlayer1 !== null) {
                     console.log("Nombre ingresado:", nombre);
                     console.log("Avatar seleccionado:", this.colorPlayer1);
                     //const user = this.userService.create({ name: nombre, avatar: 'Red', x: 0, y: 0, angle: 0, firing: false });
