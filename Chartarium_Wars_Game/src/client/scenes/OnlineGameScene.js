@@ -57,8 +57,22 @@ export class OnlineGameScene extends Phaser.Scene {
         this.isGameOver = false;
         // Colores que vienen de SelectColor
         //mirar si colores de ambos jugadores son iguales
-        this.colorPlayer1 = data.playerRole === 'player1' ? data.avatar : 'Red';
-        this.colorPlayer2 = data.playerRole === 'player1' ? 'Red' : data.avatar;
+        this.colorPlayer1 = data.avatar1;
+        this.colorPlayer2 = data.avatar2;
+        this.name1 = data.name1;
+        this.name2 = data.name2;
+        //ajustar el color
+        if(this.colorPlayer2 === this.colorPlayer1){
+            //mismo color
+            const colors = ['Red', 'Blue', 'Green', 'Yellow'];
+            let disponibles = colors.filter(e => e !== this.colorPlayer1); 
+            let elegido = Phaser.Utils.Array.GetRandom(disponibles);
+            if(this.playerRole === 'player1'){
+                this.colorPlayer2 = elegido;
+            }else{
+                this.colorPlayer1 = elegido;
+            }
+        }
     }
 
 
@@ -158,10 +172,22 @@ export class OnlineGameScene extends Phaser.Scene {
                 //this.ball.setPosition(400, 300);
                 break;
 
-            case 'ballRelaunch':
-                // Server is relaunching the ball with new velocity
-                //this.ball.setPosition(data.ball.x, data.ball.y);
-                //this.ball.setVelocity(data.ball.vx, data.ball.vy);
+            case 'tankColor':
+                if(data.role !== this.playerRole){
+                    this.remoteTank.destroy();//destruye el tanque remoto actual
+                    if(data.color !== this.remoteTank.color){
+                        this.remoteTank = new Tank(this, data.role, data.role==='player1' ? 90: 710, 300, data.color);
+                    }else{
+                        //mismo color
+                        const colors = ['Red', 'Blue', 'Green', 'Yellow'];
+                        let disponibles = colors.filter(e => e !== data.color); 
+                        let elegido = Phaser.Utils.Array.GetRandom(disponibles);
+                        this.remoteTank = new Tank(this, data.role, data.role==='player1' ? 90: 710, 300, elegido);
+                    }
+                    this.players.set(data.role, this.remoteTank);
+                    this.remoteTank.SetTarget(this.localTank);
+                    this.createCollisions();
+                }
                 break;
 
             case 'gameOver':
@@ -265,6 +291,7 @@ export class OnlineGameScene extends Phaser.Scene {
 
         this.localTank.SetTarget(this.remoteTank);
         this.remoteTank.SetTarget(this.localTank);
+
     }
 
 

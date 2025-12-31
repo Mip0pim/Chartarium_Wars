@@ -125,7 +125,7 @@ wss.on('connection', (ws) => {
 
       switch (data.type) {
         case 'joinQueue':
-          matchmakingService.joinQueue(ws);
+          matchmakingService.joinQueue(ws, data.color, data.name);
           break;
 
         case 'leaveQueue':
@@ -138,6 +138,9 @@ wss.on('connection', (ws) => {
 
         case 'gameOver':
           gameRoomService.handleGameOver(ws, data.winner);
+          break;
+        case 'tankColor':
+          gameRoomService.handleTankColor(ws, data.color, data.role);
           break;
 
         default:

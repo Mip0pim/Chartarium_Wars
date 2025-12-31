@@ -81,6 +81,24 @@ export function createGameRoomService() {
     rooms.delete(roomId);
   }
 
+  function handleTankColor(ws, color, role) {
+    const roomId = ws.roomId;
+    if (!roomId) return;    
+
+    const room = rooms.get(roomId);
+    if (!room || !room.active) return;
+
+    // Relay to the other player
+    const opponent = room.player1.ws === ws ? room.player2.ws : room.player1.ws;
+
+    if (opponent.readyState === 1) { // WebSocket.OPEN
+      opponent.send(JSON.stringify({
+        type: 'tankColor',
+        color,
+        role
+      }));
+    }
+  }
   /**
    * Handle goal event from a player
    * @param {WebSocket} ws - Player's WebSocket
@@ -193,6 +211,8 @@ export function createGameRoomService() {
     rooms.delete(roomId);
   }
 
+  
+
   /**
    * Get number of active rooms
    * @returns {number} Number of active rooms
@@ -204,6 +224,7 @@ export function createGameRoomService() {
   return {
     createRoom,
     handleTankMove,
+    handleTankColor,
     handleGoal,
     handleDisconnect,
     getActiveRoomCount,

@@ -70,7 +70,7 @@ export default class LobbyScene extends Phaser.Scene {
         this.statusText.setText('Waiting for opponent...');
 
         // Join matchmaking queue
-        this.ws.send(JSON.stringify({ type: 'joinQueue' }));
+        this.ws.send(JSON.stringify({ type: 'joinQueue' , color: this.avatar, name: this.playerName  }) );
       };
 
       this.ws.onmessage = (event) => {
@@ -115,8 +115,10 @@ export default class LobbyScene extends Phaser.Scene {
           ws: this.ws,
           playerRole: data.role,
           roomId: data.roomId,
-          avatar: this.avatar, 
-          playerName: this.playerName
+          avatar1: data.colorp1, 
+          avatar2: data.colorp2,
+          name1: data.namep1,
+          name2: data.namep2
         });
         break;
 
