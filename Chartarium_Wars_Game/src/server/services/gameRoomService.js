@@ -33,9 +33,52 @@ export function createGameRoomService() {
     player1Ws.roomId = roomId;
     player2Ws.roomId = roomId;
 
+    //generador de power ups
+    createPowerUpGenerator(roomId);
     return roomId;
   }
+function createPowerUpGenerator(roomId){
+    // Lógica para crear y gestionar generadores de power-ups en la sala
+    const room = rooms.get(roomId);
+    if (!room) return;
+    room.maxPowerUps = 0;
+    room.powerUpInterval = setInterval(() => {
+        const powerUp = generarPowerUp();
 
+        // Enviar a los jugadores de la sala
+        if (room.maxPowerUps >= 3) return;
+        room.player1.ws.send(JSON.stringify({ type: "spawnPowerUp", data: powerUp }));
+        room.player2.ws.send(JSON.stringify({ type: "spawnPowerUp", data: powerUp }));
+        room.maxPowerUps += 1;
+
+    }, 10000); // cada 10 segundos
+}
+
+function generarPowerUp(){
+    const tipos = ['Heal', 'Speed', 'Shield', 'NoShoot'];
+    const posicionesX = [100,700,700,100,400];
+    const posicionesY = [150,500,150,500,300];
+
+    const tipo = tipos[Math.floor(Math.random() * tipos.length)];
+    const indicePos = Math.floor(Math.random() * posicionesX.length);
+    const x = posicionesX[indicePos];
+    const y = posicionesY[indicePos];
+
+    return { tipo, x, y };
+}
+
+function handleCollectPowerUp(ws){
+    const roomId = ws.roomId;
+    if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (!room || !room.active) return;
+
+    // Decrementar el contador de power-ups en la sala
+    room.maxPowerUps -= 1;
+    console.log('Power-up collected in room:', roomId);
+
+}
   /**
    * Handle tank movement from a player
    * @param {WebSocket} ws - Player's WebSocket
@@ -78,6 +121,7 @@ export function createGameRoomService() {
 
     // Clean up room
     room.active = false;
+    clearInterval(room.powerUpInterval);
     rooms.delete(roomId);
   }
 
@@ -208,6 +252,7 @@ export function createGameRoomService() {
 
     // Clean up room
     room.active = false;
+    clearInterval(room.powerUpInterval);
     rooms.delete(roomId);
   }
 
@@ -226,6 +271,7 @@ export function createGameRoomService() {
     handleTankMove,
     handleTankColor,
     handleGoal,
+    handleCollectPowerUp,
     handleDisconnect,
     getActiveRoomCount,
     handleGameOver

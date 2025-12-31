@@ -23,6 +23,7 @@ export class PowerUp {
 
 
     aplyPowerUp(tank, type){
+        this.scene.usePowerUps = true;
         switch(type){
             case 'Heal':
                 if (tank.vidas<5){

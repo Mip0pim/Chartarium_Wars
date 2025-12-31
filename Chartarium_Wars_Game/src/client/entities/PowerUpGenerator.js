@@ -3,14 +3,16 @@ import { PowerUp } from './PowerUp.js';
 import Phaser from 'phaser';
 
 export class PowerUpGenerator {
-    constructor(scene,interval) {
+    constructor(scene,interval, online) {
         this.scene = scene;
-        this.interval=interval; 
+        this.interval=interval;
+        this.online = online; 
         this.types = ['Heal', 'Speed', 'Shield', 'NoShoot'];
         this.positionsX = [100,700,700,100,400];
         this.positionsY = [150,500,150,500,300];
         this.maxPowerUps = 0;
-        this.startGenerating();
+        if (!this.online)
+            this.startGenerating();
     }
 
     startGenerating() {

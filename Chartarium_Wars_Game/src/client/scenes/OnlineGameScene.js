@@ -3,8 +3,8 @@ import { Tank } from '../entities/Tank';
 import { PowerUpGenerator } from '../entities/PowerUpGenerator.js';
 import { CommandProcessor } from '../commands/CommandProcessor';
 import { MoveTankCommand } from '../commands/MoveTankCommand';
-import { PauseGameCommand } from '../commands/PuaseGameCommand';
 import { connectionManager } from '../services/ConnectionManager';
+import { PowerUp } from '../entities/PowerUp.js';
 
 export class OnlineGameScene extends Phaser.Scene {
 
@@ -73,6 +73,7 @@ export class OnlineGameScene extends Phaser.Scene {
                 this.colorPlayer1 = elegido;
             }
         }
+        this.usePowerUps = false;
     }
 
 
@@ -114,7 +115,7 @@ export class OnlineGameScene extends Phaser.Scene {
         connectionManager.addListener(this.connectionListener);
         this.events.on('shutdown', this.onShutdown, this);
         this.events.on('destroy', this.onShutdown, this);
-
+        this.poweUpGenerator = new PowerUpGenerator(this, 10000, true);
     }
     
     onConnectionLost(){//api
@@ -159,17 +160,12 @@ export class OnlineGameScene extends Phaser.Scene {
                 this.actualizarVidas(this.playerRole === 'player1' ? 'player2' : 'player1', data.lives);
                 break;
 
-            case 'scoreUpdate':
-                // Update scores from server
-                this.localScore = this.playerRole === 'player1' ? data.player1Score : data.player2Score;
-                this.remoteScore = this.playerRole === 'player1' ? data.player2Score : data.player1Score;
-
-                //this.scoreLeft.setText(data.player1Score.toString());
-                //this.scoreRight.setText(data.player2Score.toString());
-
-                // Stop ball, server will relaunch it
-                //this.ball.setVelocity(0, 0);
-                //this.ball.setPosition(400, 300);
+            case 'spawnPowerUp':
+                const powerUp = data.data;
+                new PowerUp(this, powerUp.x, powerUp.y, powerUp.tipo, this.poweUpGenerator);
+                break;
+            case 'collectPowerUp':
+                console.log('Power-up collected');
                 break;
 
             case 'tankColor':
@@ -297,7 +293,11 @@ export class OnlineGameScene extends Phaser.Scene {
 
     endGame(winnerId) {
         this.players.forEach(tank => {
-            tank.sprite.setVelocity(0, 0);
+            tank.sprite.setVelocityY(0);
+            tank.sprite.setVelocityX(0);
+            tank.turret.sprite.setVelocityY(0);
+            tank.turret.sprite.setVelocityX(0);
+            tank.turret.shoot(true);
         });
         this.physics.pause();
 
@@ -376,6 +376,15 @@ export class OnlineGameScene extends Phaser.Scene {
     update() {
         if (this.isGameOver) return;
         
+        if(this.usePowerUps){
+            this.sendMessage({
+              type: 'collectPowerUp'
+            });
+
+            this.usePowerUps = false;
+        }
+
+
         // Handle local tank input - both players use arrow keys
         let direction = null;
         if (this.cursors.up.isDown) {

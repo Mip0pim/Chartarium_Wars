@@ -142,7 +142,10 @@ wss.on('connection', (ws) => {
         case 'tankColor':
           gameRoomService.handleTankColor(ws, data.color, data.role);
           break;
-
+        case 'collectPowerUp':
+          console.log('Power-up collected message received from client');
+          gameRoomService.handleCollectPowerUp(ws);
+          break;
         default:
           console.log('Mensaje desconocido:', data.type);
       }

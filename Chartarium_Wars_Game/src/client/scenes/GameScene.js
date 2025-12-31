@@ -84,7 +84,7 @@ export class GameScene extends Phaser.Scene {
         
 
         this.vidasJugadores();
-        this.powerUpGenerator = new PowerUpGenerator(this, 10000); // Genera un power-up cada 10 segundos
+        this.powerUpGenerator = new PowerUpGenerator(this, 10000, false); // Genera un power-up cada 10 segundos
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
     
