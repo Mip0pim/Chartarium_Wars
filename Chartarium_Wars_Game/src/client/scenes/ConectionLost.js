@@ -6,11 +6,15 @@ import { connectionManager } from '../services/ConnectionManager';
  * Pausa el resto de escenas y comprueba continuamente hasta que se restablezca
  */
 export class ConnectionLostScene extends Phaser.Scene {
+
     constructor() {
         super('ConnectionLostScene');
         this.reconnectCheckInterval = null;
     }
-
+    preload() {
+         this.load.image('ConexionPerdida', 'imagenes/ConexionPerdidaCW.png');
+         this.load.image('Fondo', 'imagenes/Fondo.jpg');
+    }
     init(data) {
         // Guardar la escena que estaba activa cuando se perdió la conexión
         this.previousScene = data.previousScene;
@@ -18,26 +22,22 @@ export class ConnectionLostScene extends Phaser.Scene {
 
     create() {
         // Fondo semi-transparente
-        this.add.rectangle(400, 300, 800, 600, 0x000000, 0.8);
+        this.add.image(400, 300, 'Fondo');
 
         // Título
-        this.add.text(400, 200, 'CONEXIÓN PERDIDA', {
-            fontSize: '48px',
-            color: '#ff0000',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
+        this.add.image(400, 100, "ConexionPerdida").setScale(0.4).setOrigin(0.5);
 
         // Mensaje
         this.statusText = this.add.text(400, 300, 'Intentando reconectar...', {
             fontSize: '24px',
-            color: '#ffff00'
+            color: '#ff0000'
         }).setOrigin(0.5);
 
         // Contador de intentos
         this.attemptCount = 0;
         this.attemptText = this.add.text(400, 350, 'Intentos: 0', {
             fontSize: '18px',
-            color: '#ffffff'
+            color: '#000000'
         }).setOrigin(0.5);
 
         // Indicador parpadeante

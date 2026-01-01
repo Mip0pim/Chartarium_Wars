@@ -26,6 +26,9 @@ export class OnlineScene extends Phaser.Scene {
         this.load.image('Bubble', 'imagenes/BurbujaCW.png');
         this.load.image('Elige', 'imagenes/EligeColorCW.png');
         this.load.audio('sfx', 'audio/menusfx.mp3');
+
+        this.load.image('Escudo', 'imagenes/EscudoCW.png');
+        this.load.image('NoFuegoAmigo', 'imagenes/NoFuegoAmigoCW.png');
     }
 
     create() {

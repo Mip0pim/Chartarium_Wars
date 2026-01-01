@@ -8,13 +8,13 @@ export class PowerUp {
         this.y = y;
         this.type = type; 
         if (type==='Heal')
-            this.sprite = this.scene.physics.add.sprite(x, y, 'Vida').setScale(0.05);//cambiar cuando se tengan
+            this.sprite = this.scene.physics.add.sprite(x, y, 'Vida').setScale(0.05);
         if (type==='Speed')
             this.sprite = this.scene.physics.add.sprite(x, y, 'Bubble');//cambiar cuando se tengan
         if (type==='Shield')
-            this.sprite = this.scene.physics.add.sprite(x, y, 'BaseBlue');//cambiar cuando se tengan
+            this.sprite = this.scene.physics.add.sprite(x, y, 'Escudo').setScale(1.1);
         if (type === 'NoShoot')
-            this.sprite = this.scene.physics.add.sprite(x, y, 'Bubble');
+            this.sprite = this.scene.physics.add.sprite(x, y, 'NoFuegoAmigo').setScale(1.1);
         this.sprite.setDepth(1);
         this.createCollistions();
         this.scene.powerUpsGroup.add(this.sprite);

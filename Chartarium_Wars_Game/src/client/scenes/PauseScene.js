@@ -19,7 +19,7 @@ preload() {
         //fondo
         this.add.image(400, 300, 'Fondo');
 
-        this.add.image(400,200,'BTNPause').setOrigin(0.5).setScale(0.6);
+        this.add.image(400,100,'BTNPause').setOrigin(0.5).setScale(0.8);
         
         const resumeBtn = this.add.image(400,310,'BTNContinue').setOrigin(0.5).setScale(0.25)
         .setInteractive({useHandCursor: true})

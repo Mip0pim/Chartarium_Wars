@@ -205,23 +205,18 @@ export class OnlineGameScene extends Phaser.Scene {
         this.remoteTank.sprite.setVelocity(0, 0);
         this.physics.pause();
 
-        this.add.text(400, 250, 'Opponent Disconnected', {
-            fontSize: '48px',
-            color: '#ff0000'
-        }).setOrigin(0.5);
+        this.add.image(400, 130, "ConexionPerdida").setScale(0.4).setOrigin(0.5);
 
         this.createMenuButton();
     }
 
     createMenuButton() {
-        const menuBtn = this.add.text(400, 400, 'Return to Main Menu', {
-            fontSize: '32px',
-            color: '#ffffff',
-        }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerover', () => menuBtn.setColor('#cccccc'))
-        .on('pointerout', () => menuBtn.setColor('#ffffff'))
+        const menuBtn = this.add.image(400, 400, "BTNMenu").setOrigin(0.5).setScale(0.4)
+        .setInteractive({useHandCursor: true})
+        .on('pointerover', () => menuBtn.setScale(0.43))
+        .on('pointerout', () => menuBtn.setScale(0.4))
         .on('pointerdown', () => {
+             this.sound.play('sfx', { volume: 0.5 });
             if (this.ws && this.ws.readyState === WebSocket.OPEN) {
                 this.ws.close();
             }

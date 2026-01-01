@@ -10,6 +10,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('Logo', 'imagenes/Logo.png');
 
+        this.load.image('ConexionPerdida', 'imagenes/ConexionPerdidaCW.png');
         this.load.image('BTNPlayer', 'imagenes/LocalBtnCW.png');
         this.load.image('BTNCredit', 'imagenes/CreditosCW.png');
         this.load.image('BTNOnline', 'imagenes/OnlineBtnCW.png');   
@@ -17,6 +18,9 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('BTNTutorial', 'imagenes/TutorialCW.png');
         this.load.audio('musica', 'audio/musica.mp3');
         this.load.audio('sfx', 'audio/menusfx.mp3');   
+        
+        this.load.image('Escudo', 'imagenes/EscudoCW.png');
+        this.load.image('NoFuegoAmigo', 'imagenes/NoFuegoAmigoCW.png');
     }
 
 

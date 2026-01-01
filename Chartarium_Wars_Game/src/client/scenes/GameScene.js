@@ -14,6 +14,8 @@ export class GameScene extends Phaser.Scene {
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('Vida', 'imagenes/VidaCW.png');
         this.load.image('Bubble', 'imagenes/BurbujaCW.png');
+        this.load.image('Escudo', 'imagenes/EscudoCW.png');
+        this.load.image('NoFuegoAmigo', 'imagenes/NoFuegoAmigoCW.png');
         this.load.image('MedioMapa', 'imagenes/MedioObstaculoCW.png');
         this.load.image('Palo', 'imagenes/PaloObstaculoCW.png');
         this.load.image('BloqueSimple', 'imagenes/TileMuro.png');
