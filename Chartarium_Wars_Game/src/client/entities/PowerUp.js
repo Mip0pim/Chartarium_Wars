@@ -10,7 +10,7 @@ export class PowerUp {
         if (type==='Heal')
             this.sprite = this.scene.physics.add.sprite(x, y, 'Vida').setScale(0.05);
         if (type==='Speed')
-            this.sprite = this.scene.physics.add.sprite(x, y, 'Bubble');//cambiar cuando se tengan
+            this.sprite = this.scene.physics.add.sprite(x, y, 'Velocidad').setScale(1.1);
         if (type==='Shield')
             this.sprite = this.scene.physics.add.sprite(x, y, 'Escudo').setScale(1.1);
         if (type === 'NoShoot')
