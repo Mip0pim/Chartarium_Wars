@@ -13,7 +13,7 @@ export function createUserController(userService) {
   async function create(req, res, next) {
     try {
       // 1. Extraer datos del body: email, name, avatar, level
-      const { name, avatar, x, y, angle, firing} = req.body;
+      const { name, avatar, wins } = req.body;
 
       // 2. Validar que los campos requeridos estén presentes (email, name)
       if (!avatar || !name) {
@@ -23,7 +23,7 @@ export function createUserController(userService) {
       }
 
       // 3. Llamar a userService.createUser()
-      const newUser = userService.createUser({ name, avatar, x, y, angle, firing });
+      const newUser = userService.createUser({ name, avatar, wins });
 
       // 4. Retornar 201 con el usuario creado
       res.status(201).json(newUser);
@@ -75,6 +75,27 @@ export function createUserController(userService) {
       next(error);
     }
   }
+
+  async function getByName(req, res, next) {
+    try {
+        const { name } = req.query;
+
+        if (!name) {
+            return res.status(400).json({ error: "Falta el parámetro name" });
+        }
+
+        const user = userService.getUserByName(name);
+
+        if (!user) {
+            return res.status(200).json(null); // usuario no encontrado
+        }
+
+        return res.status(200).json(user); // devolver array con 1 usuario
+    } catch (error) {
+        next(error);
+    }
+}
+
 
   /**
    * PUT /api/users/:id - Actualizar un usuario
@@ -129,6 +150,7 @@ export function createUserController(userService) {
     create,
     getAll,
     getById,
+    getByName,
     update,
     remove
   };

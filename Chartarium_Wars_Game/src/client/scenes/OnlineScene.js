@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { connectionManager } from '../services/ConnectionManager'; 
+import { createUserController } from '../../server/controllers/userController';
+import { createUserService } from '../../server/services/userService';
 //import { userController } from '../../server/controllers/userController.js';
 export class OnlineScene extends Phaser.Scene {
     constructor() {
@@ -35,6 +37,9 @@ export class OnlineScene extends Phaser.Scene {
     create() {
         const Matter = this.matter;//no se porque pero hay que poner esto
         // Fondo
+        const userService = createUserService();
+        const userController = createUserController(userService);
+
         this.add.image(400, 310, 'Fondo');
         const onlineBtn = this.add.image(400, 90, "BTNOnline")
             .setOrigin(0.5)
@@ -68,20 +73,8 @@ export class OnlineScene extends Phaser.Scene {
             .on('pointerout', () => {
                 this.play.setScale(0.3);         // vuelve al tamaño original
             })
-            .on('pointerdown', () => {
-                const nombre = this.inputName.value.trim();
-                if (nombre.length > 0 && this.colorPlayer1 !== null) {
-                    console.log("Nombre ingresado:", nombre);
-                    console.log("Avatar seleccionado:", this.colorPlayer1);
-                    //const user = this.userService.create({ name: nombre, avatar: 'Red', x: 0, y: 0, angle: 0, firing: false });
-                    //console.log("Usuario creado:", user);
-                    this.sound.play('sfx', { volume: 0.5 });
-                    this.scene.start('LobbyScene', { playerName: nombre , avatar: this.colorPlayer1 });
-                } else {    
-                    this.sound.play('sfx', { volume: 0.5 });
-                    console.log("Por favor, ingresa un nombre válido o seleccione un avatar.");
-                }
-                
+            .on('pointerdown', () => { 
+                this.handleLogin();
         });
 
         // Crear input HTML y guardarlo en this.inputName
@@ -171,6 +164,66 @@ export class OnlineScene extends Phaser.Scene {
         });
     }
 
+    async handleLogin() {
+        const nombre = this.inputName.value.trim();
+        console.log("Nombre ingresado:", nombre);
+        console.log("Avatar seleccionado:", this.colorPlayer1);
+
+        if (nombre.length === 0) {
+            this.sound.play('sfx', { volume: 0.5 });
+            console.log("Por favor, ingresa un nombre válido.");
+            return;
+        }
+
+        let user = await this.getPlayerByName(nombre);
+
+        // Si devuelve [] → no existe
+        if (Array.isArray(user) && user.length === 0) {
+            user = null;
+        } else if (Array.isArray(user)) {
+            user = user[0]; // tomar el usuario real
+        }
+
+
+        if (user) {
+            // Usuario existente
+            if (this.colorPlayer1 !== null) {
+                console.log("Actualizando avatar del usuario existente.");
+                user = await this.updatePlayer(user.id, {
+                    avatar: this.colorPlayer1
+                });
+            } else {
+                console.log("Usando avatar existente del usuario.");
+                this.colorPlayer1 = user.avatar;
+            }
+
+        } else {
+            // Usuario nuevo
+            if (this.colorPlayer1 === null) {
+                console.log("Por favor, selecciona un avatar.");
+                return;
+            }
+
+            console.log("Creando usuario nuevo...");
+            user = await this.createPlayer({
+                name: nombre,
+                avatar: this.colorPlayer1,
+                wins: 0
+            });
+
+            console.log("Usuario creado:", user);
+
+            // ❗ IMPORTANTE: NO actualizar aquí
+        }
+
+        this.sound.play('sfx', { volume: 0.5 });
+        this.scene.start('LobbyScene', { 
+            playerName: user.name, 
+            avatar: user.avatar 
+        });
+}
+
+
     updateConnectionDisplay(data) {
         if (!this.connectionText2 || !this.scene || !this.scene.isActive('OnlineScene')) {
             return;
@@ -214,6 +267,52 @@ export class OnlineScene extends Phaser.Scene {
         }
     }
 
+    //--------------------api-------------------
+    async getPlayerByName(nombre) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/users?name=${nombre}`);
+
+            if (!response.ok) {
+                throw new Error('HTTP error ' + response.status);
+            }
+
+            const data = await response.json();
+            if (Array.isArray(data) && data.length > 0) { 
+                return data.find(u => u.name === nombre) || null; 
+            }
+            return null;
+
+        } catch (error) {
+            console.error('Error:', error);
+            return null;
+        }
+    }
+
+    async createPlayer(data) {
+        const response = await fetch('http://localhost:3000/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        return await response.json();
+    }
+
+    async updatePlayer(id, updates) {
+        const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updates)
+        });
+
+        return await response.json();
+    }
+
+    //
     onShutdown() {
 
         // Quitar listener del servidor

@@ -8,16 +8,16 @@ export function createUserService() {
   // Estado privado: almacén de usuarios
   let users = [];
   let nextId = 1;
-
   /**
    * Crea un nuevo usuario
-   * @param {Object} userData - { name, avatar, x, y, angle, firing}
+   * @param {Object} userData - { name, avatar, wins }
    * @returns {Object} Usuario creado
    */
   function createUser(userData) {
     // 1. Validar que el nombre no exista ya
     const existingUser = users.find(u => u.name === userData.name);
     if (existingUser) {
+      console.log("Error: El nombre de usuario ya existe:", userData.name);
       throw new Error('Ocurrio un error al crear el usuario, nombre ya existe');
     }
 
@@ -26,10 +26,7 @@ export function createUserService() {
       id: String(nextId),
       name: userData.name,
       avatar: userData.avatar,
-      x: userData.x || 0,
-      y: userData.y || 0,
-      angle: userData.angle || 0,
-      firing: userData.firing || false,
+      wins: userData.wins || 0,
       createdAt: new Date().toISOString()
     };
 
@@ -68,7 +65,10 @@ export function createUserService() {
    * @returns {Object|null} Usuario encontrado o null
    */
   function getUserByName(name) {
-    const user = users.find(u => u.name === name);
+    console.log("Buscando usuario:", name); 
+    console.log("Usuarios existentes:", users);
+    const users2= getAllUsers();
+    const user = users2.find(u => u.name === name);
     return user || null;
   }
 
@@ -83,7 +83,7 @@ export function createUserService() {
     if (!user) return null;
 
     // Campos permitidos
-    const allowedFields = ['x', 'y', 'angle', 'firing'];
+    const allowedFields = ['avatar', 'wins'];
 
     for (const key of Object.keys(updates)) {
       if (allowedFields.includes(key)) {
@@ -117,3 +117,4 @@ export function createUserService() {
     deleteUser
   };
 }
+
