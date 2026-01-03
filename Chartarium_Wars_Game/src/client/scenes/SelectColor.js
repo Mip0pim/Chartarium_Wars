@@ -35,17 +35,17 @@ export class SelectColor extends Phaser.Scene {
         // Fondo
         this.add.image(400, 300, 'Fondo');
         
-        this.add.image(400,50,'Elige').setOrigin(0.5).setScale(0.3);
+        this.add.image(400,50,'Elige').setOrigin(0.5).setScale(0.4);
 
         // Ahora empezamos SIN color elegido
         this.colorPlayer1 = null;
         this.colorPlayer2 = null;
 
         // --- Títulos ---
-        this.add.image(190, 120, 'P').setOrigin(0.5).setScale(0.3);
-        this.add.image(240, 122, '1').setOrigin(0.5).setScale(0.3);  
-        this.add.image(590, 120, 'P').setOrigin(0.5).setScale(0.3);
-        this.add.image(640, 120, '2').setOrigin(0.5).setScale(0.3);
+        this.add.image(190, 120, 'P').setOrigin(0.5).setScale(0.25);
+        this.add.image(240, 122, '1').setOrigin(0.5).setScale(0.25);  
+        this.add.image(590, 120, 'P').setOrigin(0.5).setScale(0.25);
+        this.add.image(640, 120, '2').setOrigin(0.5).setScale(0.25);
 
         this.p1Options = [];
         this.p2Options = [];
@@ -116,17 +116,17 @@ export class SelectColor extends Phaser.Scene {
         });
 
         // Botón Play
-        const playBtn = this.add.image(400, 300, "Play")
+        const playBtn = this.add.image(400, 320, "Play")
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
-                playBtn.setScale(0.25)
+                playBtn.setScale(0.3)
             .on('pointerover', () => {
                 //localBtn.setTint(0x00ff88);   // aplica color
-                playBtn.setScale(0.28);       // aumenta tamaño un 10%
+                playBtn.setScale(0.33);       // aumenta tamaño un 10%
             })
             .on('pointerout', () => {
                 //localBtn.setTint(0x00ff00);   // vuelve al color original
-                playBtn.setScale(0.25);         // vuelve al tamaño original
+                playBtn.setScale(0.3);         // vuelve al tamaño original
             });
         
         playBtn.on('pointerup', () => {
@@ -139,14 +139,16 @@ export class SelectColor extends Phaser.Scene {
         });
 
         // Botón volver
-        const menuBtn = this.add.image(400,550,'BTNMenu').setOrigin(0.5).setScale(0.3)
-        .setInteractive({useHandCursor: true})
-        .on('pointerover', () => menuBtn.setScale(0.33))
-        .on('pointerout', () => menuBtn.setScale(0.3))
-        .on('pointerdown', () => {
-            this.sound.play('sfx', { volume: 0.5 });
-            this.scene.start('MenuScene');
-        });
+        const menuBtn = this.add.image(400, 525, 'BTNMenu')
+            .setOrigin(0.5)
+            .setScale(0.3)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => menuBtn.setScale(0.35))
+            .on('pointerout', () => menuBtn.setScale(0.3))
+            .on('pointerdown', () => {
+                this.sound.play('sfx', { volume: 0.5 });
+                this.scene.start('MenuScene');
+            });
     }
 
     // Marca seleccionado

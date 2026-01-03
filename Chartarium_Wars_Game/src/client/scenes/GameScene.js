@@ -4,6 +4,7 @@ import { PowerUpGenerator } from '../entities/PowerUpGenerator.js';
 import { CommandProcessor } from '../commands/CommandProcessor';
 import { MoveTankCommand } from '../commands/MoveTankCommand';
 import { PauseGameCommand } from '../commands/PuaseGameCommand';
+import { connectionManager } from '../services/ConnectionManager';
 
 export class GameScene extends Phaser.Scene {
 
@@ -88,8 +89,27 @@ export class GameScene extends Phaser.Scene {
         this.vidasJugadores();
         this.powerUpGenerator = new PowerUpGenerator(this, 10000, false); // Genera un power-up cada 10 segundos
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        this.connectionListener = (data) => {
+            if(!data.connected && this.scene.isActive()){
+                this.onConnectionLost();
+            }
+        };
+                
+        connectionManager.addListener(this.connectionListener);
+        this.events.on('shutdown', this.onShutdown, this);
+        this.events.on('destroy', this.onShutdown, this);
+
+        this.removeKeys = this.input.keyboard.removeCapture(['ESC', 'W', 'A', 'S', 'D', 'UP', 'DOWN', 'LEFT', 'RIGHT']);
     }
     
+    onConnectionLost(){//api
+        
+        this.scene.launch('ConnectionLostScene', { previousScene: 'GameScene' });
+        this.scene.pause();
+        this.scene.bringToTop('ConnectionLostScene');
+    }
+
     vidasJugadores() {
         this.vidaPlayer1 = [];
         this.vidaPlayer2 = [];
@@ -349,5 +369,15 @@ export class GameScene extends Phaser.Scene {
             let moveCommand = new MoveTankCommand(tank, direction);
             this.processor.process(moveCommand);
         });
+    }
+
+    onShutdown() {
+
+        // Quitar listener del servidor
+        if (this.connectionListener) {
+            connectionManager.removeListener(this.connectionListener);
+            this.connectionListener = null;
+        }
+        this.removeKeys;
     }
 }

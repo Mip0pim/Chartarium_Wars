@@ -120,9 +120,9 @@ export class OnlineGameScene extends Phaser.Scene {
     
     onConnectionLost(){//api
         
-        this.scene.launch('ConnectionLostScene', { previousScene: 'OnlineGameScene' });
-        this.scene.pause();
-        this.scene.bringToTop('ConnectionLostScene');
+        //this.scene.launch('ConnectionLostScene', { previousScene: 'OnlineGameScene' });
+        //this.scene.pause();
+        //this.scene.bringToTop('ConnectionLostScene');
     }
 
 

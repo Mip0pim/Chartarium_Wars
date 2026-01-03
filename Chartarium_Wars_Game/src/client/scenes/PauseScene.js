@@ -19,32 +19,34 @@ preload() {
         //fondo
         this.add.image(400, 300, 'Fondo');
 
-        this.add.image(400,100,'BTNPause').setOrigin(0.5).setScale(0.8);
+        this.add.image(400,100,'BTNPause').setOrigin(0.5).setScale(0.7);
         
-        const resumeBtn = this.add.image(400,310,'BTNContinue').setOrigin(0.5).setScale(0.25)
+        const resumeBtn = this.add.image(400,270,'BTNContinue').setOrigin(0.5).setScale(0.2)
         .setInteractive({useHandCursor: true})
-        .on('pointerover', () => resumeBtn.setScale(0.28))
-        .on('pointerout', () => resumeBtn.setScale(0.25))
+        .on('pointerover', () => resumeBtn.setScale(0.24))
+        .on('pointerout', () => resumeBtn.setScale(0.2))
         .on('pointerdown', () => {
             this.sound.play('sfx', { volume: 0.5 });
             this.scene.stop();
             this.scene.resume(data.originalScene);
             this.scene.get(data.originalScene).resume();
         });
+    
+        const menuBtn = this.add.image(400, 525, 'BTNMenu')
+            .setOrigin(0.5)
+            .setScale(0.3)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => menuBtn.setScale(0.35))
+            .on('pointerout', () => menuBtn.setScale(0.3))
+            .on('pointerdown', () => {
+                this.sound.play('sfx', { volume: 0.5 });
+                this.scene.stop('GameScene');
+                this.scene.stop();
+                this.scene.start('MenuScene');
+            });
 
-        const menuBtn = this.add.image(400,400,'BTNMenu').setOrigin(0.5).setScale(0.4)
-        .setInteractive({useHandCursor: true})
-        .on('pointerover', () => menuBtn.setScale(0.43))
-        .on('pointerout', () => menuBtn.setScale(0.4))
-        .on('pointerdown', () => {
-            this.sound.play('sfx', { volume: 0.5 });
-            this.scene.stop('GameScene');
-            this.scene.stop();
-            this.scene.start('MenuScene');
-        });       
-        
         //Slider de volumen
-        const x = 400, y = 480;
+        const x = 400, y = 370;
         const minX = x - 100, maxX = x + 100;
         const currentVolume = Phaser.Math.Clamp(this.sound.volume ?? 1, 0, 1);
         const handleX = minX + (maxX - minX) * currentVolume;

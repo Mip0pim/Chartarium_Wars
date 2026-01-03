@@ -4,6 +4,7 @@ import { connectionManager } from '../services/ConnectionManager';
 export class OnlineScene extends Phaser.Scene {
     constructor() {
         super('OnlineScene');
+     
     }
 
     preload() {
@@ -58,7 +59,7 @@ export class OnlineScene extends Phaser.Scene {
 
         // --------- LOGIN ---------
         this.colorPlayer1 = null;
-        this.play = this.add.image(400, 430, 'Play')
+        this.play = this.add.image(400, 400, 'Play')
             .setOrigin(0.5)
             .setScale(0.3).setInteractive({ useHandCursor: true })
             .on('pointerover', () => {

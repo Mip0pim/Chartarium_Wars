@@ -14,29 +14,37 @@ export default class LobbyScene extends Phaser.Scene {
   create() {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
-
+    this.add.image(400, 310, 'Fondo');
     // Title
-    this.add.text(width / 2, 100, 'Online Multiplayer', {
-      fontSize: '48px',
-      color: '#ffffff'
-    }).setOrigin(0.5);
+    const onlineBtn = this.add.image(400, 90, "BTNOnline")
+            .setOrigin(0.5)
+            .setScale(0.33);
 
     // Status text
     this.statusText = this.add.text(width / 2, height / 2 - 50, 'Connecting to server...', {
       fontSize: '24px',
-      color: '#ffff00'
+      color: '#939342ff'
     }).setOrigin(0.5);
 
     // Player count text
     this.playerCountText = this.add.text(width / 2, height / 2 + 20, '', {
       fontSize: '20px',
-      color: '#00ff00'
+      color: '#4b954bff'
     }).setOrigin(0.5);
+
+    const base = this.add.image(400, 350, `Base${this.avatar}`).setScale(1.3).setDepth(10);
+    const turret = this.add.image(400, 350, `Torreta${this.avatar}`).setScale(1.3).setOrigin(0.2,0.5).setDepth(15);
+    const nameTank = this.add.text(400, 400, this.playerName, {
+      fontSize: '32px',
+      color: '#2b2b27ff',
+      backgroundColor: '#bbb7b7ff',
+    }).setOrigin(0.5);
+
 
     // Cancel button
     const cancelButton = this.add.text(width / 2, height - 100, 'Cancel', {
       fontSize: '24px',
-      color: '#ff6666',
+      color: '#9b4545ff',
       backgroundColor: '#333333',
       padding: { x: 20, y: 10 }
     }).setOrigin(0.5).setInteractive();
@@ -92,13 +100,13 @@ export default class LobbyScene extends Phaser.Scene {
         console.log('WebSocket connection closed');
         if (this.scene.isActive('LobbyScene')) {
           this.statusText.setText('Connection lost!');
-          this.statusText.setColor('#ff0000');
+          this.statusText.setColor('#8a4848ff');
         }
       };
     } catch (error) {
       console.error('Error connecting to server:', error);
       this.statusText.setText('Failed to connect!');
-      this.statusText.setColor('#ff0000');
+      this.statusText.setColor('#a94848ff');
     }
   }
 
