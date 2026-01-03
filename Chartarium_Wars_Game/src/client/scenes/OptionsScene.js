@@ -9,19 +9,18 @@ export class OptionsScene extends Phaser.Scene {
     preload() {//carga de archivos
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('BTNMenu', 'imagenes/MenuCW.png');
+        this.load.image('Opciones', 'imagenes/OpcionesCW.png');
+        this.load.image('Barra', 'imagenes/BarraMusicaCW.png');
+        this.load.image('Deslizador', 'imagenes/DeslizadorMusicaCW.png');
         this.load.audio('sfx', 'audio/menusfx.mp3');
     }
 
     create() {
         
         //fondo
-        this.add.image(400, 310, 'Fondo');
+        this.add.image(400, 300, 'Fondo');
         
-        this.add.text(400, 90, 'Opciones', {
-            fontSize: '75px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
+        this.add.image(400, 90, 'Opciones').setScale(0.5).setOrigin(0.5);
         
         const menuBtn = this.add.image(400,525,'BTNMenu').setOrigin(0.5).setScale(0.4)
         .setInteractive({useHandCursor: true})
@@ -36,18 +35,18 @@ export class OptionsScene extends Phaser.Scene {
     const y = 300;
 
     // Barra del slider
-    this.sliderBar = this.add.rectangle(x, y, 200, 10, 0x888888);
+    this.sliderBar = this.add.image(x, y, 'Barra').setDisplaySize(200,68).setOrigin(0.5);
 
     // Obtener volumen global actual (0 a 1)
     const currentVolume = Phaser.Math.Clamp(this.sound.volume ?? 1, 0, 1);
 
     // Convertir volumen a posición del handle
-    const minX = x - 100;
-    const maxX = x + 100;
+    const minX = x - 80;
+    const maxX = x + 80;
     const handleX = minX + (maxX - minX) * currentVolume;
 
     // Crear handle en la posición correcta
-    this.sliderHandle = this.add.circle(handleX, y, 12, 0xffffff)
+    this.sliderHandle = this.add.image(handleX, y, 'Deslizador').setScale(0.5).setOrigin(0.5)
         .setInteractive({ draggable: true });
 
     this.input.setDraggable(this.sliderHandle);

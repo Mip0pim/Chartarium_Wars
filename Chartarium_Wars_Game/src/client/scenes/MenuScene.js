@@ -16,6 +16,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('BTNOnline', 'imagenes/OnlineBtnCW.png');   
         this.load.image('BTNMenu', 'imagenes/MenuCW.png'); 
         this.load.image('BTNTutorial', 'imagenes/TutorialCW.png');
+        this.load.image('BTNOpciones', 'imagenes/OpcionesCW.png');
         this.load.audio('musica', 'audio/musica.mp3');
         this.load.audio('sfx', 'audio/menusfx.mp3');   
         
@@ -105,19 +106,17 @@ export class MenuScene extends Phaser.Scene {
                 this.scene.start('CreditScene');
         });
 
-        const optionsBtn = this.add.text(400, 460, 'Opciones', {
-            fontSize: '40px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5)
+        const optionsBtn = this.add.image(400, 460, 'BTNOpciones')
+        .setOrigin(0.5)
         .setInteractive({ useHandCursor: true })
+            optionsBtn.setScale(0.19)
             .on('pointerover', () => {
                 //localBtn.setTint(0x00ff88);   // aplica color
-                optionsBtn.setScale(1.1);       // aumenta tamaño un 10%
+                optionsBtn.setScale(0.20);       // aumenta tamaño un 10%
             })
             .on('pointerout', () => {
                 //localBtn.setTint(0x00ff00);   // vuelve al color original
-                optionsBtn.setScale(1);         // vuelve al tamaño original
+                optionsBtn.setScale(0.19);         // vuelve al tamaño original
             })
             .on('pointerdown', () => {
                 this.sound.play('sfx', { volume: 0.5 });
