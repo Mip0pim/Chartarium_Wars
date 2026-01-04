@@ -11,6 +11,7 @@ export class OptionsScene extends Phaser.Scene {
         this.load.image('BTNMenu', 'imagenes/MenuCW.png');
         this.load.image('Opciones', 'imagenes/OpcionesCW.png');
         this.load.image('Barra', 'imagenes/BarraMusicaCW.png');
+        this.load.image('Mute', 'imagenes/MuteCW.png');
         this.load.image('Deslizador', 'imagenes/DeslizadorMusicaCW.png');
         this.load.audio('sfx', 'audio/menusfx.mp3');
     }
@@ -60,12 +61,7 @@ export class OptionsScene extends Phaser.Scene {
     });
     
     // Botón Mute simple
-    const muteBtn = this.add.text(x, y + 40, 'Mute', {
-        fontSize: '24px',
-        color: '#ffffff',
-        backgroundColor: '#333333',
-        padding: { left: 20, right: 20, top: 10, bottom: 10 }
-    }).setOrigin(0.5)
+    const muteBtn = this.add.image(x, y + 40, 'Mute').setOrigin(0.5).setScale(0.5)
         .setInteractive({ useHandCursor: true });
 
     muteBtn.on('pointerdown', () => {

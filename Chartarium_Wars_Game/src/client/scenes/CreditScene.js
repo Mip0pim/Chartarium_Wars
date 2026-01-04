@@ -16,7 +16,7 @@ export class CreditScene extends Phaser.Scene {
     create() {
 
         //fondo
-        this.add.image(400, 310, 'Fondo');
+        this.add.image(400, 300, 'Fondo');
         
         const creditBtn = this.add.image(400, 90, "BTNCredit")
             .setOrigin(0.5);

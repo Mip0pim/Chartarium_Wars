@@ -17,6 +17,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('BTNMenu', 'imagenes/MenuCW.png'); 
         this.load.image('BTNTutorial', 'imagenes/TutorialCW.png');
         this.load.image('BTNOpciones', 'imagenes/OpcionesCW.png');
+        this.load.image('BTNCancel' , 'imagenes/CancelCW.png');
         this.load.audio('musica_menu', 'audio/musica.mp3');
         this.load.audio('sfx', 'audio/menusfx.mp3');   
         

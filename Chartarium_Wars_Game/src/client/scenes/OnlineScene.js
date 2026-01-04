@@ -41,7 +41,7 @@ export class OnlineScene extends Phaser.Scene {
         const userService = createUserService();
         const userController = createUserController(userService);
 
-        this.add.image(400, 310, 'Fondo');
+        this.add.image(400, 300, 'Fondo');
         const onlineBtn = this.add.image(400, 90, "BTNOnline")
             .setOrigin(0.5)
             .setScale(0.33);

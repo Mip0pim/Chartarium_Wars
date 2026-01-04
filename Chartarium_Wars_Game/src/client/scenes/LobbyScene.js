@@ -14,7 +14,7 @@ export default class LobbyScene extends Phaser.Scene {
   create() {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
-    this.add.image(400, 310, 'Fondo');
+    this.add.image(400, 300, 'Fondo');
     // Title
     const onlineBtn = this.add.image(400, 90, "BTNOnline")
             .setOrigin(0.5)
@@ -42,19 +42,14 @@ export default class LobbyScene extends Phaser.Scene {
 
 
     // Cancel button
-    const cancelButton = this.add.text(width / 2, height - 100, 'Cancel', {
-      fontSize: '24px',
-      color: '#9b4545ff',
-      backgroundColor: '#333333',
-      padding: { x: 20, y: 10 }
-    }).setOrigin(0.5).setInteractive();
+    const cancelButton = this.add.image(width / 2, height - 100, 'BTNCancel').setOrigin(0.5).setScale(0.30).setInteractive();
 
     cancelButton.on('pointerover', () => {
-      cancelButton.setColor('#ff0000');
+      cancelButton.setScale(0.33);
     });
 
     cancelButton.on('pointerout', () => {
-      cancelButton.setColor('#ff6666');
+      cancelButton.setScale(0.30);
     });
 
     cancelButton.on('pointerdown', () => {

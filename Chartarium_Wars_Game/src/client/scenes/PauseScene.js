@@ -11,6 +11,7 @@ preload() {
         this.load.image('BTNPause', 'imagenes/PausaCW.png');
         this.load.image('BTNMenu', 'imagenes/MenuCW.png');
         this.load.image('BTNContinue', 'imagenes/ContinuarCW.png');
+        this.load.image('Mute', 'imagenes/MuteCW.png');
         this.load.image('Barra', 'imagenes/BarraMusicaCW.png');
         this.load.image('Deslizador', 'imagenes/DeslizadorMusicaCW.png');
         this.load.audio('sfx', 'audio/menusfx.mp3');
@@ -77,12 +78,7 @@ preload() {
             });
         
         // Botón Mute
-        const muteBtn = this.add.text(x, y + 40, 'Mute', {
-            fontSize: '24px',
-            color: '#ffffff',
-            backgroundColor: '#333333',
-            padding: { left: 20, right: 20, top: 10, bottom: 10 }
-        }).setOrigin(0.5)
+        const muteBtn = this.add.image(x, y + 40, 'Mute').setOrigin(0.5).setScale(0.5)
           .setInteractive({ useHandCursor: true });
 
         muteBtn.on('pointerdown', () => {

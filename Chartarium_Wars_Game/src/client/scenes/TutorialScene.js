@@ -17,7 +17,7 @@ export class TutorialScene extends Phaser.Scene {
     create() {
 
         //fondo
-        this.add.image(400, 310, 'Fondo');
+        this.add.image(400, 300, 'Fondo');
         
         this.add.image(400,80,'Tutorial').setOrigin(0.5).setScale(0.45);
 
