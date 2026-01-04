@@ -9,6 +9,8 @@ export class TutorialScene extends Phaser.Scene {
     preload() {//carga de archivos
         this.load.image('Fondo', 'imagenes/Fondo.jpg');
         this.load.image('Tutorial', 'imagenes/TutorialCW.png');
+        this.load.image('TutorialInfo', 'imagenes/InfoTutorialCW.png');
+        this.load.image('TeclasTutorial', 'imagenes/TeclasTutorialCW.png');
         this.load.audio('sfx', 'audio/menusfx.mp3');
     }
 
@@ -19,59 +21,8 @@ export class TutorialScene extends Phaser.Scene {
         
         this.add.image(400,80,'Tutorial').setOrigin(0.5).setScale(0.45);
 
-        this.add.text(400, 150, 'Controles:', {
-            fontSize: '25px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
-
-        this.add.text(400, 180, 'Player 1: wasd', {
-            fontSize: '25px',
-            color: '#000000ff',
-        }).setOrigin(0.5);
-
-        this.add.text(400, 210, 'Player 2: flechas direccionales', {
-            fontSize: '25px',
-            color: '#000000ff',
-        }).setOrigin(0.5);
-        
-        this.add.text(400, 260, 'Objetivo:', {
-            fontSize: '25px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
-
-        this.add.text(400, 290, 'Quitarle las cinco vidas al oponente', {
-            fontSize: '25px',
-            color: '#000000ff',
-        }).setOrigin(0.5);
-
-        this.add.text(400, 340, 'Mecánicas:', {
-            fontSize: '25px',
-            color: '#000000ff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
-
-        this.add.text(400, 370, 'Disparas automáticamente y solo cuando estas quieto', {
-            fontSize: '25px',
-            color: '#000000ff',
-        }).setOrigin(0.5);
-        
-        this.add.text(400, 400, 'Tu cañón siempre apunta al otro jugador', {
-            fontSize: '25px',
-            color: '#000000ff',
-        }).setOrigin(0.5);
-        
-        this.add.text(400, 430, 'Las balas rebotan 3 veces', {
-            fontSize: '25px',
-            color: '#000000ff',
-        }).setOrigin(0.5);
-
-        this.add.text(400, 460, 'Tus propias balas pueden darte', {
-            fontSize: '25px',
-            color: '#000000ff',
-        }).setOrigin(0.5);
-
+        this.add.image(600, 300, 'TutorialInfo').setOrigin(0.5).setScale(0.4);
+        this.add.image(200, 300, 'TeclasTutorial').setOrigin(0.5).setScale(0.4);
         const menuBtn = this.add.image(400, 525, 'BTNMenu')
             .setOrigin(0.5)
             .setScale(0.3)

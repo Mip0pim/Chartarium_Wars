@@ -37,6 +37,7 @@ export class OnlineScene extends Phaser.Scene {
     create() {
         const Matter = this.matter;//no se porque pero hay que poner esto
         // Fondo
+        this.connected=false;
         const userService = createUserService();
         const userController = createUserController(userService);
 
@@ -169,7 +170,7 @@ export class OnlineScene extends Phaser.Scene {
         console.log("Nombre ingresado:", nombre);
         console.log("Avatar seleccionado:", this.colorPlayer1);
 
-        if (nombre.length === 0) {
+        if (nombre.length === 0 || !this.connected) {
             this.sound.play('sfx', { volume: 0.5 });
             console.log("Por favor, ingresa un nombre válido.");
             return;
@@ -233,12 +234,15 @@ export class OnlineScene extends Phaser.Scene {
             if (data.connected) {
                 this.connectionText2.setText(`Servidor: ${data.count} usuario(s) conectado(s)`);
                 this.connectionText2.setColor('#5e925eff');
+                this.connected = true;
             } else {
                 this.connectionText2.setText('Servidor: Desconectado');
                 this.connectionText2.setColor('#a16666ff');
+                this.connected = false;
             }
         } catch (error) {
             console.error('[OnlineScene] Error updating connection display:', error);
+            this.connected = false;
         }
     }
 

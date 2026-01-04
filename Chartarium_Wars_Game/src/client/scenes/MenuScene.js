@@ -23,6 +23,10 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('Velocidad', 'imagenes/VelocidadCW.png');
         this.load.image('Escudo', 'imagenes/EscudoCW.png');
         this.load.image('NoFuegoAmigo', 'imagenes/NoFuegoAmigoCW.png');
+
+        this.load.audio('musica_game', 'audio/musicab.mp3');
+        this.load.audio('sfx_game', 'audio/disparo.mp3');
+        this.load.audio('sfx_rebote', 'audio/rebote.mp3');
     }
 
 

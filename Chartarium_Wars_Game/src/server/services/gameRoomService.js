@@ -84,7 +84,7 @@ function handleCollectPowerUp(ws){
    * @param {WebSocket} ws - Player's WebSocket
    * @param {string} action - Movement action {x, y, angle, firing}
    */
-  function handleTankMove(ws, action, lives) {
+  function handleTankMove(ws, action, x, y, lives) {
     const roomId = ws.roomId;
     if (!roomId) return;
 
@@ -98,6 +98,8 @@ function handleCollectPowerUp(ws){
       opponent.send(JSON.stringify({
         type: 'tankUpdate',
         action,
+        x,
+        y,
         lives
       }));
     }

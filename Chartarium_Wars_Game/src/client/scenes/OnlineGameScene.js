@@ -41,9 +41,7 @@ export class OnlineGameScene extends Phaser.Scene {
         this.load.image('Bloque', 'imagenes/TileMuro.png');
         this.load.image('Palo', 'imagenes/PaloObstaculoCW.png');
 
-        this.load.audio('musica_game', 'audio/musicab.mp3');
-        this.load.audio('sfx_game', 'audio/disparo.mp3');
-        this.load.audio('sfx_rebote', 'audio/rebote.mp3');
+        
        
     }
     init(data) {
@@ -171,6 +169,10 @@ export class OnlineGameScene extends Phaser.Scene {
                 // Update opponent's tank position
                 let moveCommand2 = new MoveTankCommand(this.remoteTank, data.action);
                 this.processor.process(moveCommand2);
+                this.remoteTank.sprite.x = data.x;
+                this.remoteTank.sprite.y = data.y;
+                this.remoteTank.turret.x = data.x;
+                this.remoteTank.turret.y = data.y;
                 this.actualizarVidas(this.playerRole === 'player1' ? 'player2' : 'player1', data.lives);
                 break;
 
@@ -415,6 +417,8 @@ export class OnlineGameScene extends Phaser.Scene {
         this.sendMessage({
             type: 'tankMove',
             action: direction,
+            x: this.localTank.GetX(),
+            y: this.localTank.GetY(),
             lives: this.localTank.vidas
         });
 

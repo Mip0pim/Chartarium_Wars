@@ -133,7 +133,7 @@ wss.on('connection', (ws) => {
           break;
 
         case 'tankMove':
-          gameRoomService.handleTankMove(ws, data.action, data.lives);
+          gameRoomService.handleTankMove(ws, data.action, data.x, data.y, data.lives);
           break;
 
         case 'gameOver':

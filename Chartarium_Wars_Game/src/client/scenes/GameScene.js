@@ -43,9 +43,7 @@ export class GameScene extends Phaser.Scene {
         this.load.image('Bloque', 'imagenes/TileMuro.png');
         this.load.image('Palo', 'imagenes/PaloObstaculoCW.png');
        
-        this.load.audio('musica_game', 'audio/musicab.mp3');
-        this.load.audio('sfx_game', 'audio/disparo.mp3');
-        this.load.audio('sfx_rebote', 'audio/rebote.mp3');
+
     }
     init(data) {
         this.players = new Map();

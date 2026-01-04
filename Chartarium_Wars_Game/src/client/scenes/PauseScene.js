@@ -11,6 +11,8 @@ preload() {
         this.load.image('BTNPause', 'imagenes/PausaCW.png');
         this.load.image('BTNMenu', 'imagenes/MenuCW.png');
         this.load.image('BTNContinue', 'imagenes/ContinuarCW.png');
+        this.load.image('Barra', 'imagenes/BarraMusicaCW.png');
+        this.load.image('Deslizador', 'imagenes/DeslizadorMusicaCW.png');
         this.load.audio('sfx', 'audio/menusfx.mp3');
         this.scene.bringToTop('PauseScene');
     }
@@ -46,20 +48,33 @@ preload() {
             });
 
         //Slider de volumen
-        const x = 400, y = 370;
-        const minX = x - 100, maxX = x + 100;
-        const currentVolume = Phaser.Math.Clamp(this.sound.volume ?? 1, 0, 1);
-        const handleX = minX + (maxX - minX) * currentVolume;
-        this.add.rectangle(x, y, 200, 10, 0x888888);
-        const sliderHandle = this.add.circle(handleX, y, 12, 0xffffff)
-            .setInteractive({ draggable: true });
-        this.input.setDraggable(sliderHandle);
-        this.input.on('drag', (pointer, gameObject, dragX) => {
-            if (gameObject !== sliderHandle) return;
-            gameObject.x = Phaser.Math.Clamp(dragX, minX, maxX);
-            this.sound.mute = false; // Desmutear al mover el slider
-            this.sound.volume = (gameObject.x - minX) / (maxX - minX);
-        });         
+            const x = 400;
+            const y = 370;
+        
+            // Barra del slider
+            this.sliderBar = this.add.image(x, y, 'Barra').setDisplaySize(200,68).setOrigin(0.5);
+        
+            // Obtener volumen global actual (0 a 1)
+            const currentVolume = Phaser.Math.Clamp(this.sound.volume ?? 1, 0, 1);
+        
+            // Convertir volumen a posición del handle
+            const minX = x - 80;
+            const maxX = x + 80;
+            const handleX = minX + (maxX - minX) * currentVolume;
+        
+            // Crear handle en la posición correcta
+            this.sliderHandle = this.add.image(handleX, y, 'Deslizador').setScale(0.5).setOrigin(0.5)
+                .setInteractive({ draggable: true });
+        
+            this.input.setDraggable(this.sliderHandle);
+        
+            // Evento de arrastre
+            this.input.on('drag', (pointer, gameObject, dragX) => {
+                if (gameObject !== this.sliderHandle) return;
+                gameObject.x = Phaser.Math.Clamp(dragX, minX, maxX);
+                this.sound.mute = false; // Desmutear al mover el slider
+                this.sound.volume = (gameObject.x - minX) / (maxX - minX);
+            });
         
         // Botón Mute
         const muteBtn = this.add.text(x, y + 40, 'Mute', {
