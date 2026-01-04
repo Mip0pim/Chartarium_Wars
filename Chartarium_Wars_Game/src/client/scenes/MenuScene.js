@@ -17,7 +17,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.image('BTNMenu', 'imagenes/MenuCW.png'); 
         this.load.image('BTNTutorial', 'imagenes/TutorialCW.png');
         this.load.image('BTNOpciones', 'imagenes/OpcionesCW.png');
-        this.load.audio('musica', 'audio/musica.mp3');
+        this.load.audio('musica_menu', 'audio/musica.mp3');
         this.load.audio('sfx', 'audio/menusfx.mp3');   
         
         this.load.image('Velocidad', 'imagenes/VelocidadCW.png');
@@ -28,11 +28,14 @@ export class MenuScene extends Phaser.Scene {
 
     create() {
         //musica
-
-        let musica = this.sound.get('musica');
-        if (!musica) {        
-            musica = this.sound.add('musica', { loop: true, volume: 0.4});            
-            musica.play();        
+        const musicaJuego = this.sound.get('musica_game');
+        musicaJuego?.stop();
+        let musicaMenu = this.sound.get('musica_menu');
+        if (!musicaMenu) {
+           musicaMenu = this.sound.add('musica_menu', { loop: true, volume: 0.4 });    
+        }
+        if (!musicaMenu.isPlaying) {
+        musicaMenu.play();
         }
         //fondo
         this.add.image(400, 300, 'Fondo');

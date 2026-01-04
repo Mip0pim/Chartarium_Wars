@@ -65,6 +65,7 @@ export class Turret {
                     this.sprite.rotation,
                     this.color
                 );
+                this.scene.sound.play('sfx_game', { volume: 0.3 });
             }
         }
     }

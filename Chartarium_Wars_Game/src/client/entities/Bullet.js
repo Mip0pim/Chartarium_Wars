@@ -57,6 +57,9 @@ export class Bullet {
     }
 
     destroy() {
+        this.scene.sound.play('sfx_rebote', {        
+            volume: 0.5,
+        });
         this.bounces-=1;
         if (this.bounces<1){
         this.destroyBullet();
