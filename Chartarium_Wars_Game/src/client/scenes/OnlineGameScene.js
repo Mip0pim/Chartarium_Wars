@@ -40,6 +40,10 @@ export class OnlineGameScene extends Phaser.Scene {
         this.load.image('MuroBloque6', 'imagenes/MedioObstaculoCW.png');
         this.load.image('Bloque', 'imagenes/TileMuro.png');
         this.load.image('Palo', 'imagenes/PaloObstaculoCW.png');
+
+        this.load.audio('musica_game', 'audio/musicab.mp3');
+        this.load.audio('sfx_game', 'audio/disparo.mp3');
+        this.load.audio('sfx_rebote', 'audio/rebote.mp3');
        
     }
     init(data) {
@@ -80,7 +84,17 @@ export class OnlineGameScene extends Phaser.Scene {
     create() {
 
         this.powerUpsGroup = this.physics.add.group();
-        
+        //musica
+        const musicaMenu = this.sound.get('musica_menu');    
+        musicaMenu?.stop();
+        let musicaJuego = this.sound.get('musica_game');
+        if (!musicaJuego) {
+           musicaJuego = this.sound.add('musica_game', { loop: true, volume: 0.4 });
+        }
+        if (!musicaJuego.isPlaying) {
+        musicaJuego.play();
+        }
+
         //fondo
         this.add.image(400, 300, 'Fondo');       
         this.createBounds();
