@@ -23,6 +23,7 @@ export class PowerUp {
 
 
     aplyPowerUp(tank, type){
+        this.scene.sound.play('sfx_powerup', { volume: 0.7 });
         this.scene.usePowerUps = true;
         switch(type){
             case 'Heal':

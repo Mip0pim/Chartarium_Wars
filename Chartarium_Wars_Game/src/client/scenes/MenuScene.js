@@ -28,6 +28,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.audio('musica_game', 'audio/musicab.mp3');
         this.load.audio('sfx_game', 'audio/disparo.mp3');
         this.load.audio('sfx_rebote', 'audio/rebote.mp3');
+        this.load.audio('sfx_powerup', 'audio/powerupsfx.mp3');
     }
 
 
