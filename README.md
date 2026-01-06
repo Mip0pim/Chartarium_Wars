@@ -46,6 +46,30 @@ Integrantes del equipo:
   - [2. COSAS POR HACER](#2-cosas-por-hacer)
     - [2.1 Poderes](#21-poderes)
     - [2.2 Cambios de sprites](#22-cambios-de-sprites)
+- [Fase 3: Comunicación cliente-servidor mediante API REST](#fase-3-comunicacion-cliente-servidor-mediante-api-rest)
+  - [1. Objetivo de la fase](#1-objetivo-de-la-fase)
+  - [2. Arquitectura cliente-servidor](#2-arquitectura-cliente-servidor)
+  - [3. Diseño de la API REST](#3-diseno-de-la-api-rest)
+    - [3.1 Gestión de usuarios](#31-gestion-de-usuarios)
+    - [3.2 Gestión de conexiones](#32-gestion-de-conexiones)
+    - [3.3 Otros endpoints](#33-otros-endpoints)
+  - [4. Sistema de keep-alive y detección de caídas](#4-sistema-de-keep-alive-y-deteccion-de-caidas)
+  - [5. Indicadores visuales de conexión](#5-indicadores-visuales-de-conexion)
+  - [6. Manejo de errores](#6-manejo-de-errores)
+- [Fase 4: Comunicación asíncrona mediante WebSockets](#fase-4-comunicacion-asincrona-mediante-websockets)
+  - [1. Objetivo de la fase](#1-objetivo-de-la-fase-1)
+  - [2. Arquitectura WebSocket](#2-arquitectura-websocket)
+  - [3. Flujo del modo online (Lobby → Matchmaking → Partida)](#3-flujo-del-modo-online-lobby--matchmaking--partida)
+    - [3.1 Conexión desde Lobby](#31-conexion-desde-lobby)
+    - [3.2 Sistema de matchmaking (cola de emparejamiento)](#32-sistema-de-matchmaking-cola-de-emparejamiento)
+    - [3.3 Salas de juego (Game Rooms)](#33-salas-de-juego-game-rooms)
+  - [4. Sincronización en tiempo real durante la partida](#4-sincronizacion-en-tiempo-real-durante-la-partida)
+    - [4.1 Mensajes principales usados](#41-mensajes-principales-usados)
+      - [4.1.1 Movimiento del tanque](#411-movimiento-del-tanque)
+      - [4.1.2 Sincronización de eventos del mapa (Power-ups)](#412-sincronizacion-de-eventos-del-mapa-power-ups)
+      - [4.1.3 Cambio de color del tanque](#413-cambio-de-color-del-tanque)
+      - [4.1.4 Fin de partida (Game Over)](#414-fin-de-partida-game-over)
+      - [4.1.5 Gestión de desconexiones](#415-gestion-de-desconexiones)
 
 # Fase 1: Equipo de desarrollo y temática del juego
 
@@ -258,3 +282,203 @@ Se ha tenido que priorizar otras tareas para que el juego sea jugable y cumpla l
 ## 2.2 Cambios de sprites
 
 Se puede obsevar cómo algunos tanques son más pequeños o grandes. Debido a que al estar dibujados las proporciones han variado. A consecuencia el tamaño de sus colisioneses lejeramente diferente, variando unos 5 píxeles. Esta variación puede hacer que de la sensación de algunos tanques sea más difícil de golpear. Se tratará de rebibujar todos los tanques de nuevo y ajustar lo más posible el tamaño de sus colisiones para que el juego se sienta justo.
+
+# Fase 3: Comunicación cliente-servidor mediante API REST
+
+## 1. Objetivo de la fase
+
+El objetivo de esta fase es implementar la comunicación cliente-servidor síncrona mediante una API REST, permitiendo la gestión de usuarios, el control de conexiones activas y la detección de la disponibilidad del servidor. Esta fase establece la base para la implementación del modo multijugador online.
+
+## 2. Arquitectura cliente-servidor
+
+El juego sigue una arquitectura cliente-servidor claramente diferenciada.
+
+El cliente se encarga de la representación visual del juego, la gestión de escenas y la interacción con el jugador. El cliente realiza peticiones al servidor para obtener información de estado y notificar su actividad, pero no gestiona la lógica global del sistema.
+
+El servidor centraliza la lógica relacionada con la gestión de usuarios y conexiones, actuando como punto único de control y garantizando la coherencia del sistema.
+
+## 3. Diseño de la API REST
+
+La comunicación síncrona entre cliente y servidor se realiza mediante una API REST, utilizando los principales verbos HTTP: GET, POST, PUT y DELETE.
+
+### 3.1 Gestión de usuarios
+
+- `POST /api/users`  
+  Crea un nuevo usuario con nombre y avatar.
+
+- `GET /api/users`  
+  Obtiene la lista completa de usuarios.
+
+- `GET /api/users/:id`  
+  Obtiene la información de un usuario concreto.
+
+- `PUT /api/users/:id`  
+  Actualiza los datos del usuario (avatar o número de victorias).
+
+- `DELETE /api/users/:id`  
+  Elimina un usuario del sistema.
+
+Cada usuario dispone de los siguientes datos:
+- `id`
+- `name`
+- `avatar`
+- `wins`
+- `createdAt`
+
+Los usuarios se almacenan en memoria durante la ejecución del servidor.
+
+### 3.2 Gestión de conexiones
+
+Para el control de las conexiones activas se utiliza el endpoint:
+
+- `POST /api/connected`
+
+Este endpoint permite registrar o actualizar la actividad de una sesión mediante un identificador único de sesión (`sessionId`) y devuelve el número total de sesiones activas registradas en el servidor.
+
+### 3.3 Otros endpoints
+
+- `GET /health`: permite comprobar de forma sencilla si el servidor está operativo.
+
+Además, el servidor utiliza endpoints REST para la gestión de mensajes (`/api/messages`), integrados en la arquitectura del sistema y preparados para futuras ampliaciones.
+
+## 4. Sistema de keep-alive y detección de caídas
+
+El cliente implementa un sistema de keep-alive mediante peticiones periódicas al endpoint `POST /api/connected`.
+
+Funcionamiento:
+1. El cliente genera un `sessionId` único.
+2. Cada 2 segundos envía una petición al servidor.
+3. El servidor registra la sesión y devuelve el número de sesiones activas.
+
+Si el cliente no recibe respuesta, se considera que el servidor no está disponible.
+
+## 5. Indicadores visuales de conexión
+
+El juego dispone de una escena específica para la pérdida de conexión que:
+- Informa visualmente al jugador de la desconexión.
+- Realiza intentos periódicos de reconexión.
+- Muestra el número de intentos realizados.
+- Permite volver al menú principal.
+
+En modo online, la desconexión durante una partida se gestiona mostrando un aviso visual y permitiendo al jugador regresar al menú.
+
+## 6. Manejo de errores
+
+El servidor valida las peticiones REST recibidas:
+- Si falta el `sessionId` en `/api/connected`, se devuelve un error 400.
+- Si se solicitan recursos inexistentes, se devuelven errores 404.
+
+El cliente gestiona los errores de conexión proporcionando feedback visual claro, evitando estados inconsistentes.
+
+# Fase 4: Comunicación asíncrona mediante WebSockets
+
+## 1. Objetivo de la fase
+
+El objetivo de esta fase es implementar comunicación asíncrona y en tiempo real mediante WebSockets, permitiendo el emparejamiento de jugadores y la sincronización del estado del juego durante las partidas online (movimiento, vidas, eventos del mapa y fin de partida).
+
+## 2. Arquitectura WebSocket
+
+Para el modo online se utiliza un servidor WebSocket basado en la librería `ws`, integrado con el servidor HTTP. El servidor actúa como punto central de comunicación: recibe mensajes del cliente, procesa la lógica del emparejamiento y reenvía actualizaciones al oponente dentro de cada sala.
+
+Esto hace que todos los mensajes pasen por el servidor, evitando comunicación directa entre clientes y permitiendo que el servidor controle el estado de la partida.
+
+## 3. Flujo del modo online (Lobby → Matchmaking → Partida)
+
+### 3.1 Conexión desde Lobby
+
+Al entrar en el modo online, el cliente accede a la escena de lobby, se conecta al WebSocket en:
+
+`ws://<host>`
+
+Al abrirse la conexión, el cliente envía un mensaje de entrada a cola con la información del jugador:
+
+- `type: "joinQueue"`
+- `color`: avatar/color elegido
+- `name`: nombre del jugador
+
+Además, existe un botón de cancelación que permite abandonar la cola mediante `leaveQueue`.
+
+### 3.2 Sistema de matchmaking (cola de emparejamiento)
+
+El servidor mantiene una cola de jugadores esperando. Cuando hay al menos 2 jugadores:
+
+1. Se extraen los dos primeros de la cola.
+2. Se crea una sala de juego (room).
+3. Se envía a ambos un mensaje `gameStart` con:
+   - rol (`player1` / `player2`)
+   - colores y nombres de ambos jugadores
+   - `roomId`
+
+Mientras un jugador está en cola, el servidor envía mensajes `queueStatus` informando de su estado. 
+
+### 3.3 Salas de juego (Game Rooms)
+
+Una vez emparejados, el servidor crea una sala con:
+- identificador único `room_<n>`
+- referencias a los WebSocket de ambos jugadores
+- estado de la sala (activa/inactiva)
+- contador y generador de power-ups
+
+El `roomId` se almacena en cada WebSocket para localizar rápidamente la sala asociada a un cliente.
+
+## 4. Sincronización en tiempo real durante la partida
+
+La escena `OnlineGameScene` gestiona el estado local del jugador y envía periódicamente información al servidor a través de WebSocket. 
+
+### 4.1 Mensajes principales usados
+
+#### 4.1.1 Movimiento del tanque
+El cliente envía:
+- `type: "tankMove"`
+- `action` (up/down/left/right/stop)
+- `x`, `y` (posición)
+- `lives` (vidas actuales)
+
+El servidor reenvía al oponente un mensaje:
+- `type: "tankUpdate"`
+- `action`, `x`, `y`, `lives`
+
+El cliente receptor aplica la actualización al tanque contrario y actualiza sus vidas en HUD. 
+
+#### 4.1.2 Sincronización de eventos del mapa (Power-ups)
+
+El servidor genera periódicamente power-ups en cada sala:
+- cada 10 segundos
+- con un máximo de 3 power-ups activos simultáneamente
+
+Cuando se genera uno, el servidor envía a ambos jugadores:
+- `type: "spawnPowerUp"`
+- `data: { tipo, x, y }`
+
+El cliente, al recibir el mensaje, crea el power-up correspondiente en el escenario. 
+
+Cuando un jugador usa un power-up, el cliente envía:
+- `type: "collectPowerUp"`
+
+y el servidor reduce el contador de power-ups activos en la sala. 
+
+#### 4.1.3 Cambio de color del tanque
+
+Durante la partida, el color del tanque puede sincronizarse mediante:
+- `type: "tankColor"`
+- `color`
+- `role`
+
+El servidor reenvía el cambio al oponente para mantener coherencia visual. 
+
+#### 4.1.4 Fin de partida (Game Over)
+
+Cuando se cumple la condición de fin de partida, se utiliza el mensaje:
+- `type: "gameOver"`
+- `winner`
+
+El servidor notifica a ambos clientes y limpia la sala (marcándola inactiva y eliminándola). 
+
+#### 4.1.5 Gestión de desconexiones
+
+Si un jugador se desconecta durante una partida activa, el servidor:
+- notifica al oponente con `type: "playerDisconnected"`
+- finaliza la sala y libera recursos
+
+En el cliente, al recibir `playerDisconnected` (o si se cierra el WebSocket), se pausa la partida,
+se muestra un aviso visual y se habilita un botón para volver al menú principal. 

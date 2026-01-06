@@ -16,7 +16,7 @@
     "Tanks",
     "Power-Ups"
   ],
-  "author": "Iván Palacios, Carlos Martínez, Pablo Romero, Alex Weng Yu",
+  "author": "Iván Palacios, Carlos Martínez, Pablo Romero, Alex Yu Weng",
   "license": "Apache-2.0",
   "description": "A tank game with Phaser3",
   "dependencies": {
