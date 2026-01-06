@@ -33,7 +33,12 @@ export class GameOverScene extends Phaser.Scene {
         this.add.image(445, 200, ganadorKey).setOrigin(0.5).setScale(0.5);
         
         this.add.image(400, 375, `Base${this.color}`).setOrigin(0.5, 0.5).setScale(3);
-        this.torre=this.add.image(400, 375, `Torreta${this.color}`).setOrigin(0.15, 0.5).setScale(3);
+        if(this.color==='Amarillo' || this.color==='Verde'){
+            this.torre=this.add.image(400, 375, `Torreta${this.color}`).setOrigin(0.2, 0.5).setScale(3);
+        }else{
+            this.torre=this.add.image(400, 375, `Torreta${this.color}`).setOrigin(0.15, 0.5).setScale(3);
+        }
+        
 
         const menuBtn = this.add.image(400,540,'BTNMenu').setOrigin(0.5).setScale(0.4)
         .setInteractive({useHandCursor: true})

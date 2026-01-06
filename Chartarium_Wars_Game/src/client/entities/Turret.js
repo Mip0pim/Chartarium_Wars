@@ -26,18 +26,22 @@ export class Turret {
 
         if (this.color === "Red") {
             this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaRed');
+            this.sprite.setOrigin(0.15, 0.5);
         }
         if (this.color === "Green") {
             this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaGreen');
+            this.sprite.setOrigin(0.20, 0.5);
         }
         if (this.color === "Blue") {
             this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaBlue');
+            this.sprite.setOrigin(0.15, 0.5);
         }
         if (this.color === "Yellow") {
             this.sprite = this.scene.physics.add.sprite(x, y, 'TorretaYellow');
+            this.sprite.setOrigin(0.2, 0.5);
         }
         this.sprite.body.allowGravity = false;
-        this.sprite.setOrigin(0.15, 0.5);
+        
         this.SetPosition = (x, y) => { this.sprite.x = x; this.sprite.y = y; };
         this.sprite.setDepth(10);
         this.powerUpBullet = null;

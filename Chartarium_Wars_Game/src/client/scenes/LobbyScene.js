@@ -42,14 +42,14 @@ export default class LobbyScene extends Phaser.Scene {
 
 
     // Cancel button
-    const cancelButton = this.add.image(width / 2, height - 100, 'BTNCancel').setOrigin(0.5).setScale(0.30).setInteractive();
+    const cancelButton = this.add.image(width / 2, height - 100, 'BTNCancel').setOrigin(0.5).setScale(0.35).setInteractive();
 
     cancelButton.on('pointerover', () => {
-      cancelButton.setScale(0.33);
+      cancelButton.setScale(0.38);
     });
 
     cancelButton.on('pointerout', () => {
-      cancelButton.setScale(0.30);
+      cancelButton.setScale(0.35);
     });
 
     cancelButton.on('pointerdown', () => {

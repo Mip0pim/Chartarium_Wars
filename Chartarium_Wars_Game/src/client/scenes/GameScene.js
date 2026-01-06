@@ -119,6 +119,7 @@ export class GameScene extends Phaser.Scene {
         this.scene.launch('ConnectionLostScene', { previousScene: 'GameScene' });
         this.scene.pause();
         this.scene.bringToTop('ConnectionLostScene');
+        
     }
 
     vidasJugadores() {

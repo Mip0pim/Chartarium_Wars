@@ -24,7 +24,7 @@ export class OnlineScene extends Phaser.Scene {
 
         this.load.image('Play', 'imagenes/PLAYCW.png');
         this.load.image('BTNMenu', 'imagenes/MenuCW.png');
- 
+        this.load.image('Basura', 'imagenes/EliminarCW.png');
 
         this.load.image('Bubble', 'imagenes/BurbujaCW.png');
         this.load.image('Elige', 'imagenes/EligeColorCW.png');
@@ -76,6 +76,19 @@ export class OnlineScene extends Phaser.Scene {
             })
             .on('pointerdown', () => { 
                 this.handleLogin();
+        });
+
+        this.basura = this.add.image(550, 310, 'Basura')
+            .setOrigin(0.5)
+            .setScale(0.3).setInteractive({ useHandCursor: true })
+            .on('pointerover', () => {
+                this.basura.setScale(0.35);       // aumenta tamaño un 10%
+            })
+            .on('pointerout', () => {
+                this.basura.setScale(0.3);         // vuelve al tamaño original
+            })
+            .on('pointerdown', () => { 
+                this.handleDelete();
         });
 
         // Crear input HTML y guardarlo en this.inputName
@@ -163,6 +176,37 @@ export class OnlineScene extends Phaser.Scene {
             });
             this.p1Options.push(opt);
         });
+    }
+
+    async handleDelete() {
+        const nombre = this.inputName.value.trim();
+        console.log("Eliminando usuario...");
+        console.log("Nombre ingresado:", nombre);
+        console.log("Avatar seleccionado:", this.colorPlayer1);
+
+        if (nombre.length === 0 || !this.connected) {
+            this.sound.play('sfx', { volume: 0.5 });
+            console.log("Usuario inválido para eliminar.");
+            return;
+        }
+        let user = await this.getPlayerByName(nombre);
+
+        // Si devuelve [] → no existe
+        if (Array.isArray(user) && user.length === 0) {
+            user = null;
+        } else if (Array.isArray(user)) {
+            user = user[0]; // tomar el usuario real
+        }
+
+        if (user) {
+            // Usuario existente
+            console.log("Eliminando usuario existente.");
+            await this.deletePlayer(user.id);
+            console.log("Usuario eliminado:", user);
+        }else{
+            console.log("Usuario no existe, no se puede eliminar.");
+        }
+
     }
 
     async handleLogin() {
@@ -315,6 +359,21 @@ export class OnlineScene extends Phaser.Scene {
 
         return await response.json();
     }
+
+    async deletePlayer(id) {
+        const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (response.status === 204) return; // No Content
+
+        const text = await response.text();
+        return text ? JSON.parse(text) : null;
+    }
+
 
     //
     onShutdown() {
