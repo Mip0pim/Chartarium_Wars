@@ -46,30 +46,31 @@ Integrantes del equipo:
   - [2. COSAS POR HACER](#2-cosas-por-hacer)
     - [2.1 Poderes](#21-poderes)
     - [2.2 Cambios de sprites](#22-cambios-de-sprites)
-- [Fase 3: Comunicación cliente-servidor mediante API REST](#fase-3-comunicacion-cliente-servidor-mediante-api-rest)
+- [Fase 3: Comunicación cliente-servidor mediante API REST](#fase-3-comunicaci%C3%B3n-cliente-servidor-mediante-api-rest)
   - [1. Objetivo de la fase](#1-objetivo-de-la-fase)
   - [2. Arquitectura cliente-servidor](#2-arquitectura-cliente-servidor)
-  - [3. Diseño de la API REST](#3-diseno-de-la-api-rest)
-    - [3.1 Gestión de usuarios](#31-gestion-de-usuarios)
-    - [3.2 Gestión de conexiones](#32-gestion-de-conexiones)
+  - [3. Diseño de la API REST](#3-diseño-de-la-api-rest)
+    - [3.1 Gestión de usuarios](#31-gesti%C3%B3n-de-usuarios)
+    - [3.2 Gestión de conexiones](#32-gesti%C3%B3n-de-conexiones)
     - [3.3 Otros endpoints](#33-otros-endpoints)
-  - [4. Sistema de keep-alive y detección de caídas](#4-sistema-de-keep-alive-y-deteccion-de-caidas)
-  - [5. Indicadores visuales de conexión](#5-indicadores-visuales-de-conexion)
+  - [4. Sistema de keep-alive y detección de caídas](#4-sistema-de-keep-alive-y-detecci%C3%B3n-de-caidas)
+  - [5. Indicadores visuales de conexión](#5-indicadores-visuales-de-conexi%C3%B3n)
   - [6. Manejo de errores](#6-manejo-de-errores)
-- [Fase 4: Comunicación asíncrona mediante WebSockets](#fase-4-comunicacion-asincrona-mediante-websockets)
+- [Fase 4: Comunicación asíncrona mediante WebSockets](#fase-4-comunicaci%C3%B3n-as%C3%ADncrona-mediante-websockets)
   - [1. Objetivo de la fase](#1-objetivo-de-la-fase-1)
   - [2. Arquitectura WebSocket](#2-arquitectura-websocket)
   - [3. Flujo del modo online (Lobby → Matchmaking → Partida)](#3-flujo-del-modo-online-lobby--matchmaking--partida)
-    - [3.1 Conexión desde Lobby](#31-conexion-desde-lobby)
+    - [3.1 Conexión desde Lobby](#31-conexi%C3%B3n-desde-lobby)
     - [3.2 Sistema de matchmaking (cola de emparejamiento)](#32-sistema-de-matchmaking-cola-de-emparejamiento)
     - [3.3 Salas de juego (Game Rooms)](#33-salas-de-juego-game-rooms)
-  - [4. Sincronización en tiempo real durante la partida](#4-sincronizacion-en-tiempo-real-durante-la-partida)
+  - [4. Sincronización en tiempo real durante la partida](#4-sincronizaci%C3%B3n-en-tiempo-real-durante-la-partida)
     - [4.1 Mensajes principales usados](#41-mensajes-principales-usados)
       - [4.1.1 Movimiento del tanque](#411-movimiento-del-tanque)
-      - [4.1.2 Sincronización de eventos del mapa (Power-ups)](#412-sincronizacion-de-eventos-del-mapa-power-ups)
+      - [4.1.2 Sincronización de eventos del mapa (Power-ups)](#412-sincronizaci%C3%B3n-de-eventos-del-mapa-power-ups)
       - [4.1.3 Cambio de color del tanque](#413-cambio-de-color-del-tanque)
       - [4.1.4 Fin de partida (Game Over)](#414-fin-de-partida-game-over)
-      - [4.1.5 Gestión de desconexiones](#415-gestion-de-desconexiones)
+      - [4.1.5 Gestión de desconexiones](#415-gesti%C3%B3n-de-desconexiones)
+- [Fase 5: Subida del juego a plataformas en línea](#fase-5-subida-del-juego-a-plataformas-en-l%C3%ADnea)
 
 # Fase 1: Equipo de desarrollo y temática del juego
 
@@ -459,12 +460,7 @@ y el servidor reduce el contador de power-ups activos en la sala.
 
 #### 4.1.3 Cambio de color del tanque
 
-Durante la partida, el color del tanque puede sincronizarse mediante:
-- `type: "tankColor"`
-- `color`
-- `role`
-
-El servidor reenvía el cambio al oponente para mantener coherencia visual. 
+Existe un problema si ambos jugadores seleccionan el mismo color de tanque. En ese caso, el cliente se encarga de detectarlo y selecciona un color aleatorio (distinto al suyo) para el oponente. Esto quiere decir que seguramente los colores no coincidan en ambas pantallas. 
 
 #### 4.1.4 Fin de partida (Game Over)
 
@@ -482,3 +478,15 @@ Si un jugador se desconecta durante una partida activa, el servidor:
 
 En el cliente, al recibir `playerDisconnected` (o si se cierra el WebSocket), se pausa la partida,
 se muestra un aviso visual y se habilita un botón para volver al menú principal. 
+
+# Fase 5: Subida del juego a plataformas en línea
+
+Para esta fase se han subido la versión más reciente del juego a las siguientes plataformas. Para poder jugarlo, haga click en la plataforma y le llevará al sitio correspondiente.
+
+[Itch.io](https://mippim.itch.io/chartarium-wars) 
+
+[GameJolt](https://gamejolt.com/games/Chartarium_Wars/1041576)
+
+
+
+
