@@ -3,6 +3,9 @@ import { connectionManager } from '../services/ConnectionManager';
 import { createUserController } from '../../server/controllers/userController';
 import { createUserService } from '../../server/services/userService';
 //import { userController } from '../../server/controllers/userController.js';
+
+const API_BASE = `http://${window.location.hostname}:3000`;
+
 export class OnlineScene extends Phaser.Scene {
     constructor() {
         super('OnlineScene');
@@ -318,7 +321,7 @@ export class OnlineScene extends Phaser.Scene {
     //--------------------api-------------------
     async getPlayerByName(nombre) {
         try {
-            const response = await fetch(`http://localhost:3000/api/users?name=${nombre}`);
+            const response = await fetch(`${API_BASE}/api/users?name=${encodeURIComponent(nombre)}`);
 
             if (!response.ok) {
                 throw new Error('HTTP error ' + response.status);
@@ -337,7 +340,7 @@ export class OnlineScene extends Phaser.Scene {
     }
 
     async createPlayer(data) {
-        const response = await fetch('http://localhost:3000/api/users', {
+        const response = await fetch(`${API_BASE}/api/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -349,7 +352,7 @@ export class OnlineScene extends Phaser.Scene {
     }
 
     async updatePlayer(id, updates) {
-        const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+        const response = await fetch(`${API_BASE}/api/users/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -361,7 +364,7 @@ export class OnlineScene extends Phaser.Scene {
     }
 
     async deletePlayer(id) {
-        const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+        const response = await fetch(`${API_BASE}/api/users/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
