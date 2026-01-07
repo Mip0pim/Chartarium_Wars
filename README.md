@@ -485,8 +485,7 @@ Para esta fase se han subido la versión más reciente del juego a las siguiente
 
 [Itch.io](https://mippim.itch.io/chartarium-wars) 
 
-[GameJolt](https://gamejolt.com/games/Chartarium_Wars/1041576)
+[Game Jolt](https://gamejolt.com/games/Chartarium_Wars/1041576)
 
-
-
+[New Grounds](https://www.newgrounds.com/portal/view/1013747)
 
