@@ -489,3 +489,4 @@ Para esta fase se han subido la versión más reciente del juego a las siguiente
 
 [New Grounds](https://www.newgrounds.com/portal/view/1013747)
 
+[GameHole.ink](https://www.gamehole.ink/play/chartarium-wars)
